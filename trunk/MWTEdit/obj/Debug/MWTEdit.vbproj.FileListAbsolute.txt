@@ -1,0 +1,14 @@
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\MWTEdit.exe
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\MWTEdit.pdb
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\MWTEdit.xml
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.Form1.resources
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.Resources.resources
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.vbproj.GenerateResource.Cache
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.exe
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.xml
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.pdb
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\Interop.MSXML2.dll
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.vbproj.ResolveComReference.cache
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\Interop.MSXML2.dll
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.TextDialog.resources
