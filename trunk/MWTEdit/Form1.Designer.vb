@@ -58,6 +58,22 @@ Partial Class Form1
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
         Me.TreeViewPages = New System.Windows.Forms.TreeView
+        Me.Label16 = New System.Windows.Forms.Label
+        Me.txtDelayIfNotSet = New System.Windows.Forms.TextBox
+        Me.Label17 = New System.Windows.Forms.Label
+        Me.txtDelayIfSet = New System.Windows.Forms.TextBox
+        Me.Label18 = New System.Windows.Forms.Label
+        Me.txtDelayUnSet = New System.Windows.Forms.TextBox
+        Me.Label19 = New System.Windows.Forms.Label
+        Me.txtDelaySet = New System.Windows.Forms.TextBox
+        Me.Label14 = New System.Windows.Forms.Label
+        Me.txtPageIfNotSet = New System.Windows.Forms.TextBox
+        Me.Label15 = New System.Windows.Forms.Label
+        Me.txtPageIfSet = New System.Windows.Forms.TextBox
+        Me.Label13 = New System.Windows.Forms.Label
+        Me.txtPageUnSet = New System.Windows.Forms.TextBox
+        Me.Label12 = New System.Windows.Forms.Label
+        Me.txtPageSet = New System.Windows.Forms.TextBox
         Me.WebBrowser2 = New System.Windows.Forms.WebBrowser
         Me.btnDeletePage = New System.Windows.Forms.Button
         Me.btnNewPage = New System.Windows.Forms.Button
@@ -72,6 +88,10 @@ Partial Class Form1
         Me.DataGridView1 = New System.Windows.Forms.DataGridView
         Me.btnText = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.btnTarget = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnSet = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnUnset = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnIfSet = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.bntIfUnSet = New System.Windows.Forms.DataGridViewTextBoxColumn
         Me.Label3 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.tbDelayTarget = New System.Windows.Forms.TextBox
@@ -103,6 +123,9 @@ Partial Class Form1
         Me.OpenFileDialogImage = New System.Windows.Forms.OpenFileDialog
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
+        Me.txtDefaltDir = New System.Windows.Forms.TextBox
+        Me.Label20 = New System.Windows.Forms.Label
+        Me.btnSaveDir = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -145,6 +168,9 @@ Partial Class Form1
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnSaveDir)
+        Me.TabPage1.Controls.Add(Me.Label20)
+        Me.TabPage1.Controls.Add(Me.txtDefaltDir)
         Me.TabPage1.Controls.Add(Me.cbAutoSetPageWhenSeen)
         Me.TabPage1.Controls.Add(Me.Label11)
         Me.TabPage1.Controls.Add(Me.tbMWTId)
@@ -487,6 +513,22 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label16)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayIfNotSet)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label17)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayIfSet)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label18)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayUnSet)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label19)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelaySet)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label14)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageIfNotSet)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label15)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageIfSet)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label13)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageUnSet)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.Label12)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageSet)
         Me.SplitContainer1.Panel2.Controls.Add(Me.WebBrowser2)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnDeletePage)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnNewPage)
@@ -512,7 +554,7 @@ Partial Class Form1
         Me.SplitContainer1.Panel2.Controls.Add(Me.lblPage)
         Me.SplitContainer1.Panel2.Controls.Add(Me.tbImage)
         Me.SplitContainer1.Size = New System.Drawing.Size(1060, 630)
-        Me.SplitContainer1.SplitterDistance = 521
+        Me.SplitContainer1.SplitterDistance = 318
         Me.SplitContainer1.TabIndex = 0
         '
         'TreeViewPages
@@ -520,19 +562,174 @@ Partial Class Form1
         Me.TreeViewPages.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TreeViewPages.Location = New System.Drawing.Point(0, 0)
         Me.TreeViewPages.Name = "TreeViewPages"
-        Me.TreeViewPages.Size = New System.Drawing.Size(521, 630)
+        Me.TreeViewPages.Size = New System.Drawing.Size(318, 630)
         Me.TreeViewPages.TabIndex = 1
+        '
+        'Label16
+        '
+        Me.Label16.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label16.AutoSize = True
+        Me.Label16.Location = New System.Drawing.Point(398, 182)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(52, 13)
+        Me.Label16.TabIndex = 42
+        Me.Label16.Text = "If Not Set"
+        '
+        'txtDelayIfNotSet
+        '
+        Me.txtDelayIfNotSet.Location = New System.Drawing.Point(451, 179)
+        Me.txtDelayIfNotSet.Name = "txtDelayIfNotSet"
+        Me.txtDelayIfNotSet.Size = New System.Drawing.Size(100, 20)
+        Me.txtDelayIfNotSet.TabIndex = 41
+        '
+        'Label17
+        '
+        Me.Label17.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label17.AutoSize = True
+        Me.Label17.Location = New System.Drawing.Point(273, 182)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(32, 13)
+        Me.Label17.TabIndex = 40
+        Me.Label17.Text = "If Set"
+        '
+        'txtDelayIfSet
+        '
+        Me.txtDelayIfSet.Location = New System.Drawing.Point(305, 179)
+        Me.txtDelayIfSet.Name = "txtDelayIfSet"
+        Me.txtDelayIfSet.Size = New System.Drawing.Size(88, 20)
+        Me.txtDelayIfSet.TabIndex = 39
+        '
+        'Label18
+        '
+        Me.Label18.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(398, 147)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(37, 13)
+        Me.Label18.TabIndex = 38
+        Me.Label18.Text = "UnSet"
+        '
+        'txtDelayUnSet
+        '
+        Me.txtDelayUnSet.Location = New System.Drawing.Point(451, 144)
+        Me.txtDelayUnSet.Name = "txtDelayUnSet"
+        Me.txtDelayUnSet.Size = New System.Drawing.Size(100, 20)
+        Me.txtDelayUnSet.TabIndex = 37
+        '
+        'Label19
+        '
+        Me.Label19.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(273, 147)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(23, 13)
+        Me.Label19.TabIndex = 36
+        Me.Label19.Text = "Set"
+        '
+        'txtDelaySet
+        '
+        Me.txtDelaySet.Location = New System.Drawing.Point(305, 144)
+        Me.txtDelaySet.Name = "txtDelaySet"
+        Me.txtDelaySet.Size = New System.Drawing.Size(88, 20)
+        Me.txtDelaySet.TabIndex = 35
+        '
+        'Label14
+        '
+        Me.Label14.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label14.AutoSize = True
+        Me.Label14.Location = New System.Drawing.Point(405, 46)
+        Me.Label14.Name = "Label14"
+        Me.Label14.Size = New System.Drawing.Size(52, 13)
+        Me.Label14.TabIndex = 34
+        Me.Label14.Text = "If Not Set"
+        '
+        'txtPageIfNotSet
+        '
+        Me.txtPageIfNotSet.Location = New System.Drawing.Point(455, 43)
+        Me.txtPageIfNotSet.Name = "txtPageIfNotSet"
+        Me.txtPageIfNotSet.Size = New System.Drawing.Size(100, 20)
+        Me.txtPageIfNotSet.TabIndex = 33
+        '
+        'Label15
+        '
+        Me.Label15.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label15.AutoSize = True
+        Me.Label15.Location = New System.Drawing.Point(282, 46)
+        Me.Label15.Name = "Label15"
+        Me.Label15.Size = New System.Drawing.Size(32, 13)
+        Me.Label15.TabIndex = 32
+        Me.Label15.Text = "If Set"
+        '
+        'txtPageIfSet
+        '
+        Me.txtPageIfSet.Location = New System.Drawing.Point(314, 43)
+        Me.txtPageIfSet.Name = "txtPageIfSet"
+        Me.txtPageIfSet.Size = New System.Drawing.Size(88, 20)
+        Me.txtPageIfSet.TabIndex = 31
+        '
+        'Label13
+        '
+        Me.Label13.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label13.AutoSize = True
+        Me.Label13.Location = New System.Drawing.Point(405, 18)
+        Me.Label13.Name = "Label13"
+        Me.Label13.Size = New System.Drawing.Size(37, 13)
+        Me.Label13.TabIndex = 30
+        Me.Label13.Text = "UnSet"
+        '
+        'txtPageUnSet
+        '
+        Me.txtPageUnSet.Location = New System.Drawing.Point(455, 15)
+        Me.txtPageUnSet.Name = "txtPageUnSet"
+        Me.txtPageUnSet.Size = New System.Drawing.Size(100, 20)
+        Me.txtPageUnSet.TabIndex = 29
+        '
+        'Label12
+        '
+        Me.Label12.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label12.AutoSize = True
+        Me.Label12.Location = New System.Drawing.Point(282, 18)
+        Me.Label12.Name = "Label12"
+        Me.Label12.Size = New System.Drawing.Size(23, 13)
+        Me.Label12.TabIndex = 28
+        Me.Label12.Text = "Set"
+        '
+        'txtPageSet
+        '
+        Me.txtPageSet.Location = New System.Drawing.Point(314, 15)
+        Me.txtPageSet.Name = "txtPageSet"
+        Me.txtPageSet.Size = New System.Drawing.Size(88, 20)
+        Me.txtPageSet.TabIndex = 27
         '
         'WebBrowser2
         '
+        Me.WebBrowser2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.WebBrowser2.Location = New System.Drawing.Point(26, 316)
         Me.WebBrowser2.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser2.Name = "WebBrowser2"
-        Me.WebBrowser2.Size = New System.Drawing.Size(410, 140)
+        Me.WebBrowser2.Size = New System.Drawing.Size(696, 140)
         Me.WebBrowser2.TabIndex = 26
         '
         'btnDeletePage
         '
+        Me.btnDeletePage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnDeletePage.Location = New System.Drawing.Point(223, 591)
         Me.btnDeletePage.Name = "btnDeletePage"
         Me.btnDeletePage.Size = New System.Drawing.Size(75, 23)
@@ -542,6 +739,7 @@ Partial Class Form1
         '
         'btnNewPage
         '
+        Me.btnNewPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnNewPage.Location = New System.Drawing.Point(121, 591)
         Me.btnNewPage.Name = "btnNewPage"
         Me.btnNewPage.Size = New System.Drawing.Size(75, 23)
@@ -551,6 +749,7 @@ Partial Class Form1
         '
         'btnSavePage
         '
+        Me.btnSavePage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
         Me.btnSavePage.Location = New System.Drawing.Point(23, 591)
         Me.btnSavePage.Name = "btnSavePage"
         Me.btnSavePage.Size = New System.Drawing.Size(75, 23)
@@ -560,6 +759,9 @@ Partial Class Form1
         '
         'cbAudio
         '
+        Me.cbAudio.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbAudio.AutoSize = True
         Me.cbAudio.Location = New System.Drawing.Point(23, 247)
         Me.cbAudio.Name = "cbAudio"
@@ -570,6 +772,9 @@ Partial Class Form1
         '
         'cbVideo
         '
+        Me.cbVideo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbVideo.AutoSize = True
         Me.cbVideo.Location = New System.Drawing.Point(23, 282)
         Me.cbVideo.Name = "cbVideo"
@@ -614,7 +819,7 @@ Partial Class Form1
         '
         'bntImage
         '
-        Me.bntImage.Location = New System.Drawing.Point(271, 43)
+        Me.bntImage.Location = New System.Drawing.Point(241, 43)
         Me.bntImage.Name = "bntImage"
         Me.bntImage.Size = New System.Drawing.Size(27, 25)
         Me.bntImage.TabIndex = 14
@@ -623,14 +828,17 @@ Partial Class Form1
         '
         'DataGridView1
         '
+        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
         Me.DataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
         Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.btnText, Me.btnTarget})
-        Me.DataGridView1.Location = New System.Drawing.Point(31, 473)
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.btnText, Me.btnTarget, Me.btnSet, Me.btnUnset, Me.btnIfSet, Me.bntIfUnSet})
+        Me.DataGridView1.Location = New System.Drawing.Point(16, 473)
         Me.DataGridView1.MultiSelect = False
         Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(377, 112)
+        Me.DataGridView1.Size = New System.Drawing.Size(706, 112)
         Me.DataGridView1.TabIndex = 13
         '
         'btnText
@@ -640,11 +848,34 @@ Partial Class Form1
         '
         'btnTarget
         '
-        Me.btnTarget.HeaderText = "target"
+        Me.btnTarget.HeaderText = "Target"
         Me.btnTarget.Name = "btnTarget"
+        '
+        'btnSet
+        '
+        Me.btnSet.HeaderText = "Set"
+        Me.btnSet.Name = "btnSet"
+        '
+        'btnUnset
+        '
+        Me.btnUnset.HeaderText = "Unset"
+        Me.btnUnset.Name = "btnUnset"
+        '
+        'btnIfSet
+        '
+        Me.btnIfSet.HeaderText = "If Set"
+        Me.btnIfSet.Name = "btnIfSet"
+        '
+        'bntIfUnSet
+        '
+        Me.bntIfUnSet.HeaderText = "If Not Set"
+        Me.bntIfUnSet.Name = "bntIfUnSet"
         '
         'Label3
         '
+        Me.Label3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
         Me.Label3.Location = New System.Drawing.Point(108, 182)
         Me.Label3.Name = "Label3"
@@ -654,6 +885,9 @@ Partial Class Form1
         '
         'Label2
         '
+        Me.Label2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
         Me.Label2.Location = New System.Drawing.Point(100, 144)
         Me.Label2.Name = "Label2"
@@ -673,7 +907,7 @@ Partial Class Form1
         Me.gbDelay.Controls.Add(Me.rbSecret)
         Me.gbDelay.Controls.Add(Me.rbHidden)
         Me.gbDelay.Controls.Add(Me.rbNormal)
-        Me.gbDelay.Location = New System.Drawing.Point(288, 136)
+        Me.gbDelay.Location = New System.Drawing.Point(560, 136)
         Me.gbDelay.Name = "gbDelay"
         Me.gbDelay.Size = New System.Drawing.Size(131, 100)
         Me.gbDelay.TabIndex = 8
@@ -682,6 +916,9 @@ Partial Class Form1
         '
         'rbSecret
         '
+        Me.rbSecret.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.rbSecret.AutoSize = True
         Me.rbSecret.Location = New System.Drawing.Point(9, 67)
         Me.rbSecret.Name = "rbSecret"
@@ -693,6 +930,9 @@ Partial Class Form1
         '
         'rbHidden
         '
+        Me.rbHidden.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.rbHidden.AutoSize = True
         Me.rbHidden.Location = New System.Drawing.Point(8, 44)
         Me.rbHidden.Name = "rbHidden"
@@ -704,6 +944,9 @@ Partial Class Form1
         '
         'rbNormal
         '
+        Me.rbNormal.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.rbNormal.AutoSize = True
         Me.rbNormal.Location = New System.Drawing.Point(7, 20)
         Me.rbNormal.Name = "rbNormal"
@@ -722,6 +965,9 @@ Partial Class Form1
         '
         'cbDelay
         '
+        Me.cbDelay.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbDelay.AutoSize = True
         Me.cbDelay.Location = New System.Drawing.Point(23, 141)
         Me.cbDelay.Name = "cbDelay"
@@ -739,6 +985,9 @@ Partial Class Form1
         '
         'cbMetronome
         '
+        Me.cbMetronome.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbMetronome.AutoSize = True
         Me.cbMetronome.Location = New System.Drawing.Point(23, 93)
         Me.cbMetronome.Name = "cbMetronome"
@@ -749,15 +998,18 @@ Partial Class Form1
         '
         'PictureBox2
         '
-        Me.PictureBox2.Location = New System.Drawing.Point(299, 12)
+        Me.PictureBox2.Location = New System.Drawing.Point(558, 15)
         Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(100, 50)
+        Me.PictureBox2.Size = New System.Drawing.Size(174, 115)
         Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox2.TabIndex = 3
         Me.PictureBox2.TabStop = False
         '
         'Label1
         '
+        Me.Label1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label1.AutoSize = True
         Me.Label1.Location = New System.Drawing.Point(23, 46)
         Me.Label1.Name = "Label1"
@@ -767,6 +1019,9 @@ Partial Class Form1
         '
         'lblPage
         '
+        Me.lblPage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.lblPage.AutoSize = True
         Me.lblPage.Location = New System.Drawing.Point(20, 15)
         Me.lblPage.Name = "lblPage"
@@ -776,10 +1031,9 @@ Partial Class Form1
         '
         'tbImage
         '
-        Me.tbImage.Enabled = False
         Me.tbImage.Location = New System.Drawing.Point(75, 43)
         Me.tbImage.Name = "tbImage"
-        Me.tbImage.Size = New System.Drawing.Size(194, 20)
+        Me.tbImage.Size = New System.Drawing.Size(143, 20)
         Me.tbImage.TabIndex = 0
         '
         'TabPage4
@@ -925,6 +1179,31 @@ Partial Class Form1
         '
         Me.FontDialog1.ShowColor = True
         '
+        'txtDefaltDir
+        '
+        Me.txtDefaltDir.Location = New System.Drawing.Point(135, 451)
+        Me.txtDefaltDir.Name = "txtDefaltDir"
+        Me.txtDefaltDir.Size = New System.Drawing.Size(294, 20)
+        Me.txtDefaltDir.TabIndex = 20
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(30, 451)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(67, 13)
+        Me.Label20.TabIndex = 21
+        Me.Label20.Text = "File Location"
+        '
+        'btnSaveDir
+        '
+        Me.btnSaveDir.Location = New System.Drawing.Point(446, 451)
+        Me.btnSaveDir.Name = "btnSaveDir"
+        Me.btnSaveDir.Size = New System.Drawing.Size(75, 23)
+        Me.btnSaveDir.TabIndex = 22
+        Me.btnSaveDir.Text = "Save"
+        Me.btnSaveDir.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -996,8 +1275,6 @@ Partial Class Form1
     Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
     Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
-    Friend WithEvents btnText As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnTarget As System.Windows.Forms.DataGridViewTextBoxColumn
     Friend WithEvents SplitContainer5 As System.Windows.Forms.SplitContainer
     Friend WithEvents bntImage As System.Windows.Forms.Button
     Friend WithEvents OpenFileDialogImage As System.Windows.Forms.OpenFileDialog
@@ -1047,5 +1324,30 @@ Partial Class Form1
     Friend WithEvents tscbCopy As System.Windows.Forms.ToolStripButton
     Friend WithEvents tscbPaste As System.Windows.Forms.ToolStripButton
     Friend WithEvents tscbUpdate As System.Windows.Forms.ToolStripButton
+    Friend WithEvents Label12 As System.Windows.Forms.Label
+    Friend WithEvents txtPageSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label16 As System.Windows.Forms.Label
+    Friend WithEvents txtDelayIfNotSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label17 As System.Windows.Forms.Label
+    Friend WithEvents txtDelayIfSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label18 As System.Windows.Forms.Label
+    Friend WithEvents txtDelayUnSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label19 As System.Windows.Forms.Label
+    Friend WithEvents txtDelaySet As System.Windows.Forms.TextBox
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents txtPageIfNotSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents txtPageIfSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents txtPageUnSet As System.Windows.Forms.TextBox
+    Friend WithEvents btnText As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnTarget As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnSet As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnUnset As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnIfSet As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents bntIfUnSet As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnSaveDir As System.Windows.Forms.Button
+    Friend WithEvents Label20 As System.Windows.Forms.Label
+    Friend WithEvents txtDefaltDir As System.Windows.Forms.TextBox
 
 End Class
