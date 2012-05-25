@@ -1,5 +1,6 @@
 ﻿Public Class Form1
     Private MobjXMLDoc As New MSXML2.DOMDocument
+    Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
     Private MstrPage As String
     Private MobjXMLPage As MSXML2.IXMLDOMElement
@@ -11,29 +12,50 @@
 
     Private Sub BtnFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFile.Click
         If OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
-            Dim objXMLEl As MSXML2.IXMLDOMElement
-            TextBox1.Text = OpenFileDialog1.FileName
-            MobjXMLDoc.load(TextBox1.Text)
-            MobjXMLPages = MobjXMLDoc.selectSingleNode("//Pages")
-            PopPageTree()
-            tbMediaDirectory.Text = MobjXMLDoc.selectSingleNode("//MediaDirectory").text
-            tbTitle.Text = MobjXMLDoc.selectSingleNode("//Title").text
-            tbURL.Text = MobjXMLDoc.selectSingleNode("//Url").text
-            tbMWTId.Text = MobjXMLDoc.documentElement.getAttribute("id")
-            objXMLEl = MobjXMLDoc.selectSingleNode("//Author")
-            tbAuthorId.Text = objXMLEl.getAttribute("id")
-            tbAuthorName.Text = objXMLEl.selectSingleNode("Name").text
-            tbAuthorURL.Text = objXMLEl.selectSingleNode("Url").text
-            objXMLEl = MobjXMLDoc.selectSingleNode("//Settings")
-            cbAutoSetPageWhenSeen.Checked = objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text
+            loadFile(OpenFileDialog1.FileName)
         End If
+    End Sub
+
+    Private Sub loadFile(ByVal strFile As String)
+        Dim objXMLEl As MSXML2.IXMLDOMElement
+        TextBox1.Text = strFile
+        MobjXMLDoc.load(TextBox1.Text)
+        MobjXMLPages = MobjXMLDoc.selectSingleNode("//Pages")
+        PopPageTree()
+        tbMediaDirectory.Text = MobjXMLDoc.selectSingleNode("//MediaDirectory").text
+        tbTitle.Text = MobjXMLDoc.selectSingleNode("//Title").text
+        tbURL.Text = MobjXMLDoc.selectSingleNode("//Url").text
+        tbMWTId.Text = getAttribute(MobjXMLDoc.documentElement, "id")
+        objXMLEl = MobjXMLDoc.selectSingleNode("//Author")
+        tbAuthorId.Text = getAttribute(objXMLEl, "id")
+        tbAuthorName.Text = objXMLEl.selectSingleNode("Name").text
+        tbAuthorURL.Text = objXMLEl.selectSingleNode("Url").text
+        objXMLEl = MobjXMLDoc.selectSingleNode("//Settings")
+        cbAutoSetPageWhenSeen.Checked = objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text
+        TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
+        displaypage()
     End Sub
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         OpenFileDialog1.DefaultExt = ".xml"
         OpenFileDialog1.Filter = "XML Files|*.xml"
-        'OpenFileDialog1.InitialDirectory = My.Application.Info.DirectoryPath
-        OpenFileDialog1.InitialDirectory = "C:\James\tm"
+        Dim strPath As String
+        Dim objDomSettings As New MSXML2.DOMDocument
+        Dim objXMLEl As MSXML2.IXMLDOMElement
+        objDomSettings.load(My.Application.Info.DirectoryPath & "\Settings.xml")
+        If objDomSettings.documentElement Is Nothing Then
+            objXMLEl = objDomSettings.createElement("Settings")
+            objXMLEl.setAttribute("directory", "c:\")
+            objDomSettings.documentElement = objXMLEl
+            objDomSettings.save(My.Application.Info.DirectoryPath & "\Settings.xml")
+        End If
+        strPath = getAttribute(objDomSettings.documentElement, "directory")
+        txtDefaltDir.Text = strPath
+        If strPath <> "" Then
+            OpenFileDialog1.InitialDirectory = strPath
+        Else
+            OpenFileDialog1.InitialDirectory = My.Application.Info.DirectoryPath
+        End If
         ReDim MobjButtons(0)
         MblnDirty = False
         AddHandler btnDelay.Click, AddressOf DynamicButtonClick
@@ -50,12 +72,16 @@
     End Sub
 
     Private Sub PopPageTree()
-        Dim objXMLPage As MSXML2.IXMLDOMElement
+        Dim objXMLPage As MSXML2.IXMLDOMNode
+        Dim objXMLPageEl As MSXML2.IXMLDOMElement
         TabPage3.Focus()
         Application.DoEvents()
         TreeViewPages.Nodes.Clear()
         For Each objXMLPage In MobjXMLPages.childNodes
-            TreeViewPages.Nodes.Add(objXMLPage.getAttribute("id"))
+            If objXMLPage.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
+                objXMLPageEl = objXMLPage
+                TreeViewPages.Nodes.Add(getAttribute(objXMLPageEl, "id"))
+            End If
         Next
     End Sub
 
@@ -71,7 +97,7 @@
         objXMLDelay = objXMLPage.selectSingleNode("./Delay")
         If objXMLDelay Is Nothing Then
         Else
-            strTarget = objXMLDelay.getAttribute("target")
+            strTarget = getAttribute(objXMLDelay, "target")
             objXMLPage2 = MobjXMLPages.selectSingleNode("Page[@id=""" & strTarget & """]")
             objTreeNode2 = objTreeNode.Nodes.Add(objXMLPage2.getAttribute("id"))
             Application.DoEvents()
@@ -81,11 +107,11 @@
         objXMLButtons = objXMLPage.selectNodes("./Button")
         For intloop = 0 To objXMLButtons.length - 1
             objXMLButton = objXMLButtons.item(intloop)
-            strButtonTarget = objXMLButton.getAttribute("target")
+            strButtonTarget = getAttribute(objXMLButton, "target")
             objTreeNodeTest = objTreeNode.Nodes.Item(strButtonTarget)
             If objTreeNodeTest Is Nothing Then
                 objXMLPage2 = MobjXMLPages.selectSingleNode("Page[@id=""" & strButtonTarget & """]")
-                objTreeNode2 = objTreeNode.Nodes.Add(objXMLPage2.getAttribute("id"))
+                objTreeNode2 = objTreeNode.Nodes.Add(getAttribute(objXMLPage2, "id"))
                 Application.DoEvents()
                 PopNextTree(objTreeNode2, objXMLPage2)
             End If
@@ -166,6 +192,38 @@
     End Sub
 
     Private Sub DataGridView1_RowsRemoved(ByVal sender As Object, ByVal e As System.Windows.Forms.DataGridViewRowsRemovedEventArgs) Handles DataGridView1.RowsRemoved
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtPageSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPageSet.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtPageUnSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPageUnSet.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtPageIfSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPageIfSet.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtPageIfNotSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtPageIfNotSet.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtDelaySet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDelaySet.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtDelayUnSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDelayUnSet.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtDelayIfSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDelayIfSet.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub txtDelayIfNotSet_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtDelayIfNotSet.TextChanged
         MblnDirty = True
     End Sub
 
@@ -298,8 +356,10 @@
     End Sub
 
     Private Sub savepage()
+        'TODO save set / unset etc
         Dim objXMLImage As MSXML2.IXMLDOMElement
         Dim objXMLText As MSXML2.IXMLDOMElement
+        Dim objXMLTextChild As MSXML2.IXMLDOMElement
         Dim objXMLDelay As MSXML2.IXMLDOMElement
         Dim objXMLMetronome As MSXML2.IXMLDOMElement
         Dim objXMLAudio As MSXML2.IXMLDOMElement
@@ -308,6 +368,13 @@
         Dim objXMLButton As MSXML2.IXMLDOMElement
         Dim strStyle As String
         Dim intloop As Integer
+
+        'page set options
+        MobjXMLPage.setAttribute("set", txtPageSet.Text)
+        MobjXMLPage.setAttribute("unset", txtPageUnSet.Text)
+        MobjXMLPage.setAttribute("if-set", txtPageIfSet.Text)
+        MobjXMLPage.setAttribute("if-not-set", txtPageIfNotSet.Text)
+
         objXMLImage = MobjXMLPage.selectSingleNode("Image")
         If Not objXMLImage Is Nothing Then
             objXMLImage.setAttribute("id", tbImage.Text)
@@ -321,7 +388,20 @@
             objXMLText = MobjXMLDoc.createElement("Text")
             MobjXMLPage.appendChild(objXMLText)
         End If
-        objXMLText.text = WebBrowser2.Document.Body.InnerHtml
+        strStyle = HtmlAsXml(WebBrowser2.Document.Body.InnerHtml)
+        If strStyle.Substring(0, 3) <> "<P>" And strStyle.Substring(0, 5) <> "<DIV>" Then
+            strStyle = "<DIV>" & strStyle & "</DIV>"
+        End If
+        MobjXMLDocFrag.loadXML(strStyle)
+        For intloop = objXMLText.childNodes.length - 1 To 0 Step -1
+            If objXMLText.childNodes(intloop).nodeType = MSXML2.DOMNodeType.NODE_TEXT Then
+                objXMLText.text = ""
+            Else
+                objXMLTextChild = objXMLText.childNodes(intloop)
+                objXMLText.removeChild(objXMLTextChild)
+            End If
+        Next
+        objXMLText.appendChild(MobjXMLDocFrag.documentElement)
         objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
         If objXMLDelay Is Nothing Then
             If cbDelay.Checked Then
@@ -356,10 +436,16 @@
                         strStyle = "normal"
                 End Select
                 objXMLDelay.setAttribute("style", strStyle)
+                'delay set options
+                objXMLDelay.setAttribute("set", txtDelaySet.Text)
+                objXMLDelay.setAttribute("unset", txtDelayUnSet.Text)
+                objXMLDelay.setAttribute("if-set", txtDelayIfSet.Text)
+                objXMLDelay.setAttribute("if-not-set", txtDelayIfNotSet.Text)
             Else
                 MobjXMLPage.removeChild(objXMLDelay)
             End If
         End If
+
         objXMLMetronome = MobjXMLPage.selectSingleNode("./Metronome")
         If objXMLMetronome Is Nothing Then
             If cbMetronome.Checked Then
@@ -407,13 +493,60 @@
             objXMLButton = objXMLButtons.item(intloop)
             MobjXMLPage.removeChild(objXMLButton)
         Next
-        For intloop = 0 To DataGridView1.Rows.Count - 1
+        For intloop = 0 To DataGridView1.Rows.Count - 2
             objXMLButton = MobjXMLDoc.createElement("Button")
             objXMLButton.setAttribute("target", DataGridView1.Rows(intloop).Cells(1).Value)
             objXMLButton.text = DataGridView1.Rows(intloop).Cells(0).Value
+            objXMLButton.setAttribute("set", DataGridView1.Rows(intloop).Cells(2).Value)
+            objXMLButton.setAttribute("unset", DataGridView1.Rows(intloop).Cells(3).Value)
+            objXMLButton.setAttribute("if-set", DataGridView1.Rows(intloop).Cells(4).Value)
+            objXMLButton.setAttribute("if-not-set", DataGridView1.Rows(intloop).Cells(5).Value)
             MobjXMLPage.appendChild(objXMLButton)
         Next
+        displaypage()
     End Sub
+
+    Private Function HtmlAsXml(ByVal strHtml As String)
+        Dim strXml As String = ""
+        Dim intLoop As Integer
+        Dim intPos As Integer
+        Dim blnInTag As Boolean = False
+        Dim blnInAtt As Boolean = False
+        For intLoop = 0 To strHtml.Length - 1
+            Select Case strHtml.Substring(intLoop, 1)
+                Case "<"
+                    strXml = strXml & "<"
+                    blnInTag = True
+                Case ">"
+                    blnInTag = False
+                    If blnInAtt Then
+                        strXml = strXml & """>"
+                        blnInAtt = False
+                    Else
+                        strXml = strXml & ">"
+                    End If
+                Case "="
+                    If blnInTag Then
+                        If blnInAtt Then
+                            intPos = strXml.LastIndexOf(" ")
+                            strXml = strXml.Substring(0, intPos) & """ " & strXml.Substring(intPos)
+                        End If
+                        If strHtml.Substring(intLoop + 1, 1) = """" Then
+                            strXml = strXml & "="
+                            blnInAtt = False
+                        Else
+                            strXml = strXml & "="""
+                            blnInAtt = True
+                        End If
+                    Else
+                        strXml = strXml & "="
+                    End If
+                Case Else
+                    strXml = strXml & strHtml.Substring(intLoop, 1)
+            End Select
+        Next
+        Return strXml
+    End Function
 
     Private Sub displaypage()
         Dim objXMLImage As MSXML2.IXMLDOMElement
@@ -435,6 +568,10 @@
         Dim strBPM As String
         Dim strButtonTarget As String
         Dim strButtonText As String
+        Dim strButtonSet As String
+        Dim strButtonUnSet As String
+        Dim strButtonIfSet As String
+        Dim strButtonIfNotSet As String
         Dim intloop As Integer
         Dim intButtons As Integer
         Dim intSeconds As Integer
@@ -443,10 +580,16 @@
         MstrPage = TreeViewPages.SelectedNode.Text
         lblPage.Text = MstrPage
         MobjXMLPage = MobjXMLPages.selectSingleNode("./Page[@id=""" & MstrPage & """]")
+        'page set options
+        txtPageSet.Text = getAttribute(MobjXMLPage, "set")
+        txtPageUnSet.Text = getAttribute(MobjXMLPage, "unset")
+        txtPageIfSet.Text = getAttribute(MobjXMLPage, "if-set")
+        txtPageIfNotSet.Text = getAttribute(MobjXMLPage, "if-not-set")
+        'image
         objXMLImage = MobjXMLPage.selectSingleNode("Image")
         If Not objXMLImage Is Nothing Then
-            tbImage.Text = objXMLImage.getAttribute("id")
-            If tbImage.Text = "" Then
+            tbImage.Text = getAttribute(objXMLImage, "id")
+            If tbImage.Text = "" Or tbImage.Text.IndexOf("*") > -1 Then
                 If Not PictureBox1.Image Is Nothing Then
                     PictureBox1.Image.Dispose()
                     PictureBox1.Image = Nothing
@@ -456,7 +599,7 @@
                     PictureBox2.Image = Nothing
                 End If
             Else
-                strImage = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & objXMLImage.getAttribute("id")
+                strImage = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & getAttribute(objXMLImage, "id")
                 PictureBox1.Load(strImage)
                 PictureBox2.Load(strImage)
             End If
@@ -471,12 +614,17 @@
                 PictureBox2.Image = Nothing
             End If
         End If
+        'text
         objXMLText = MobjXMLPage.selectSingleNode("./Text")
         strText = objXMLText.xml
+        strText = strText.Replace("<Text>", "")
+        strText = strText.Replace("</Text>", "")
         strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
         WebBrowser1.DocumentText = strHtml
         WebBrowser2.DocumentText = strHtml
+        'delay
         objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
+        'Delay
         If objXMLDelay Is Nothing Then
             cbDelay.Checked = False
             tbDelaySeconds.Text = ""
@@ -487,11 +635,15 @@
             btnDelay.Tag = ""
             btnDelay.Enabled = False
             lblTimer.Text = ""
+            txtDelaySet.Text = ""
+            txtDelayUnSet.Text = ""
+            txtDelayIfSet.Text = ""
+            txtDelayIfNotSet.Text = ""
         Else
             cbDelay.Checked = True
-            strSeconds = objXMLDelay.getAttribute("seconds")
-            strTarget = objXMLDelay.getAttribute("target")
-            strStyle = objXMLDelay.getAttribute("style")
+            strSeconds = getAttribute(objXMLDelay, "seconds")
+            strTarget = getAttribute(objXMLDelay, "target")
+            strStyle = getAttribute(objXMLDelay, "style")
             tbDelaySeconds.Text = strSeconds
             tbDelayTarget.Text = strTarget
             btnDelay.Tag = strTarget
@@ -501,10 +653,14 @@
                     rbHidden.Checked = False
                     rbNormal.Checked = True
                     rbSecret.Checked = False
-                    intSeconds = strSeconds
-                    intMinutes = intSeconds / 60
-                    intSeconds = intSeconds - (intMinutes * 60)
-                    lblTimer.Text = Microsoft.VisualBasic.Right("0" & intMinutes, 2) & ":" & Microsoft.VisualBasic.Right("0" & intSeconds, 2)
+                    If strSeconds.IndexOf("..") > -1 Then
+                        lblTimer.Text = strSeconds
+                    Else
+                        intSeconds = strSeconds
+                        intMinutes = intSeconds / 60
+                        intSeconds = intSeconds - (intMinutes * 60)
+                        lblTimer.Text = Microsoft.VisualBasic.Right("0" & intMinutes, 2) & ":" & Microsoft.VisualBasic.Right("0" & intSeconds, 2)
+                    End If
                 Case "hidden"
                     rbHidden.Checked = True
                     rbNormal.Checked = False
@@ -516,16 +672,23 @@
                     rbSecret.Checked = True
                     lblTimer.Text = "00:00"
             End Select
+            'delay set options
+            txtDelaySet.Text = getAttribute(objXMLDelay, "set")
+            txtDelayUnSet.Text = getAttribute(objXMLDelay, "unset")
+            txtDelayIfSet.Text = getAttribute(objXMLDelay, "if-set")
+            txtDelayIfNotSet.Text = getAttribute(objXMLDelay, "if-not-set")
         End If
+        'Metronome
         objXMLMetronome = MobjXMLPage.selectSingleNode("./Metronome")
         If objXMLMetronome Is Nothing Then
             cbMetronome.Checked = False
             tbMetronome.Text = ""
         Else
             cbMetronome.Checked = True
-            strBPM = objXMLMetronome.getAttribute("bpm")
+            strBPM = getAttribute(objXMLMetronome, "bpm")
             tbMetronome.Text = strBPM
         End If
+        'Audio
         objXMLAudio = MobjXMLPage.selectSingleNode("./Audio")
         If objXMLAudio Is Nothing Then
             cbAudio.Checked = False
@@ -533,32 +696,40 @@
             btnPlayAudio.Enabled = False
         Else
             cbAudio.Checked = True
-            strAudio = objXMLAudio.getAttribute("id")
+            strAudio = getAttribute(objXMLAudio, "id")
             tbAudio.Text = strAudio
             btnPlayAudio.Enabled = True
         End If
+        'Video
         objXMLVideo = MobjXMLPage.selectSingleNode("./Video")
         If objXMLVideo Is Nothing Then
             cbVideo.Checked = False
             tbVideo.Text = ""
         Else
             cbVideo.Checked = True
-            strVideo = objXMLVideo.getAttribute("id")
+            strVideo = getAttribute(objXMLVideo, "id")
             tbVideo.Text = strVideo
         End If
+        'Buttons
         objXMLButtons = MobjXMLPage.selectNodes("./Button")
+        'clear buttons from previous page
         DataGridView1.Rows.Clear()
         For intloop = MobjButtons.GetUpperBound(0) To 1 Step -1
             FlowLayoutPanel1.Controls.Remove(MobjButtons(intloop))
             MobjButtons(intloop).Dispose()
         Next
+        'populate with buttons for this page
         ReDim MobjButtons(0)
         intButtons = 0
         For intloop = 0 To objXMLButtons.length - 1
             objXMLButton = objXMLButtons.item(intloop)
-            strButtonTarget = objXMLButton.getAttribute("target")
+            strButtonTarget = getAttribute(objXMLButton, "target")
+            strButtonSet = getAttribute(objXMLButton, "set")
+            strButtonUnSet = getAttribute(objXMLButton, "unset")
+            strButtonIfSet = getAttribute(objXMLButton, "if-set")
+            strButtonIfNotSet = getAttribute(objXMLButton, "if-not-set")
             strButtonText = objXMLButton.text
-            DataGridView1.Rows.Add(strButtonText, strButtonTarget)
+            DataGridView1.Rows.Add(strButtonText, strButtonTarget, strButtonSet, strButtonUnSet, strButtonIfSet, strButtonIfNotSet)
             intButtons = intButtons + 1
             ReDim Preserve MobjButtons(intButtons)
             MobjButtons(intButtons) = New Button
@@ -581,29 +752,67 @@
     End Sub
 
     Private Sub tsbtnColour_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbtnColour.Click
+        Dim intColour As Integer
         Dim strColour As String
+        Dim strSize As String
+        Dim intSize As Integer
+        Dim strFamily As String
+        Dim objFont As Font
+        Dim objFontStyle As System.Drawing.FontStyle
+        Dim blnBold As Boolean
+        Dim blnItalic As Boolean
+        intColour = MobjDomDoc.queryCommandValue("ForeColor")
+        FontDialog1.Color = ColorTranslator.FromHtml(fixColour(intColour))
+        intSize = MobjDomDoc.queryCommandValue("FontSize")
+        Select Case intSize
+            Case 1
+                intSize = 8
+            Case 2
+                intSize = 10
+            Case 3
+                intSize = 12
+            Case 4
+                intSize = 14
+            Case 5
+                intSize = 16
+            Case 6
+                intSize = 20
+            Case Else
+                intSize = 26
+        End Select
+        strFamily = MobjDomDoc.queryCommandValue("FontName")
+        blnBold = MobjDomDoc.queryCommandValue("Bold")
+        blnItalic = MobjDomDoc.queryCommandValue("Italic")
+        objFontStyle = FontStyle.Regular
+        If blnBold Then
+            objFontStyle = objFontStyle + FontStyle.Bold
+        End If
+        If blnItalic Then
+            objFontStyle = objFontStyle + FontStyle.Italic
+        End If
+        objFont = New Font(strFamily, intSize, objFontStyle)
+        FontDialog1.Font = objFont
         If FontDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             MobjDomDoc.execCommand("RemoveFormat", False, Nothing)
             strColour = ColorTranslator.ToHtml(FontDialog1.Color)
             MobjDomDoc.execCommand("ForeColor", False, strColour)
-            Dim fz As String
             Select Case FontDialog1.Font.Size
                 Case Is < 9
-                    fz = "1"
+                    strSize = "1"
                 Case Is < 11
-                    fz = "2"
+                    strSize = "2"
                 Case Is < 13
-                    fz = "3"
+                    strSize = "3"
                 Case Is < 15
-                    fz = "4"
+                    strSize = "4"
                 Case Is < 17
-                    fz = "5"
+                    strSize = "5"
                 Case Is < 21
-                    fz = "6"
+                    strSize = "6"
                 Case Else
-                    fz = "7"
+                    strSize = "7"
             End Select
-            MobjDomDoc.execCommand("FontSize", False, fz)
+            MobjDomDoc.execCommand("FontSize", False, strSize)
             MobjDomDoc.execCommand("FontName", False, FontDialog1.Font.Name)
             If FontDialog1.Font.Italic = True Then
                 MobjDomDoc.execCommand("Italic", False, Nothing)
@@ -616,12 +825,6 @@
 
     Private Sub WebBrowser2_DocumentCompleted(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
         Dim objDomDoc As IHTMLDocument2
-        Dim objRange As IHTMLTxtRange
-        Dim objRange2 As IHTMLTxtRange
-        Dim intColour As Integer
-        Dim intLoop As Integer
-        Dim intLength As Integer
-        Dim intLength2 As Integer
         objDomDoc = WebBrowser2.Document.DomDocument
         MobjDomDoc = WebBrowser3.Document.DomDocument
         MobjDomDoc.designMode = "On"
@@ -630,26 +833,10 @@
         MobjDomDoc.execCommand("Cut", False, Nothing)
         objDomDoc.execCommand("Copy", False, Nothing)
         MobjDomDoc.execCommand("Paste", False, Nothing)
-        MobjDomDoc.execCommand("SelectAll", False, Nothing)
-        objRange = objDomDoc.selection.createRange()
-        intLength = objRange.text.Length
-        objRange.moveEnd("character", 1 - intLength)
-        objRange2 = MobjDomDoc.selection.createRange()
-        intLength2 = objRange2.text.Length
-        objRange2.moveEnd("character", 1 - intLength2)
-        For intLoop = 1 To intLength
-            objRange.select()
-            objRange2.select()
-            intColour = objDomDoc.queryCommandValue("ForeColor")
-            MobjDomDoc.execCommand("ForeColor", False, fixColour(intColour))
-            objRange.moveStart("character", 1)
-            objRange.moveEnd("character", 1)
-            objRange2.moveStart("character", 1)
-            objRange2.moveEnd("character", 1)
-        Next
         objDomDoc.execCommand("Unselect", False, Nothing)
         MobjDomDoc.execCommand("Unselect", False, Nothing)
         MobjDomDoc.bgColor = objDomDoc.bgColor
+        MobjDomDoc.fgColor = objDomDoc.fgColor
     End Sub
 
     Private Function fixColour(ByVal intColour As Integer) As Integer
@@ -668,10 +855,111 @@
     End Sub
 
     Private Sub btnSaveFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveFile.Click
+        Dim objXMLEl As MSXML2.IXMLDOMElement
+        Dim objXMLEl2 As MSXML2.IXMLDOMElement
+        If MblnDirty Then
+            savepage()
+            MblnDirty = False
+        End If
+        MobjXMLDoc.selectSingleNode("//MediaDirectory").text = tbMediaDirectory.Text
+        MobjXMLDoc.selectSingleNode("//Title").text = tbTitle.Text
+        MobjXMLDoc.selectSingleNode("//Url").text = tbURL.Text
+        MobjXMLDoc.documentElement.setAttribute("id", tbMWTId.Text)
+        objXMLEl = MobjXMLDoc.selectSingleNode("//Author")
+        objXMLEl.setAttribute("id", tbAuthorId.Text)
+        objXMLEl2 = objXMLEl.selectSingleNode("./Name")
+        objXMLEl2.text = tbAuthorName.Text
+        objXMLEl2 = objXMLEl.selectSingleNode("./Url")
+        objXMLEl2.text = tbAuthorURL.Text
+        objXMLEl = MobjXMLDoc.selectSingleNode("//Settings")
+        If cbAutoSetPageWhenSeen.Checked Then
+            objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text = "true"
+        Else
+            objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text = "false"
+        End If
         MobjXMLDoc.save(TextBox1.Text)
     End Sub
 
     Private Sub btnNewFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewFile.Click
+        Dim DialogBox As New TextDialog()
+        Dim strName As String
+        Dim objXMLRoot As MSXML2.IXMLDOMElement
+        Dim objXMLEl As MSXML2.IXMLDOMElement
+        Dim objXMLEl2 As MSXML2.IXMLDOMElement
+        Dim objXMLEl3 As MSXML2.IXMLDOMElement
+        DialogBox.Text = "File Name"
+        If DialogBox.ShowDialog = Windows.Forms.DialogResult.OK Then
+            strName = DialogBox.TextBox1.Text
+            If strName.IndexOf(".xml") = -1 Then
+                strName = strName & ".xml"
+            End If
+            TextBox1.Text = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & strName
+            objXMLRoot = MobjXMLDoc.createElement("Tease")
+            objXMLRoot.setAttribute("scriptVersion", "v0.1")
+            objXMLRoot.setAttribute("id", "")
 
+            objXMLEl = MobjXMLDoc.createElement("Title")
+            objXMLRoot.appendChild(objXMLEl)
+
+            objXMLEl = MobjXMLDoc.createElement("Url")
+            objXMLRoot.appendChild(objXMLEl)
+
+            objXMLEl = MobjXMLDoc.createElement("Author")
+            objXMLEl.setAttribute("id", "")
+            objXMLEl2 = MobjXMLDoc.createElement("Name")
+            objXMLEl.appendChild(objXMLEl2)
+            objXMLEl2 = MobjXMLDoc.createElement("Url")
+            objXMLEl.appendChild(objXMLEl2)
+            objXMLRoot.appendChild(objXMLEl)
+
+            objXMLEl = MobjXMLDoc.createElement("MediaDirectory")
+            objXMLRoot.appendChild(objXMLEl)
+
+            objXMLEl = MobjXMLDoc.createElement("Settings")
+            objXMLRoot.appendChild(objXMLEl)
+            objXMLEl2 = MobjXMLDoc.createElement("AutoSetPageWhenSeen")
+            objXMLEl2.text = "false"
+            objXMLEl.appendChild(objXMLEl2)
+
+            objXMLEl = MobjXMLDoc.createElement("Pages")
+            objXMLRoot.appendChild(objXMLEl)
+            objXMLEl2 = MobjXMLDoc.createElement("Page")
+            objXMLEl2.setAttribute("id", "start")
+            objXMLEl3 = MobjXMLDoc.createElement("Text")
+            objXMLEl3.text = "Start Page"
+            objXMLEl2.appendChild(objXMLEl3)
+            objXMLEl.appendChild(objXMLEl2)
+            objXMLRoot.appendChild(objXMLEl)
+
+            MobjXMLDoc.documentElement = objXMLRoot
+            MobjXMLDoc.save(TextBox1.Text)
+            loadFile(TextBox1.Text)
+        End If
     End Sub
+
+    Private Function getAttribute(ByVal objXMLEL As MSXML2.IXMLDOMElement, ByVal strAttName As String) As String
+        Dim strAttVal As String
+        Dim objXMLAt As MSXML2.IXMLDOMAttribute
+        strAttVal = ""
+        objXMLAt = objXMLEL.getAttributeNode(strAttName)
+        If Not objXMLAt Is Nothing Then
+            strAttVal = objXMLAt.text
+        End If
+        Return strAttVal
+    End Function
+
+    Private Sub btnSaveDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveDir.Click
+        Dim strPath As String
+        Dim objDomSettings As New MSXML2.DOMDocument
+        Dim objXMLEl As MSXML2.IXMLDOMElement
+        strPath = txtDefaltDir.Text
+        objDomSettings.load(My.Application.Info.DirectoryPath & "\Settings.xml")
+        objXMLEl = objDomSettings.documentElement
+        objXMLEl.setAttribute("directory", strPath)
+        objDomSettings.save(My.Application.Info.DirectoryPath & "\Settings.xml")
+        If strPath <> "" Then
+            OpenFileDialog1.InitialDirectory = strPath
+        End If
+    End Sub
+
 End Class

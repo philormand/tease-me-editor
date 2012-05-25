@@ -12,3 +12,7 @@ C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\I
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.vbproj.ResolveComReference.cache
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\Interop.MSXML2.dll
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.TextDialog.resources
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\MWTEdit.exe.manifest
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\MWTEdit.application
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.exe.manifest
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.application
