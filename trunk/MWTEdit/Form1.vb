@@ -962,4 +962,211 @@
         End If
     End Sub
 
+    Private Sub btnNyx_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNyx.Click
+        Dim objXMLDomText As New MSXML2.DOMDocument
+        Dim objXMLPageNode As MSXML2.IXMLDOMNode
+        Dim objXMLPage As MSXML2.IXMLDOMNode
+        Dim objXMLImage As MSXML2.IXMLDOMElement
+        Dim objXMLText As MSXML2.IXMLDOMElement
+        Dim objXMLDelay As MSXML2.IXMLDOMElement
+        Dim objXMLMetronome As MSXML2.IXMLDOMElement
+        Dim objXMLAudio As MSXML2.IXMLDOMElement
+        Dim objXMLVideo As MSXML2.IXMLDOMElement
+        Dim objXMLButtons As MSXML2.IXMLDOMNodeList
+        Dim objXMLButton As MSXML2.IXMLDOMElement
+        Dim strImage As String
+        Dim strAudio As String
+        Dim strVideo As String
+        Dim strText As String
+        Dim strHtml As String
+        Dim strSeconds As String
+        Dim strTarget As String
+        Dim strStyle As String
+        Dim strBPM As String
+        Dim strButtonTarget As String
+        Dim strButtonText As String
+        Dim strSet As String
+        Dim strUnSet As String
+        Dim strIfSet As String
+        Dim strIfNotSet As String
+        Dim intloop As Integer
+        Dim intButtons As Integer
+        Dim intSeconds As Integer
+        Dim intMinutes As Integer
+        Dim strScript As String = ""
+        Dim strTxtSplit() As String
+        Dim strTemp As String
+
+        For Each objXMLPageNode In MobjXMLPages.childNodes
+            If objXMLPageNode.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
+                objXMLPage = objXMLPageNode
+                strScript = strScript & getAttribute(objXMLPage, "id") & "#page("
+                'text
+                objXMLText = objXMLPage.selectSingleNode("./Text")
+                strText = objXMLText.xml
+                strText = strText.Replace("<Text>", "")
+                strText = strText.Replace("</Text>", "")
+                strText = strText.Replace("'", "&apos;")
+                strText = strText.Replace("<p>", "")
+                strText = strText.Replace("</p>", "")
+                strText = strText.Replace("<P>", "")
+                strText = strText.Replace("</P>", "")
+                strScript = strScript & "'"
+                strScript = strScript & strText
+                strScript = strScript & "'"
+                'image
+                objXMLImage = objXMLPage.selectSingleNode("Image")
+                If Not objXMLImage Is Nothing Then
+                    strImage = getAttribute(objXMLImage, "id")
+                    strScript = strScript & ",pic(""" & strImage & """)"
+                End If
+                strScript = strScript & ",vert("
+
+                'Buttons
+                objXMLButtons = objXMLPage.selectNodes("./Button")
+                'populate with buttons for this page
+                If objXMLButtons.length > 0 Then
+                    strScript = strScript & "buttons("
+                End If
+                For intloop = 0 To objXMLButtons.length - 1
+                    objXMLButton = objXMLButtons.item(intloop)
+                    strButtonTarget = getAttribute(objXMLButton, "target")
+                    strButtonText = objXMLButton.text
+                    strScript = strScript & strButtonTarget & "#,"
+                    strScript = strScript & """" & strButtonText & """"
+                    If intloop < objXMLButtons.length - 1 Then
+                        strScript = strScript & ","
+                    End If
+                    'strButtonSet = getAttribute(objXMLButton, "set")
+                    'strButtonUnSet = getAttribute(objXMLButton, "unset")
+                    'strButtonIfSet = getAttribute(objXMLButton, "if-set")
+                    'strButtonIfNotSet = getAttribute(objXMLButton, "if-not-set")
+                Next
+                If objXMLButtons.length > 0 Then
+                    strScript = strScript & ")"
+                End If
+
+                'delay
+                objXMLDelay = objXMLPage.selectSingleNode("./Delay")
+                'Delay
+                If Not objXMLDelay Is Nothing Then
+                    strSeconds = getAttribute(objXMLDelay, "seconds")
+                    strTarget = getAttribute(objXMLDelay, "target")
+                    strStyle = getAttribute(objXMLDelay, "style")
+                    If strScript.Substring(strScript.Length - 1, 1) <> "(" Then
+                        strScript = strScript & ","
+                    End If
+                    strScript = strScript & "delay(" & strSeconds & "sec," & strTarget & "#"
+                    If strStyle <> "normal" Then
+                        strScript = strScript & ",style:" & strStyle
+                    End If
+                    strScript = strScript & ")"
+                    'delay set options
+                    'txtDelaySet.Text = getAttribute(objXMLDelay, "set")
+                    'txtDelayUnSet.Text = getAttribute(objXMLDelay, "unset")
+                    'txtDelayIfSet.Text = getAttribute(objXMLDelay, "if-set")
+                    'txtDelayIfNotSet.Text = getAttribute(objXMLDelay, "if-not-set")
+                End If
+
+                'Audio
+                objXMLAudio = objXMLPage.selectSingleNode("./Audio")
+                If Not objXMLAudio Is Nothing Then
+                    strAudio = getAttribute(objXMLAudio, "id")
+                    If strScript.Substring(strScript.Length - 1, 1) <> "(" Then
+                        strScript = strScript & ","
+                    End If
+                    strScript = strScript & "hidden:sound(id:'" & strAudio & "')"
+                End If
+
+                strScript = strScript & ")"
+
+                strSet = getAttribute(objXMLPage, "set")
+                If strSet <> "" Then
+                    strTxtSplit = strSet.Split(",")
+                    strTemp = ",set("
+                    For intloop = 0 To strTxtSplit.Length - 1
+                        strTemp = strTemp & strTxtSplit(intloop) & "#"
+                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                            strTemp = strTemp & ","
+                        End If
+                    Next
+                    strTemp = strTemp & ")"
+                    strScript = strScript & strTemp
+                End If
+
+                strUnSet = getAttribute(objXMLPage, "unset")
+                If strUnSet <> "" Then
+                    strTxtSplit = strUnSet.Split(",")
+                    strTemp = ",unset("
+                    For intloop = 0 To strTxtSplit.Length - 1
+                        strTemp = strTemp & strTxtSplit(intloop) & "#"
+                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                            strTemp = strTemp & ","
+                        End If
+                    Next
+                    strTemp = strTemp & ")"
+                    strScript = strScript & strTemp
+                End If
+
+                strIfSet = getAttribute(objXMLPage, "if-set")
+                If strIfSet <> "" Then
+                    strTxtSplit = strIfSet.Split(",")
+                    strTemp = ",must("
+                    For intloop = 0 To strTxtSplit.Length - 1
+                        strTemp = strTemp & strTxtSplit(intloop) & "#"
+                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                            strTemp = strTemp & ","
+                        End If
+                    Next
+                    strTemp = strTemp & ")"
+                    strScript = strScript & strTemp
+                End If
+
+                strIfNotSet = getAttribute(objXMLPage, "if-not-set")
+                If strIfNotSet <> "" Then
+                    strTxtSplit = strIfNotSet.Split(",")
+                    strTemp = ",mustnot("
+                    For intloop = 0 To strTxtSplit.Length - 1
+                        strTemp = strTemp & strTxtSplit(intloop) & "#"
+                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                            strTemp = strTemp & ","
+                        End If
+                    Next
+                    strTemp = strTemp & ")"
+                    strScript = strScript & strTemp
+                End If
+
+                'Metronome
+                objXMLMetronome = objXMLPage.selectSingleNode("./Metronome")
+                If Not objXMLMetronome Is Nothing Then
+                    strBPM = getAttribute(objXMLMetronome, "bpm")
+                End If
+                'Video
+                objXMLVideo = objXMLPage.selectSingleNode("./Video")
+                If Not objXMLVideo Is Nothing Then
+                    strVideo = getAttribute(objXMLVideo, "id")
+                End If
+                strScript = strScript & ");" & vbCrLf
+            End If
+
+        Next
+        txtNyxScript.Text = strScript
+        'start#page(
+        '        '<TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0">Here is some text</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#CC0000" LETTERSPACING="0" KERNING="0">C<FONT COLOR="#CCFF00">o<FONT COLOR="#FFFFFF">l<FONT COLOR="#330066">oured</FONT> text</FONT></FONT></FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0"><B>Bold</B></FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0"><U>Underline</U></FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0"><I>Italic</I></FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="LEFT"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0">Left</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="RIGHT"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0">Right</FONT></P></TEXTFORMAT><TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0">Center</FONT></P></TEXTFORMAT>',
+        'pic("fiat-panda-cross-01.jpg"),
+        'vert(go(page2#),delay(10sec, page2#))
+        ');
+
+        'page2#page(
+        '        '<TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0">Random Image</FONT></P></TEXTFORMAT>',
+        'pic("*.jpg"),
+        'vert(buttons(page2#, "Button1", page4#, "Button2", page5#, "Button3"),delay(1min, page2#,style:secret))
+        ');
+
+        'page3#page(
+        '        '<TEXTFORMAT LEADING="2"><P ALIGN="CENTER"><FONT FACE="FontSans" SIZE="18" COLOR="#FFFFFF" LETTERSPACING="0" KERNING="0">do you like mud?</FONT></P></TEXTFORMAT>',
+        'pic("fiat-panda-cross-widescreen-08.jpg"),
+        'vert(yn(page2#,page4#),delay(1hrs, page2#,style:hidden))
+        ');
+    End Sub
 End Class

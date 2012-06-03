@@ -25,6 +25,9 @@ Partial Class Form1
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnSaveDir = New System.Windows.Forms.Button
+        Me.Label20 = New System.Windows.Forms.Label
+        Me.txtDefaltDir = New System.Windows.Forms.TextBox
         Me.cbAutoSetPageWhenSeen = New System.Windows.Forms.CheckBox
         Me.Label11 = New System.Windows.Forms.Label
         Me.tbMWTId = New System.Windows.Forms.TextBox
@@ -119,13 +122,14 @@ Partial Class Form1
         Me.tscbPaste = New System.Windows.Forms.ToolStripButton
         Me.tscbUpdate = New System.Windows.Forms.ToolStripButton
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser
+        Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.SplitContainer6 = New System.Windows.Forms.SplitContainer
+        Me.btnNyx = New System.Windows.Forms.Button
+        Me.txtNyxScript = New System.Windows.Forms.TextBox
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.OpenFileDialogImage = New System.Windows.Forms.OpenFileDialog
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
-        Me.txtDefaltDir = New System.Windows.Forms.TextBox
-        Me.Label20 = New System.Windows.Forms.Label
-        Me.btnSaveDir = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -151,6 +155,10 @@ Partial Class Form1
         Me.SplitContainer4.Panel2.SuspendLayout()
         Me.SplitContainer4.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
+        Me.TabPage5.SuspendLayout()
+        Me.SplitContainer6.Panel1.SuspendLayout()
+        Me.SplitContainer6.Panel2.SuspendLayout()
+        Me.SplitContainer6.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -159,6 +167,7 @@ Partial Class Form1
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TabControl1.Location = New System.Drawing.Point(0, 0)
         Me.TabControl1.Name = "TabControl1"
@@ -198,6 +207,31 @@ Partial Class Form1
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "General"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnSaveDir
+        '
+        Me.btnSaveDir.Location = New System.Drawing.Point(446, 451)
+        Me.btnSaveDir.Name = "btnSaveDir"
+        Me.btnSaveDir.Size = New System.Drawing.Size(75, 23)
+        Me.btnSaveDir.TabIndex = 22
+        Me.btnSaveDir.Text = "Save"
+        Me.btnSaveDir.UseVisualStyleBackColor = True
+        '
+        'Label20
+        '
+        Me.Label20.AutoSize = True
+        Me.Label20.Location = New System.Drawing.Point(30, 451)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(67, 13)
+        Me.Label20.TabIndex = 21
+        Me.Label20.Text = "File Location"
+        '
+        'txtDefaltDir
+        '
+        Me.txtDefaltDir.Location = New System.Drawing.Point(135, 451)
+        Me.txtDefaltDir.Name = "txtDefaltDir"
+        Me.txtDefaltDir.Size = New System.Drawing.Size(294, 20)
+        Me.txtDefaltDir.TabIndex = 20
         '
         'cbAutoSetPageWhenSeen
         '
@@ -1167,6 +1201,54 @@ Partial Class Form1
         Me.WebBrowser3.TabIndex = 27
         Me.WebBrowser3.WebBrowserShortcutsEnabled = False
         '
+        'TabPage5
+        '
+        Me.TabPage5.Controls.Add(Me.SplitContainer6)
+        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage5.Name = "TabPage5"
+        Me.TabPage5.Size = New System.Drawing.Size(1066, 636)
+        Me.TabPage5.TabIndex = 4
+        Me.TabPage5.Text = "Nyx"
+        Me.TabPage5.UseVisualStyleBackColor = True
+        '
+        'SplitContainer6
+        '
+        Me.SplitContainer6.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer6.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer6.Name = "SplitContainer6"
+        Me.SplitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'SplitContainer6.Panel1
+        '
+        Me.SplitContainer6.Panel1.Controls.Add(Me.btnNyx)
+        '
+        'SplitContainer6.Panel2
+        '
+        Me.SplitContainer6.Panel2.Controls.Add(Me.txtNyxScript)
+        Me.SplitContainer6.Size = New System.Drawing.Size(1066, 636)
+        Me.SplitContainer6.SplitterDistance = 35
+        Me.SplitContainer6.TabIndex = 0
+        '
+        'btnNyx
+        '
+        Me.btnNyx.Location = New System.Drawing.Point(10, 7)
+        Me.btnNyx.Name = "btnNyx"
+        Me.btnNyx.Size = New System.Drawing.Size(155, 23)
+        Me.btnNyx.TabIndex = 0
+        Me.btnNyx.Text = "Generate Nyx Script"
+        Me.btnNyx.UseVisualStyleBackColor = True
+        '
+        'txtNyxScript
+        '
+        Me.txtNyxScript.AcceptsReturn = True
+        Me.txtNyxScript.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtNyxScript.Location = New System.Drawing.Point(0, 0)
+        Me.txtNyxScript.Multiline = True
+        Me.txtNyxScript.Name = "txtNyxScript"
+        Me.txtNyxScript.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.txtNyxScript.Size = New System.Drawing.Size(1066, 597)
+        Me.txtNyxScript.TabIndex = 0
+        '
         'OpenFileDialog1
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
@@ -1178,31 +1260,6 @@ Partial Class Form1
         'FontDialog1
         '
         Me.FontDialog1.ShowColor = True
-        '
-        'txtDefaltDir
-        '
-        Me.txtDefaltDir.Location = New System.Drawing.Point(135, 451)
-        Me.txtDefaltDir.Name = "txtDefaltDir"
-        Me.txtDefaltDir.Size = New System.Drawing.Size(294, 20)
-        Me.txtDefaltDir.TabIndex = 20
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(30, 451)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(67, 13)
-        Me.Label20.TabIndex = 21
-        Me.Label20.Text = "File Location"
-        '
-        'btnSaveDir
-        '
-        Me.btnSaveDir.Location = New System.Drawing.Point(446, 451)
-        Me.btnSaveDir.Name = "btnSaveDir"
-        Me.btnSaveDir.Size = New System.Drawing.Size(75, 23)
-        Me.btnSaveDir.TabIndex = 22
-        Me.btnSaveDir.Text = "Save"
-        Me.btnSaveDir.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -1243,6 +1300,11 @@ Partial Class Form1
         Me.SplitContainer4.ResumeLayout(False)
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
+        Me.TabPage5.ResumeLayout(False)
+        Me.SplitContainer6.Panel1.ResumeLayout(False)
+        Me.SplitContainer6.Panel2.ResumeLayout(False)
+        Me.SplitContainer6.Panel2.PerformLayout()
+        Me.SplitContainer6.ResumeLayout(False)
         Me.ResumeLayout(False)
 
     End Sub
@@ -1349,5 +1411,9 @@ Partial Class Form1
     Friend WithEvents btnSaveDir As System.Windows.Forms.Button
     Friend WithEvents Label20 As System.Windows.Forms.Label
     Friend WithEvents txtDefaltDir As System.Windows.Forms.TextBox
+    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
+    Friend WithEvents SplitContainer6 As System.Windows.Forms.SplitContainer
+    Friend WithEvents btnNyx As System.Windows.Forms.Button
+    Friend WithEvents txtNyxScript As System.Windows.Forms.TextBox
 
 End Class
