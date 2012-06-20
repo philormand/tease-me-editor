@@ -11,7 +11,13 @@
     Private MobjDomDoc As IHTMLDocument2
 
     Private Sub BtnFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFile.Click
+        Dim strNewFile As String
         If OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            'create backup
+            If System.IO.File.Exists(OpenFileDialog1.FileName) = True Then
+                strNewFile = OpenFileDialog1.FileName & ".bkp"
+                System.IO.File.Copy(OpenFileDialog1.FileName, strNewFile, True)
+            End If
             loadFile(OpenFileDialog1.FileName)
         End If
     End Sub
@@ -74,13 +80,14 @@
     Private Sub PopPageTree()
         Dim objXMLPage As MSXML2.IXMLDOMNode
         Dim objXMLPageEl As MSXML2.IXMLDOMElement
+        Dim objNode As System.Windows.Forms.TreeNode
         TabPage3.Focus()
         Application.DoEvents()
         TreeViewPages.Nodes.Clear()
         For Each objXMLPage In MobjXMLPages.childNodes
             If objXMLPage.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
                 objXMLPageEl = objXMLPage
-                TreeViewPages.Nodes.Add(getAttribute(objXMLPageEl, "id"))
+                objNode = TreeViewPages.Nodes.Add(getAttribute(objXMLPageEl, "id"), getAttribute(objXMLPageEl, "id"))
             End If
         Next
     End Sub
@@ -334,6 +341,7 @@
                 Next
                 MblnDirty = False
                 PopPageTree()
+                TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
             End If
         End If
 
@@ -370,10 +378,10 @@
         Dim intloop As Integer
 
         'page set options
-        MobjXMLPage.setAttribute("set", txtPageSet.Text)
-        MobjXMLPage.setAttribute("unset", txtPageUnSet.Text)
-        MobjXMLPage.setAttribute("if-set", txtPageIfSet.Text)
-        MobjXMLPage.setAttribute("if-not-set", txtPageIfNotSet.Text)
+        addAttribute(MobjXMLPage, "set", txtPageSet.Text)
+        addAttribute(MobjXMLPage, "unset", txtPageUnSet.Text)
+        addAttribute(MobjXMLPage, "if-set", txtPageIfSet.Text)
+        addAttribute(MobjXMLPage, "if-not-set", txtPageIfNotSet.Text)
 
         objXMLImage = MobjXMLPage.selectSingleNode("Image")
         If Not objXMLImage Is Nothing Then
@@ -389,10 +397,14 @@
             MobjXMLPage.appendChild(objXMLText)
         End If
         strStyle = HtmlAsXml(WebBrowser2.Document.Body.InnerHtml)
-        If strStyle.Substring(0, 3) <> "<P>" And strStyle.Substring(0, 5) <> "<DIV>" Then
-            strStyle = "<DIV>" & strStyle & "</DIV>"
-        End If
+        strStyle = strStyle.Replace("<BR>", "<BR/>")
+        strStyle = strStyle.Replace("&nbsp;", "")
+        strStyle = strStyle.Trim(" ")
         MobjXMLDocFrag.loadXML(strStyle)
+        If MobjXMLDocFrag.documentElement Is Nothing Then
+            strStyle = "<DIV>" & strStyle & "</DIV>"
+            MobjXMLDocFrag.loadXML(strStyle)
+        End If
         For intloop = objXMLText.childNodes.length - 1 To 0 Step -1
             If objXMLText.childNodes(intloop).nodeType = MSXML2.DOMNodeType.NODE_TEXT Then
                 objXMLText.text = ""
@@ -437,10 +449,10 @@
                 End Select
                 objXMLDelay.setAttribute("style", strStyle)
                 'delay set options
-                objXMLDelay.setAttribute("set", txtDelaySet.Text)
-                objXMLDelay.setAttribute("unset", txtDelayUnSet.Text)
-                objXMLDelay.setAttribute("if-set", txtDelayIfSet.Text)
-                objXMLDelay.setAttribute("if-not-set", txtDelayIfNotSet.Text)
+                addAttribute(objXMLDelay, "set", txtDelaySet.Text)
+                addAttribute(objXMLDelay, "unset", txtDelayUnSet.Text)
+                addAttribute(objXMLDelay, "if-set", txtDelayIfSet.Text)
+                addAttribute(objXMLDelay, "if-not-set", txtDelayIfNotSet.Text)
             Else
                 MobjXMLPage.removeChild(objXMLDelay)
             End If
@@ -497,12 +509,13 @@
             objXMLButton = MobjXMLDoc.createElement("Button")
             objXMLButton.setAttribute("target", DataGridView1.Rows(intloop).Cells(1).Value)
             objXMLButton.text = DataGridView1.Rows(intloop).Cells(0).Value
-            objXMLButton.setAttribute("set", DataGridView1.Rows(intloop).Cells(2).Value)
-            objXMLButton.setAttribute("unset", DataGridView1.Rows(intloop).Cells(3).Value)
-            objXMLButton.setAttribute("if-set", DataGridView1.Rows(intloop).Cells(4).Value)
-            objXMLButton.setAttribute("if-not-set", DataGridView1.Rows(intloop).Cells(5).Value)
+            addAttribute(objXMLButton, "set", DataGridView1.Rows(intloop).Cells(2).Value)
+            addAttribute(objXMLButton, "unset", DataGridView1.Rows(intloop).Cells(3).Value)
+            addAttribute(objXMLButton, "if-set", DataGridView1.Rows(intloop).Cells(4).Value)
+            addAttribute(objXMLButton, "if-not-set", DataGridView1.Rows(intloop).Cells(5).Value)
             MobjXMLPage.appendChild(objXMLButton)
         Next
+        MobjXMLDoc.save(TextBox1.Text)
         displaypage()
     End Sub
 
@@ -512,39 +525,43 @@
         Dim intPos As Integer
         Dim blnInTag As Boolean = False
         Dim blnInAtt As Boolean = False
-        For intLoop = 0 To strHtml.Length - 1
-            Select Case strHtml.Substring(intLoop, 1)
-                Case "<"
-                    strXml = strXml & "<"
-                    blnInTag = True
-                Case ">"
-                    blnInTag = False
-                    If blnInAtt Then
-                        strXml = strXml & """>"
-                        blnInAtt = False
-                    Else
-                        strXml = strXml & ">"
-                    End If
-                Case "="
-                    If blnInTag Then
+        If Not strHtml Is Nothing Then
+            For intLoop = 0 To strHtml.Length - 1
+                Select Case strHtml.Substring(intLoop, 1)
+                    Case "<"
+                        strXml = strXml & "<"
+                        blnInTag = True
+                    Case ">"
+                        blnInTag = False
                         If blnInAtt Then
-                            intPos = strXml.LastIndexOf(" ")
-                            strXml = strXml.Substring(0, intPos) & """ " & strXml.Substring(intPos)
-                        End If
-                        If strHtml.Substring(intLoop + 1, 1) = """" Then
-                            strXml = strXml & "="
+                            strXml = strXml & """>"
                             blnInAtt = False
                         Else
-                            strXml = strXml & "="""
-                            blnInAtt = True
+                            strXml = strXml & ">"
                         End If
-                    Else
-                        strXml = strXml & "="
-                    End If
-                Case Else
-                    strXml = strXml & strHtml.Substring(intLoop, 1)
-            End Select
-        Next
+                    Case "="
+                        If blnInTag Then
+                            If blnInAtt Then
+                                intPos = strXml.LastIndexOf(" ")
+                                strXml = strXml.Substring(0, intPos) & """ " & strXml.Substring(intPos)
+                            End If
+                            If strHtml.Substring(intLoop + 1, 1) = """" Then
+                                strXml = strXml & "="
+                                blnInAtt = False
+                            Else
+                                strXml = strXml & "="""
+                                blnInAtt = True
+                            End If
+                        Else
+                            strXml = strXml & "="
+                        End If
+                    Case Else
+                        strXml = strXml & strHtml.Substring(intLoop, 1)
+                End Select
+            Next
+        Else
+            strXml = "<DIV></DIV>"
+        End If
         Return strXml
     End Function
 
@@ -893,7 +910,7 @@
             If strName.IndexOf(".xml") = -1 Then
                 strName = strName & ".xml"
             End If
-            TextBox1.Text = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & strName
+            TextBox1.Text = txtDefaltDir.Text & "\" & OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & strName
             objXMLRoot = MobjXMLDoc.createElement("Tease")
             objXMLRoot.setAttribute("scriptVersion", "v0.1")
             objXMLRoot.setAttribute("id", "")
@@ -933,6 +950,7 @@
 
             MobjXMLDoc.documentElement = objXMLRoot
             MobjXMLDoc.save(TextBox1.Text)
+            OpenFileDialog1.FileName = TextBox1.Text
             loadFile(TextBox1.Text)
         End If
     End Sub
@@ -1169,4 +1187,14 @@
         'vert(yn(page2#,page4#),delay(1hrs, page2#,style:hidden))
         ');
     End Sub
+
+    Private Sub addAttribute(ByVal objXMLElement As MSXML2.IXMLDOMElement, ByVal strAttName As String, ByVal strValue As String)
+        If strValue = "" Then
+            objXMLElement.removeAttribute(strAttName)
+        Else
+            objXMLElement.setAttribute(strAttName, strValue)
+        End If
+
+    End Sub
+
 End Class
