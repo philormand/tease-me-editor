@@ -39,6 +39,7 @@
         objXMLEl = MobjXMLDoc.selectSingleNode("//Settings")
         cbAutoSetPageWhenSeen.Checked = objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text
         TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
+        Application.DoEvents()
         displaypage()
     End Sub
 
@@ -83,6 +84,7 @@
         Dim objNode As System.Windows.Forms.TreeNode
         TabPage3.Focus()
         Application.DoEvents()
+        TreeViewPages.BeginUpdate()
         TreeViewPages.Nodes.Clear()
         For Each objXMLPage In MobjXMLPages.childNodes
             If objXMLPage.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
@@ -90,6 +92,7 @@
                 objNode = TreeViewPages.Nodes.Add(getAttribute(objXMLPageEl, "id"), getAttribute(objXMLPageEl, "id"))
             End If
         Next
+        TreeViewPages.EndUpdate()
     End Sub
 
     Private Sub PopNextTree(ByRef objTreeNode As TreeNode, ByRef objXMLPage As MSXML2.IXMLDOMElement)
@@ -129,7 +132,7 @@
         If MblnDirty Then
             Select Case MsgBox("Do you want to saved changes?" & vbCrLf & "Select Yes to save and move to the selected page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
                 Case MsgBoxResult.Yes
-                    savepage()
+                    savepage(False)
                     MblnDirty = False
                     displaypage()
                 Case MsgBoxResult.No
@@ -274,7 +277,7 @@
     End Sub
 
     Private Sub btnSavePage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSavePage.Click
-        savepage()
+        savepage(True)
         MblnDirty = False
     End Sub
 
@@ -289,7 +292,7 @@
         If MblnDirty Then
             Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
                 Case MsgBoxResult.Yes
-                    savepage()
+                    savepage(False)
                     MblnDirty = False
                 Case MsgBoxResult.Cancel
                     blnDoit = False
@@ -351,7 +354,9 @@
         If MsgBox("Are you sure you want to delete " & MstrPage & "?", MsgBoxStyle.YesNo, "Delete Page") = MsgBoxResult.Yes Then
             MobjXMLPage = MobjXMLPages.selectSingleNode("./Page[@id=""" & MstrPage & """]")
             MobjXMLPages.removeChild(MobjXMLPage)
+            MobjXMLDoc.save(TextBox1.Text)
             PopPageTree()
+            TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
         End If
     End Sub
 
@@ -363,7 +368,7 @@
         mciSendString("play myDevice", Nothing, 0, 0)
     End Sub
 
-    Private Sub savepage()
+    Private Sub savepage(ByVal blnRefresh As Boolean)
         'TODO save set / unset etc
         Dim objXMLImage As MSXML2.IXMLDOMElement
         Dim objXMLText As MSXML2.IXMLDOMElement
@@ -516,7 +521,9 @@
             MobjXMLPage.appendChild(objXMLButton)
         Next
         MobjXMLDoc.save(TextBox1.Text)
-        displaypage()
+        If blnRefresh Then
+            displaypage()
+        End If
     End Sub
 
     Private Function HtmlAsXml(ByVal strHtml As String)
@@ -596,6 +603,7 @@
 
         MstrPage = TreeViewPages.SelectedNode.Text
         lblPage.Text = MstrPage
+        lblPageName.Text = MstrPage
         MobjXMLPage = MobjXMLPages.selectSingleNode("./Page[@id=""" & MstrPage & """]")
         'page set options
         txtPageSet.Text = getAttribute(MobjXMLPage, "set")
@@ -751,6 +759,7 @@
             ReDim Preserve MobjButtons(intButtons)
             MobjButtons(intButtons) = New Button
             MobjButtons(intButtons).Text = strButtonText
+            MobjButtons(intButtons).AutoSize = True
             MobjButtons(intButtons).Tag = strButtonTarget
             AddHandler MobjButtons(intButtons).Click, AddressOf DynamicButtonClick
             FlowLayoutPanel1.Controls.Add(MobjButtons(intButtons))
@@ -869,13 +878,15 @@
     Private Sub tscbUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbUpdate.Click
         WebBrowser1.Document.Body.InnerHtml = WebBrowser3.Document.Body.InnerHtml
         WebBrowser2.Document.Body.InnerHtml = WebBrowser3.Document.Body.InnerHtml
+        savepage(True)
+        MblnDirty = False
     End Sub
 
     Private Sub btnSaveFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveFile.Click
         Dim objXMLEl As MSXML2.IXMLDOMElement
         Dim objXMLEl2 As MSXML2.IXMLDOMElement
         If MblnDirty Then
-            savepage()
+            savepage(False)
             MblnDirty = False
         End If
         MobjXMLDoc.selectSingleNode("//MediaDirectory").text = tbMediaDirectory.Text
@@ -1197,4 +1208,46 @@
 
     End Sub
 
+    Private Sub btnPrevNode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPrevNode.Click
+        If Not TreeViewPages.SelectedNode.PrevNode Is Nothing Then
+            TreeViewPages.SelectedNode = TreeViewPages.SelectedNode.PrevNode
+        End If
+    End Sub
+
+    Private Sub btnNextNode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNextNode.Click
+        If Not TreeViewPages.SelectedNode.NextNode Is Nothing Then
+            TreeViewPages.SelectedNode = TreeViewPages.SelectedNode.NextNode
+        End If
+    End Sub
+
+    Private Sub btnCopyPage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopyPage.Click
+        Dim DialogBox As New TextDialog()
+        Dim blnDoit As Boolean
+
+        blnDoit = True
+        If MblnDirty Then
+            Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
+                Case MsgBoxResult.Yes
+                    savepage(False)
+                    MblnDirty = False
+                Case MsgBoxResult.Cancel
+                    blnDoit = False
+            End Select
+        End If
+
+        If blnDoit Then
+            If DialogBox.ShowDialog = Windows.Forms.DialogResult.OK Then
+                MstrPage = DialogBox.TextBox1.Text
+                MobjXMLPage = MobjXMLDoc.createElement("Page")
+                MobjXMLPage.setAttribute("id", MstrPage)
+                MobjXMLPages.appendChild(MobjXMLPage)
+                lblPage.Text = MstrPage
+                PopPageTree()
+                savepage(False)
+                TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
+                MblnDirty = False
+                displaypage()
+            End If
+        End If
+    End Sub
 End Class
