@@ -130,6 +130,10 @@ Partial Class Form1
         Me.OpenFileDialogImage = New System.Windows.Forms.OpenFileDialog
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
+        Me.btnPrevNode = New System.Windows.Forms.Button
+        Me.btnNextNode = New System.Windows.Forms.Button
+        Me.lblPageName = New System.Windows.Forms.Label
+        Me.btnCopyPage = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -464,6 +468,9 @@ Partial Class Form1
         '
         'SplitContainer5.Panel1
         '
+        Me.SplitContainer5.Panel1.Controls.Add(Me.lblPageName)
+        Me.SplitContainer5.Panel1.Controls.Add(Me.btnNextNode)
+        Me.SplitContainer5.Panel1.Controls.Add(Me.btnPrevNode)
         Me.SplitContainer5.Panel1.Controls.Add(Me.btnPlayAudio)
         Me.SplitContainer5.Panel1.Controls.Add(Me.lblTimer)
         Me.SplitContainer5.Panel1.Controls.Add(Me.btnDelay)
@@ -547,6 +554,7 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.btnCopyPage)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label16)
         Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayIfNotSet)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label17)
@@ -1261,6 +1269,43 @@ Partial Class Form1
         '
         Me.FontDialog1.ShowColor = True
         '
+        'btnPrevNode
+        '
+        Me.btnPrevNode.Location = New System.Drawing.Point(111, 14)
+        Me.btnPrevNode.Name = "btnPrevNode"
+        Me.btnPrevNode.Size = New System.Drawing.Size(75, 23)
+        Me.btnPrevNode.TabIndex = 4
+        Me.btnPrevNode.Text = "<<<"
+        Me.btnPrevNode.UseVisualStyleBackColor = True
+        '
+        'btnNextNode
+        '
+        Me.btnNextNode.Location = New System.Drawing.Point(192, 14)
+        Me.btnNextNode.Name = "btnNextNode"
+        Me.btnNextNode.Size = New System.Drawing.Size(75, 23)
+        Me.btnNextNode.TabIndex = 5
+        Me.btnNextNode.Text = ">>>"
+        Me.btnNextNode.UseVisualStyleBackColor = True
+        '
+        'lblPageName
+        '
+        Me.lblPageName.AutoSize = True
+        Me.lblPageName.Location = New System.Drawing.Point(274, 23)
+        Me.lblPageName.Name = "lblPageName"
+        Me.lblPageName.Size = New System.Drawing.Size(60, 13)
+        Me.lblPageName.TabIndex = 6
+        Me.lblPageName.Text = "PageName"
+        '
+        'btnCopyPage
+        '
+        Me.btnCopyPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnCopyPage.Location = New System.Drawing.Point(314, 591)
+        Me.btnCopyPage.Name = "btnCopyPage"
+        Me.btnCopyPage.Size = New System.Drawing.Size(75, 23)
+        Me.btnCopyPage.TabIndex = 43
+        Me.btnCopyPage.Text = "Copy Page"
+        Me.btnCopyPage.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1415,5 +1460,9 @@ Partial Class Form1
     Friend WithEvents SplitContainer6 As System.Windows.Forms.SplitContainer
     Friend WithEvents btnNyx As System.Windows.Forms.Button
     Friend WithEvents txtNyxScript As System.Windows.Forms.TextBox
+    Friend WithEvents btnNextNode As System.Windows.Forms.Button
+    Friend WithEvents btnPrevNode As System.Windows.Forms.Button
+    Friend WithEvents lblPageName As System.Windows.Forms.Label
+    Friend WithEvents btnCopyPage As System.Windows.Forms.Button
 
 End Class
