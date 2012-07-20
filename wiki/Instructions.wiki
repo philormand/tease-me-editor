@@ -1,0 +1,5 @@
+Unzip to a directory and run MWTEdit.exe
+
+
+settings.xml contains the default directory for the teases
+ <Settings directory="z:\tm\teases"/>
