@@ -25,6 +25,7 @@ Partial Class Form1
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnUpLoad = New System.Windows.Forms.Button
         Me.btnSaveDir = New System.Windows.Forms.Button
         Me.Label20 = New System.Windows.Forms.Label
         Me.txtDefaltDir = New System.Windows.Forms.TextBox
@@ -53,6 +54,9 @@ Partial Class Form1
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer
         Me.SplitContainer5 = New System.Windows.Forms.SplitContainer
+        Me.lblPageName = New System.Windows.Forms.Label
+        Me.btnNextNode = New System.Windows.Forms.Button
+        Me.btnPrevNode = New System.Windows.Forms.Button
         Me.btnPlayAudio = New System.Windows.Forms.Button
         Me.lblTimer = New System.Windows.Forms.Label
         Me.btnDelay = New System.Windows.Forms.Button
@@ -61,6 +65,8 @@ Partial Class Form1
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
         Me.TreeViewPages = New System.Windows.Forms.TreeView
+        Me.btnErrors = New System.Windows.Forms.Button
+        Me.btnCopyPage = New System.Windows.Forms.Button
         Me.Label16 = New System.Windows.Forms.Label
         Me.txtDelayIfNotSet = New System.Windows.Forms.TextBox
         Me.Label17 = New System.Windows.Forms.Label
@@ -130,10 +136,7 @@ Partial Class Form1
         Me.OpenFileDialogImage = New System.Windows.Forms.OpenFileDialog
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
-        Me.btnPrevNode = New System.Windows.Forms.Button
-        Me.btnNextNode = New System.Windows.Forms.Button
-        Me.lblPageName = New System.Windows.Forms.Label
-        Me.btnCopyPage = New System.Windows.Forms.Button
+        Me.btnDelError = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -181,6 +184,7 @@ Partial Class Form1
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnUpLoad)
         Me.TabPage1.Controls.Add(Me.btnSaveDir)
         Me.TabPage1.Controls.Add(Me.Label20)
         Me.TabPage1.Controls.Add(Me.txtDefaltDir)
@@ -211,6 +215,15 @@ Partial Class Form1
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "General"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnUpLoad
+        '
+        Me.btnUpLoad.Location = New System.Drawing.Point(135, 63)
+        Me.btnUpLoad.Name = "btnUpLoad"
+        Me.btnUpLoad.Size = New System.Drawing.Size(148, 23)
+        Me.btnUpLoad.TabIndex = 23
+        Me.btnUpLoad.Text = "Create upload directory"
+        Me.btnUpLoad.UseVisualStyleBackColor = True
         '
         'btnSaveDir
         '
@@ -482,6 +495,33 @@ Partial Class Form1
         Me.SplitContainer5.SplitterDistance = 87
         Me.SplitContainer5.TabIndex = 1
         '
+        'lblPageName
+        '
+        Me.lblPageName.AutoSize = True
+        Me.lblPageName.Location = New System.Drawing.Point(274, 23)
+        Me.lblPageName.Name = "lblPageName"
+        Me.lblPageName.Size = New System.Drawing.Size(60, 13)
+        Me.lblPageName.TabIndex = 6
+        Me.lblPageName.Text = "PageName"
+        '
+        'btnNextNode
+        '
+        Me.btnNextNode.Location = New System.Drawing.Point(192, 14)
+        Me.btnNextNode.Name = "btnNextNode"
+        Me.btnNextNode.Size = New System.Drawing.Size(75, 23)
+        Me.btnNextNode.TabIndex = 5
+        Me.btnNextNode.Text = ">>>"
+        Me.btnNextNode.UseVisualStyleBackColor = True
+        '
+        'btnPrevNode
+        '
+        Me.btnPrevNode.Location = New System.Drawing.Point(111, 14)
+        Me.btnPrevNode.Name = "btnPrevNode"
+        Me.btnPrevNode.Size = New System.Drawing.Size(75, 23)
+        Me.btnPrevNode.TabIndex = 4
+        Me.btnPrevNode.Text = "<<<"
+        Me.btnPrevNode.UseVisualStyleBackColor = True
+        '
         'btnPlayAudio
         '
         Me.btnPlayAudio.Location = New System.Drawing.Point(29, 14)
@@ -554,6 +594,8 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.btnDelError)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.btnErrors)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnCopyPage)
         Me.SplitContainer1.Panel2.Controls.Add(Me.Label16)
         Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayIfNotSet)
@@ -606,6 +648,26 @@ Partial Class Form1
         Me.TreeViewPages.Name = "TreeViewPages"
         Me.TreeViewPages.Size = New System.Drawing.Size(318, 630)
         Me.TreeViewPages.TabIndex = 1
+        '
+        'btnErrors
+        '
+        Me.btnErrors.Enabled = False
+        Me.btnErrors.Location = New System.Drawing.Point(451, 247)
+        Me.btnErrors.Name = "btnErrors"
+        Me.btnErrors.Size = New System.Drawing.Size(100, 23)
+        Me.btnErrors.TabIndex = 44
+        Me.btnErrors.Text = "Download Error"
+        Me.btnErrors.UseVisualStyleBackColor = True
+        '
+        'btnCopyPage
+        '
+        Me.btnCopyPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnCopyPage.Location = New System.Drawing.Point(314, 591)
+        Me.btnCopyPage.Name = "btnCopyPage"
+        Me.btnCopyPage.Size = New System.Drawing.Size(75, 23)
+        Me.btnCopyPage.TabIndex = 43
+        Me.btnCopyPage.Text = "Copy Page"
+        Me.btnCopyPage.UseVisualStyleBackColor = True
         '
         'Label16
         '
@@ -1269,42 +1331,15 @@ Partial Class Form1
         '
         Me.FontDialog1.ShowColor = True
         '
-        'btnPrevNode
+        'btnDelError
         '
-        Me.btnPrevNode.Location = New System.Drawing.Point(111, 14)
-        Me.btnPrevNode.Name = "btnPrevNode"
-        Me.btnPrevNode.Size = New System.Drawing.Size(75, 23)
-        Me.btnPrevNode.TabIndex = 4
-        Me.btnPrevNode.Text = "<<<"
-        Me.btnPrevNode.UseVisualStyleBackColor = True
-        '
-        'btnNextNode
-        '
-        Me.btnNextNode.Location = New System.Drawing.Point(192, 14)
-        Me.btnNextNode.Name = "btnNextNode"
-        Me.btnNextNode.Size = New System.Drawing.Size(75, 23)
-        Me.btnNextNode.TabIndex = 5
-        Me.btnNextNode.Text = ">>>"
-        Me.btnNextNode.UseVisualStyleBackColor = True
-        '
-        'lblPageName
-        '
-        Me.lblPageName.AutoSize = True
-        Me.lblPageName.Location = New System.Drawing.Point(274, 23)
-        Me.lblPageName.Name = "lblPageName"
-        Me.lblPageName.Size = New System.Drawing.Size(60, 13)
-        Me.lblPageName.TabIndex = 6
-        Me.lblPageName.Text = "PageName"
-        '
-        'btnCopyPage
-        '
-        Me.btnCopyPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCopyPage.Location = New System.Drawing.Point(314, 591)
-        Me.btnCopyPage.Name = "btnCopyPage"
-        Me.btnCopyPage.Size = New System.Drawing.Size(75, 23)
-        Me.btnCopyPage.TabIndex = 43
-        Me.btnCopyPage.Text = "Copy Page"
-        Me.btnCopyPage.UseVisualStyleBackColor = True
+        Me.btnDelError.Enabled = False
+        Me.btnDelError.Location = New System.Drawing.Point(569, 247)
+        Me.btnDelError.Name = "btnDelError"
+        Me.btnDelError.Size = New System.Drawing.Size(100, 23)
+        Me.btnDelError.TabIndex = 45
+        Me.btnDelError.Text = "Delete Error"
+        Me.btnDelError.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -1464,5 +1499,8 @@ Partial Class Form1
     Friend WithEvents btnPrevNode As System.Windows.Forms.Button
     Friend WithEvents lblPageName As System.Windows.Forms.Label
     Friend WithEvents btnCopyPage As System.Windows.Forms.Button
+    Friend WithEvents btnErrors As System.Windows.Forms.Button
+    Friend WithEvents btnUpLoad As System.Windows.Forms.Button
+    Friend WithEvents btnDelError As System.Windows.Forms.Button
 
 End Class

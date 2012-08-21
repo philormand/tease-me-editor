@@ -9,6 +9,9 @@
     Private MblnDirty As Boolean
     Private Declare Function mciSendString Lib "winmm.dll" Alias "mciSendStringA" (ByVal lpstrCommand As String, ByVal lpstrReturnString As String, ByVal uReturnLength As Integer, ByVal hwndCallback As Integer) As Integer
     Private MobjDomDoc As IHTMLDocument2
+    Private MstrError As String
+    Private MstrComment As String
+
 
     Private Sub BtnFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFile.Click
         Dim strNewFile As String
@@ -54,7 +57,7 @@
             objXMLEl = objDomSettings.createElement("Settings")
             objXMLEl.setAttribute("directory", "c:\")
             objDomSettings.documentElement = objXMLEl
-            objDomSettings.save(My.Application.Info.DirectoryPath & "\Settings.xml")
+            saveXml(objDomSettings, My.Application.Info.DirectoryPath & "\Settings.xml")
         End If
         strPath = getAttribute(objDomSettings.documentElement, "directory")
         txtDefaltDir.Text = strPath
@@ -81,6 +84,7 @@
     Private Sub PopPageTree()
         Dim objXMLPage As MSXML2.IXMLDOMNode
         Dim objXMLPageEl As MSXML2.IXMLDOMElement
+        Dim objXMLError As MSXML2.IXMLDOMElement
         Dim objNode As System.Windows.Forms.TreeNode
         TabPage3.Focus()
         Application.DoEvents()
@@ -90,6 +94,10 @@
             If objXMLPage.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
                 objXMLPageEl = objXMLPage
                 objNode = TreeViewPages.Nodes.Add(getAttribute(objXMLPageEl, "id"), getAttribute(objXMLPageEl, "id"))
+                objXMLError = objXMLPage.selectSingleNode("./Errors")
+                If Not objXMLError Is Nothing Then
+                    objNode.ForeColor = Color.Red
+                End If
             End If
         Next
         TreeViewPages.EndUpdate()
@@ -354,7 +362,7 @@
         If MsgBox("Are you sure you want to delete " & MstrPage & "?", MsgBoxStyle.YesNo, "Delete Page") = MsgBoxResult.Yes Then
             MobjXMLPage = MobjXMLPages.selectSingleNode("./Page[@id=""" & MstrPage & """]")
             MobjXMLPages.removeChild(MobjXMLPage)
-            MobjXMLDoc.save(TextBox1.Text)
+            saveXml(MobjXMLDoc, TextBox1.Text)
             PopPageTree()
             TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
         End If
@@ -403,7 +411,7 @@
         End If
         strStyle = HtmlAsXml(WebBrowser2.Document.Body.InnerHtml)
         strStyle = strStyle.Replace("<BR>", "<BR/>")
-        strStyle = strStyle.Replace("&nbsp;", "")
+        strStyle = strStyle.Replace("&nbsp;", "<BR/>")
         strStyle = strStyle.Trim(" ")
         MobjXMLDocFrag.loadXML(strStyle)
         If MobjXMLDocFrag.documentElement Is Nothing Then
@@ -520,7 +528,7 @@
             addAttribute(objXMLButton, "if-not-set", DataGridView1.Rows(intloop).Cells(5).Value)
             MobjXMLPage.appendChild(objXMLButton)
         Next
-        MobjXMLDoc.save(TextBox1.Text)
+        saveXml(MobjXMLDoc, TextBox1.Text)
         If blnRefresh Then
             displaypage()
         End If
@@ -581,6 +589,8 @@
         Dim objXMLVideo As MSXML2.IXMLDOMElement
         Dim objXMLButtons As MSXML2.IXMLDOMNodeList
         Dim objXMLButton As MSXML2.IXMLDOMElement
+        Dim objXMLError As MSXML2.IXMLDOMElement
+        Dim objXMLComment As MSXML2.IXMLDOMNode
         Dim strImage As String
         Dim strAudio As String
         Dim strVideo As String
@@ -641,10 +651,15 @@
         End If
         'text
         objXMLText = MobjXMLPage.selectSingleNode("./Text")
-        strText = objXMLText.xml
-        strText = strText.Replace("<Text>", "")
-        strText = strText.Replace("</Text>", "")
-        strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
+        If objXMLText Is Nothing Then
+            strText = ""
+            strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
+        Else
+            strText = objXMLText.xml
+            strText = strText.Replace("<Text>", "")
+            strText = strText.Replace("</Text>", "")
+            strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
+        End If
         WebBrowser1.DocumentText = strHtml
         WebBrowser2.DocumentText = strHtml
         'delay
@@ -764,6 +779,24 @@
             AddHandler MobjButtons(intButtons).Click, AddressOf DynamicButtonClick
             FlowLayoutPanel1.Controls.Add(MobjButtons(intButtons))
         Next
+        objXMLError = MobjXMLPage.selectSingleNode("./Errors")
+        If objXMLError Is Nothing Then
+            MstrComment = ""
+            MstrError = ""
+            btnErrors.Enabled = False
+            btnDelError.Enabled = False
+        Else
+            MstrError = objXMLError.xml
+            MstrComment = ""
+            For Each objXMLComment In MobjXMLPage.childNodes
+                If objXMLComment.nodeType = MSXML2.DOMNodeType.NODE_COMMENT Then
+                    MstrComment = MstrComment & objXMLComment.xml
+                End If
+            Next
+            btnErrors.Enabled = True
+            btnDelError.Enabled = True
+        End If
+
         MblnDirty = False
     End Sub
 
@@ -905,7 +938,8 @@
         Else
             objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text = "false"
         End If
-        MobjXMLDoc.save(TextBox1.Text)
+
+        saveXml(MobjXMLDoc, TextBox1.Text)
     End Sub
 
     Private Sub btnNewFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewFile.Click
@@ -960,7 +994,7 @@
             objXMLRoot.appendChild(objXMLEl)
 
             MobjXMLDoc.documentElement = objXMLRoot
-            MobjXMLDoc.save(TextBox1.Text)
+            saveXml(MobjXMLDoc, TextBox1.Text)
             OpenFileDialog1.FileName = TextBox1.Text
             loadFile(TextBox1.Text)
         End If
@@ -985,7 +1019,7 @@
         objDomSettings.load(My.Application.Info.DirectoryPath & "\Settings.xml")
         objXMLEl = objDomSettings.documentElement
         objXMLEl.setAttribute("directory", strPath)
-        objDomSettings.save(My.Application.Info.DirectoryPath & "\Settings.xml")
+        saveXml(objDomSettings, My.Application.Info.DirectoryPath & "\Settings.xml")
         If strPath <> "" Then
             OpenFileDialog1.InitialDirectory = strPath
         End If
@@ -1249,5 +1283,79 @@
                 displaypage()
             End If
         End If
+    End Sub
+
+    Private Sub btnErrors_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnErrors.Click
+        Dim frmDialogue As New ErrorPopUp
+        frmDialogue.txtComment.Text = MstrComment
+        frmDialogue.txtError.Text = MstrError
+        frmDialogue.ShowDialog()
+    End Sub
+
+    Private Sub btnUpLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpLoad.Click
+        Dim objXMLImages As MSXML2.IXMLDOMNodeList
+        Dim objXMLImage As MSXML2.IXMLDOMElement
+        Dim intLoop As Integer
+        Dim intLoop2 As Integer
+        Dim strImage As String
+        Dim strUpload As String
+        Dim strImageDir As String
+        Dim strUploadDir As String
+        Dim strFiles() As String
+        strImageDir = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text
+        strUploadDir = strImageDir & "\Upload"
+        If Not System.IO.Directory.Exists(strUploadDir) Then
+            System.IO.Directory.CreateDirectory(strUploadDir)
+        End If
+        strFiles = System.IO.Directory.GetFiles(strUploadDir)
+        If Not strFiles Is Nothing Then
+            For intLoop = 0 To strFiles.Length - 1
+                System.IO.File.Delete(strFiles(intLoop))
+            Next
+        End If
+        objXMLImages = MobjXMLDoc.selectNodes("//Image")
+        For intLoop = 0 To objXMLImages.length - 1
+            objXMLImage = objXMLImages.item(intLoop)
+            tbImage.Text = getAttribute(objXMLImage, "id")
+            strImage = strImageDir & "\" & getAttribute(objXMLImage, "id")
+            If strImage.IndexOf("*") > -1 Then
+                strFiles = System.IO.Directory.GetFiles(strImageDir, getAttribute(objXMLImage, "id"))
+                If Not strFiles Is Nothing Then
+                    For intLoop2 = 0 To strFiles.Length - 1
+                        strUpload = strUploadDir & strFiles(intLoop2).Substring(strFiles(intLoop2).LastIndexOf("\"))
+                        If System.IO.File.Exists(strFiles(intLoop2)) And Not System.IO.File.Exists(strUpload) Then
+                            System.IO.File.Copy(strFiles(intLoop2), strUpload)
+                        End If
+                    Next
+                End If
+            Else
+                strUpload = strUploadDir & "\" & getAttribute(objXMLImage, "id")
+                If System.IO.File.Exists(strImage) And Not System.IO.File.Exists(strUpload) Then
+                    System.IO.File.Copy(strImage, strUpload)
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Sub saveXml(ByRef objXMLDom As MSXML2.IXMLDOMDocument2, ByVal strFileName As String)
+        Dim objDoc As New Xml.XmlDocument
+        Dim writer As System.Xml.XmlTextWriter = New System.Xml.XmlTextWriter(strFileName, Nothing)
+        writer.Formatting = Xml.Formatting.Indented
+        objDoc.LoadXml(objXMLDom.xml)
+        objDoc.Save(writer)
+    End Sub
+
+    Private Sub btnDelError_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelError.Click
+        Dim objXMLError As MSXML2.IXMLDOMElement
+        Dim objXMLComment As MSXML2.IXMLDOMNode
+        objXMLError = MobjXMLPage.selectSingleNode("./Errors")
+        If Not objXMLError Is Nothing Then
+            MobjXMLPage.removeChild(objXMLError)
+        End If
+        For Each objXMLComment In MobjXMLPage.childNodes
+            MobjXMLPage.removeChild(objXMLComment)
+        Next
+        savepage(True)
+        PopPageTree()
     End Sub
 End Class
