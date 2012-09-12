@@ -1,1 +1,1 @@
-http://code.google.com/p/tease-me-editor/source/browse/trunk/Wiki/Images/general.png
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/general.png
