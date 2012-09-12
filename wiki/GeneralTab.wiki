@@ -1,8 +1,14 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/general.png
 
+=Description=
+Most of the fields on this page are downloaded from milovana if you are creating a tease you only need to fill in title and author
+
 =Buttons=
 ==Get File==
 Opens a dialogue box which will allow you to select a tease xml file to edit
+
+==Save File==
+Kind of redundant because it saves the xml file when you save changes to a page, but if you update fields on this page it saves them.
 
 ==Create Upload Directory==
 This will create (or overwrite) an upload directory in your media directory, It will copy all the pictures you have actually used from the media directory.
