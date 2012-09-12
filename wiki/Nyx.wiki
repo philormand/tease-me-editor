@@ -1,1 +1,15 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Nyx.png
+
+=Description=
+This will generate Nyx script that can be cut and pasted to the online Nyx editor.
+
+You will need to upload the images, then cut and paste this generated script into the manual script window.
+
+There are things that tease me can do that Nyx can't so not all teases will work.
+
+I am still working on this part so it is not as tested as the rest of the editor.
+
+==Nyx stuff==
+Nyx only has the ability to do set / unset commands at the page level (not the delay / button level).  In Nyx you need to create a hidden page if you want to do this. The generator will automate this using numeric page names, starting with page 100 (or whatever you change it to at the top).
+
+Nyx will only handle random pages if the page name is numeric (fred(1..2) will not go to fred1 or fred2) make sure you set the starting page number greater than any you have used to avoid it generating two pages with the same name.
