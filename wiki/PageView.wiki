@@ -1,1 +1,23 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/PageView.png
+=Description=
+This will give you a rough view of what the page will look like in teaseme.
+
+The tease buttons will work if they go to a single page, but not random one.
+
+This page does not display videos
+
+=Buttons=
+==Play Audio==
+Will play the audio file for the page
+
+==<<==
+Will display the previous page in the page tree
+
+==>>==
+Will display the next page in the page tree
+
+==Delay Page==
+Will display the page the delay takes you to
+
+==Tease Buttons==
+Display the page the button takes you to in the tease
