@@ -8,7 +8,7 @@ Clicking on a page name on the left will display it on the right (this will also
 All editing is done here apart from the text displayed.
 
 The table contains the buttons.
-The row with a ** is where you can enter information to create a new button.
+The row with a star next to it is where you can enter information to create a new button.
 Clicking the far left of a row to highlight it and pressing the keyboard delete button will delete a button from the table
 
 =Buttons=
