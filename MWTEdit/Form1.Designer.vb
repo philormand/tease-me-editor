@@ -25,6 +25,7 @@ Partial Class Form1
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.TabControl1 = New System.Windows.Forms.TabControl
         Me.TabPage1 = New System.Windows.Forms.TabPage
+        Me.btnSortPages = New System.Windows.Forms.Button
         Me.btnUpLoad = New System.Windows.Forms.Button
         Me.btnSaveDir = New System.Windows.Forms.Button
         Me.Label20 = New System.Windows.Forms.Label
@@ -65,6 +66,10 @@ Partial Class Form1
         Me.TabPage3 = New System.Windows.Forms.TabPage
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
         Me.TreeViewPages = New System.Windows.Forms.TreeView
+        Me.btnSplitPage = New System.Windows.Forms.Button
+        Me.btnMoveDown = New System.Windows.Forms.Button
+        Me.btnRowUp = New System.Windows.Forms.Button
+        Me.btnDelError = New System.Windows.Forms.Button
         Me.btnErrors = New System.Windows.Forms.Button
         Me.btnCopyPage = New System.Windows.Forms.Button
         Me.Label16 = New System.Windows.Forms.Label
@@ -128,6 +133,10 @@ Partial Class Form1
         Me.tscbPaste = New System.Windows.Forms.ToolStripButton
         Me.tscbUpdate = New System.Windows.Forms.ToolStripButton
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser
+        Me.TabPage6 = New System.Windows.Forms.TabPage
+        Me.SplitContainer7 = New System.Windows.Forms.SplitContainer
+        Me.BtnRawText = New System.Windows.Forms.Button
+        Me.txtRawText = New System.Windows.Forms.TextBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.SplitContainer6 = New System.Windows.Forms.SplitContainer
         Me.btnNyx = New System.Windows.Forms.Button
@@ -136,7 +145,8 @@ Partial Class Form1
         Me.OpenFileDialogImage = New System.Windows.Forms.OpenFileDialog
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
-        Me.btnDelError = New System.Windows.Forms.Button
+        Me.Label21 = New System.Windows.Forms.Label
+        Me.txtRandom = New System.Windows.Forms.TextBox
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -162,6 +172,10 @@ Partial Class Form1
         Me.SplitContainer4.Panel2.SuspendLayout()
         Me.SplitContainer4.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
+        Me.TabPage6.SuspendLayout()
+        Me.SplitContainer7.Panel1.SuspendLayout()
+        Me.SplitContainer7.Panel2.SuspendLayout()
+        Me.SplitContainer7.SuspendLayout()
         Me.TabPage5.SuspendLayout()
         Me.SplitContainer6.Panel1.SuspendLayout()
         Me.SplitContainer6.Panel2.SuspendLayout()
@@ -174,6 +188,7 @@ Partial Class Form1
         Me.TabControl1.Controls.Add(Me.TabPage2)
         Me.TabControl1.Controls.Add(Me.TabPage3)
         Me.TabControl1.Controls.Add(Me.TabPage4)
+        Me.TabControl1.Controls.Add(Me.TabPage6)
         Me.TabControl1.Controls.Add(Me.TabPage5)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TabControl1.Location = New System.Drawing.Point(0, 0)
@@ -184,6 +199,7 @@ Partial Class Form1
         '
         'TabPage1
         '
+        Me.TabPage1.Controls.Add(Me.btnSortPages)
         Me.TabPage1.Controls.Add(Me.btnUpLoad)
         Me.TabPage1.Controls.Add(Me.btnSaveDir)
         Me.TabPage1.Controls.Add(Me.Label20)
@@ -215,6 +231,15 @@ Partial Class Form1
         Me.TabPage1.TabIndex = 0
         Me.TabPage1.Text = "General"
         Me.TabPage1.UseVisualStyleBackColor = True
+        '
+        'btnSortPages
+        '
+        Me.btnSortPages.Location = New System.Drawing.Point(301, 63)
+        Me.btnSortPages.Name = "btnSortPages"
+        Me.btnSortPages.Size = New System.Drawing.Size(75, 23)
+        Me.btnSortPages.TabIndex = 24
+        Me.btnSortPages.Text = "Sort Pages"
+        Me.btnSortPages.UseVisualStyleBackColor = True
         '
         'btnUpLoad
         '
@@ -594,6 +619,9 @@ Partial Class Form1
         '
         'SplitContainer1.Panel2
         '
+        Me.SplitContainer1.Panel2.Controls.Add(Me.btnSplitPage)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.btnMoveDown)
+        Me.SplitContainer1.Panel2.Controls.Add(Me.btnRowUp)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnDelError)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnErrors)
         Me.SplitContainer1.Panel2.Controls.Add(Me.btnCopyPage)
@@ -648,6 +676,46 @@ Partial Class Form1
         Me.TreeViewPages.Name = "TreeViewPages"
         Me.TreeViewPages.Size = New System.Drawing.Size(318, 630)
         Me.TreeViewPages.TabIndex = 1
+        '
+        'btnSplitPage
+        '
+        Me.btnSplitPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnSplitPage.Location = New System.Drawing.Point(408, 591)
+        Me.btnSplitPage.Name = "btnSplitPage"
+        Me.btnSplitPage.Size = New System.Drawing.Size(75, 23)
+        Me.btnSplitPage.TabIndex = 48
+        Me.btnSplitPage.Text = "Split Page"
+        Me.btnSplitPage.UseVisualStyleBackColor = True
+        '
+        'btnMoveDown
+        '
+        Me.btnMoveDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnMoveDown.Location = New System.Drawing.Point(594, 591)
+        Me.btnMoveDown.Name = "btnMoveDown"
+        Me.btnMoveDown.Size = New System.Drawing.Size(75, 23)
+        Me.btnMoveDown.TabIndex = 47
+        Me.btnMoveDown.Text = "Move Down"
+        Me.btnMoveDown.UseVisualStyleBackColor = True
+        '
+        'btnRowUp
+        '
+        Me.btnRowUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnRowUp.Location = New System.Drawing.Point(499, 591)
+        Me.btnRowUp.Name = "btnRowUp"
+        Me.btnRowUp.Size = New System.Drawing.Size(75, 23)
+        Me.btnRowUp.TabIndex = 46
+        Me.btnRowUp.Text = "Move Up"
+        Me.btnRowUp.UseVisualStyleBackColor = True
+        '
+        'btnDelError
+        '
+        Me.btnDelError.Enabled = False
+        Me.btnDelError.Location = New System.Drawing.Point(569, 247)
+        Me.btnDelError.Name = "btnDelError"
+        Me.btnDelError.Size = New System.Drawing.Size(100, 23)
+        Me.btnDelError.TabIndex = 45
+        Me.btnDelError.Text = "Delete Error"
+        Me.btnDelError.UseVisualStyleBackColor = True
         '
         'btnErrors
         '
@@ -1147,7 +1215,7 @@ Partial Class Form1
         Me.TabPage4.Name = "TabPage4"
         Me.TabPage4.Size = New System.Drawing.Size(1066, 636)
         Me.TabPage4.TabIndex = 3
-        Me.TabPage4.Text = "Edit Text"
+        Me.TabPage4.Text = "WYSIWYG Edit Text"
         Me.TabPage4.UseVisualStyleBackColor = True
         '
         'SplitContainer4
@@ -1271,6 +1339,52 @@ Partial Class Form1
         Me.WebBrowser3.TabIndex = 27
         Me.WebBrowser3.WebBrowserShortcutsEnabled = False
         '
+        'TabPage6
+        '
+        Me.TabPage6.Controls.Add(Me.SplitContainer7)
+        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage6.Name = "TabPage6"
+        Me.TabPage6.Size = New System.Drawing.Size(1066, 636)
+        Me.TabPage6.TabIndex = 5
+        Me.TabPage6.Text = "Raw Text Edit"
+        Me.TabPage6.UseVisualStyleBackColor = True
+        '
+        'SplitContainer7
+        '
+        Me.SplitContainer7.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer7.Location = New System.Drawing.Point(0, 0)
+        Me.SplitContainer7.Name = "SplitContainer7"
+        Me.SplitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal
+        '
+        'SplitContainer7.Panel1
+        '
+        Me.SplitContainer7.Panel1.Controls.Add(Me.BtnRawText)
+        '
+        'SplitContainer7.Panel2
+        '
+        Me.SplitContainer7.Panel2.Controls.Add(Me.txtRawText)
+        Me.SplitContainer7.Size = New System.Drawing.Size(1066, 636)
+        Me.SplitContainer7.SplitterDistance = 28
+        Me.SplitContainer7.TabIndex = 0
+        '
+        'BtnRawText
+        '
+        Me.BtnRawText.Location = New System.Drawing.Point(0, 0)
+        Me.BtnRawText.Name = "BtnRawText"
+        Me.BtnRawText.Size = New System.Drawing.Size(75, 23)
+        Me.BtnRawText.TabIndex = 0
+        Me.BtnRawText.Text = "Save Text"
+        Me.BtnRawText.UseVisualStyleBackColor = True
+        '
+        'txtRawText
+        '
+        Me.txtRawText.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.txtRawText.Location = New System.Drawing.Point(0, 0)
+        Me.txtRawText.Multiline = True
+        Me.txtRawText.Name = "txtRawText"
+        Me.txtRawText.Size = New System.Drawing.Size(1066, 604)
+        Me.txtRawText.TabIndex = 0
+        '
         'TabPage5
         '
         Me.TabPage5.Controls.Add(Me.SplitContainer6)
@@ -1290,6 +1404,8 @@ Partial Class Form1
         '
         'SplitContainer6.Panel1
         '
+        Me.SplitContainer6.Panel1.Controls.Add(Me.txtRandom)
+        Me.SplitContainer6.Panel1.Controls.Add(Me.Label21)
         Me.SplitContainer6.Panel1.Controls.Add(Me.btnNyx)
         '
         'SplitContainer6.Panel2
@@ -1331,15 +1447,22 @@ Partial Class Form1
         '
         Me.FontDialog1.ShowColor = True
         '
-        'btnDelError
+        'Label21
         '
-        Me.btnDelError.Enabled = False
-        Me.btnDelError.Location = New System.Drawing.Point(569, 247)
-        Me.btnDelError.Name = "btnDelError"
-        Me.btnDelError.Size = New System.Drawing.Size(100, 23)
-        Me.btnDelError.TabIndex = 45
-        Me.btnDelError.Text = "Delete Error"
-        Me.btnDelError.UseVisualStyleBackColor = True
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(172, 7)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(166, 13)
+        Me.Label21.TabIndex = 1
+        Me.Label21.Text = "Start Number For Random Pages "
+        '
+        'txtRandom
+        '
+        Me.txtRandom.Location = New System.Drawing.Point(354, 7)
+        Me.txtRandom.Name = "txtRandom"
+        Me.txtRandom.Size = New System.Drawing.Size(100, 20)
+        Me.txtRandom.TabIndex = 2
+        Me.txtRandom.Text = "100"
         '
         'Form1
         '
@@ -1380,8 +1503,14 @@ Partial Class Form1
         Me.SplitContainer4.ResumeLayout(False)
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
+        Me.TabPage6.ResumeLayout(False)
+        Me.SplitContainer7.Panel1.ResumeLayout(False)
+        Me.SplitContainer7.Panel2.ResumeLayout(False)
+        Me.SplitContainer7.Panel2.PerformLayout()
+        Me.SplitContainer7.ResumeLayout(False)
         Me.TabPage5.ResumeLayout(False)
         Me.SplitContainer6.Panel1.ResumeLayout(False)
+        Me.SplitContainer6.Panel1.PerformLayout()
         Me.SplitContainer6.Panel2.ResumeLayout(False)
         Me.SplitContainer6.Panel2.PerformLayout()
         Me.SplitContainer6.ResumeLayout(False)
@@ -1502,5 +1631,15 @@ Partial Class Form1
     Friend WithEvents btnErrors As System.Windows.Forms.Button
     Friend WithEvents btnUpLoad As System.Windows.Forms.Button
     Friend WithEvents btnDelError As System.Windows.Forms.Button
+    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
+    Friend WithEvents SplitContainer7 As System.Windows.Forms.SplitContainer
+    Friend WithEvents BtnRawText As System.Windows.Forms.Button
+    Friend WithEvents txtRawText As System.Windows.Forms.TextBox
+    Friend WithEvents btnMoveDown As System.Windows.Forms.Button
+    Friend WithEvents btnRowUp As System.Windows.Forms.Button
+    Friend WithEvents btnSplitPage As System.Windows.Forms.Button
+    Friend WithEvents btnSortPages As System.Windows.Forms.Button
+    Friend WithEvents txtRandom As System.Windows.Forms.TextBox
+    Friend WithEvents Label21 As System.Windows.Forms.Label
 
 End Class
