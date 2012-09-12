@@ -2,10 +2,10 @@ http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/WYSIWYG.png
 
 =Description=
 This is a visual editor for the text.
-It uses a lot of features built into the programming language the editor is built in, so is a bit 'clunky'.
-If you don't know HTML and want to have pretty text this will help create it for you.
+<BR>It uses a lot of features built into the programming language the editor is built in, so is a bit 'clunky'.
+<BR>If you don't know HTML and want to have pretty text this will help create it for you. (you can see the HTML it generates on the Raw text edit tab once you have pressed the Update Page button)
 
-Type the text you want and the highlight the bits you want to format.
+Type the text you want and highlight the bits you want to format.
 
 =Buttons=
 The first three should be fairly obvious (bold italic underline)
