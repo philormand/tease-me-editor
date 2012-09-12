@@ -1,1 +1,14 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/WYSIWYG.png
+
+=Description=
+This is a visual editor for the text.
+It uses a lot of features built into the programming language the editor is built in, so is a bit 'clunky'.
+If you don't know HTML and want to have pretty text this will help create it for you.
+
+Type the text you want and the highlight the bits you want to format.
+
+=Buttons=
+The first three should be fairly obvious (bold italic underline)
+<BR>The next (A underlined in red) gives an edit dialogue that lets you change colour size font etc. (font size in HTML is more limited than the dialogue gives so you may find it changes a bit after you save the file)
+<BR>You then have cut, copy and paste buttons
+<BR>The last button copies the current text to the page, if you don't click this your changes will be lost
