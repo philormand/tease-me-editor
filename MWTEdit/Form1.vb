@@ -104,6 +104,9 @@
             AddHandler tscbBold.Click, AddressOf commandButton_Click
             AddHandler tscbItalic.Click, AddressOf commandButton_Click
             AddHandler tscbUnderline.Click, AddressOf commandButton_Click
+            DataGridView1.EnableHeadersVisualStyles = False
+            DataGridView1.Columns(4).HeaderCell.Style.BackColor = Color.Red
+            DataGridView1.Columns(5).HeaderCell.Style.BackColor = Color.Red
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", Form1_Load, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
@@ -1214,6 +1217,7 @@
             Dim strButtonUnSet As String
             Dim strDelaySet As String
             Dim strDelayUnSet As String
+            Dim strTmpArr() As String
 
 
             intRandomPage = Integer.Parse(txtRandom.Text)
@@ -1239,14 +1243,15 @@
                     objXMLImage = objXMLPage.selectSingleNode("Image")
                     If Not objXMLImage Is Nothing Then
                         strImage = getAttribute(objXMLImage, "id")
-                        strScript = strScript & ",pic(""" & strImage & """)"
+                        strImage = strImage.Replace("_", "-")
+                        strScript = strScript & ",pic(""" & strImage.ToLower & """)"
                     End If
-                    strScript = strScript & ",vert("
 
                     'Buttons
                     objXMLButtons = objXMLPage.selectNodes("./Button")
                     'populate with buttons for this page
                     If objXMLButtons.length > 0 Then
+                        strScript = strScript & ",vert("
                         strScript = strScript & "buttons("
                     End If
                     For intloop = objXMLButtons.length - 1 To 0 Step -1
@@ -1254,14 +1259,25 @@
                         strButtonSet = getAttribute(objXMLButton, "set")
                         strButtonUnSet = getAttribute(objXMLButton, "unset")
                         strButtonTarget = getAttribute(objXMLButton, "target")
+                        If strButtonTarget.IndexOf("(") > -1 Then
+                            strButtonTarget = strButtonTarget.Replace("(", "")
+                            strButtonTarget = strButtonTarget.Replace(")", "")
+                            strTmpArr = strButtonTarget.Split("..")
+                            strRandomPage = intRandomPage.ToString
+                            intRandomPage = intRandomPage + 1
+                            strButtonTarget = strRandomPage & "#"
+                            strRandomPages = strRandomPages & strRandomPage & "#page("""",pic(""blank.jpg""),delay(0sec,range(" & strTmpArr(0) & "," & strTmpArr(2) & "),style:secret));" & vbCrLf
+                        Else
+                            strButtonTarget = strButtonTarget & "#"
+                        End If
                         strButtonText = objXMLButton.text
                         If strButtonSet & strButtonUnSet = "" Then
-                            strScript = strScript & strButtonTarget & "#,"
+                            strScript = strScript & strButtonTarget & ","
                         Else
                             strRandomPage = intRandomPage.ToString
                             intRandomPage = intRandomPage + 1
                             strScript = strScript & strRandomPage & "#,"
-                            strRandomPages = strRandomPages & strRandomPage & "#page(delay(0sec," & strButtonTarget & "#)"
+                            strRandomPages = strRandomPages & strRandomPage & "#page("""",pic(""blank.jpg""),delay(0sec," & strButtonTarget & ")"
                             If strButtonSet <> "" Then
                                 strTxtSplit = strButtonSet.Split(",")
                                 strTemp = ",set("
@@ -1297,7 +1313,7 @@
                         'strButtonIfNotSet = getAttribute(objXMLButton, "if-not-set")
                     Next
                     If objXMLButtons.length > 0 Then
-                        strScript = strScript & ")"
+                        strScript = strScript & "))"
                     End If
 
                     'delay
@@ -1306,6 +1322,14 @@
                     If Not objXMLDelay Is Nothing Then
                         strSeconds = getAttribute(objXMLDelay, "seconds")
                         strTarget = getAttribute(objXMLDelay, "target")
+                        If strTarget.IndexOf("(") > -1 Then
+                            strTarget = strTarget.Replace("(", "")
+                            strTarget = strTarget.Replace(")", "")
+                            strTmpArr = strTarget.Split("..")
+                            strTarget = "range(" & strTmpArr(0) & "," & strTmpArr(2) & ")"
+                        Else
+                            strTarget = strTarget & "#"
+                        End If
                         strStyle = getAttribute(objXMLDelay, "style")
                         If strScript.Substring(strScript.Length - 1, 1) <> "(" Then
                             strScript = strScript & ","
@@ -1313,12 +1337,12 @@
                         strDelaySet = getAttribute(objXMLDelay, "set")
                         strDelayUnSet = getAttribute(objXMLDelay, "unset")
                         If strDelaySet & strDelayUnSet = "" Then
-                            strScript = strScript & "delay(" & strSeconds & "sec," & strTarget & "#"
+                            strScript = strScript & "delay(" & strSeconds & "sec," & strTarget
                         Else
                             strRandomPage = intRandomPage.ToString
                             intRandomPage = intRandomPage + 1
                             strScript = strScript & "delay(" & strSeconds & "sec," & strRandomPage & "#"
-                            strRandomPages = strRandomPages & strRandomPage & "#page(delay(0sec," & strTarget & "#)"
+                            strRandomPages = strRandomPages & strRandomPage & "#page("""",pic(""blank.jpg""),delay(0sec," & strTarget & ")"
                             If strDelaySet <> "" Then
                                 strTxtSplit = strDelaySet.Split(",")
                                 strTemp = ",set("
@@ -1355,85 +1379,85 @@
                         'txtDelayIfNotSet.Text = getAttribute(objXMLDelay, "if-not-set")
                     End If
 
-                'Audio
-                objXMLAudio = objXMLPage.selectSingleNode("./Audio")
-                If Not objXMLAudio Is Nothing Then
-                    strAudio = getAttribute(objXMLAudio, "id")
-                    If strScript.Substring(strScript.Length - 1, 1) <> "(" Then
-                        strScript = strScript & ","
+                    'Audio
+                    objXMLAudio = objXMLPage.selectSingleNode("./Audio")
+                    If Not objXMLAudio Is Nothing Then
+                        strAudio = getAttribute(objXMLAudio, "id")
+                        If strScript.Substring(strScript.Length - 1, 1) <> "(" Then
+                            strScript = strScript & ","
+                        End If
+                        strScript = strScript & "hidden:sound(id:'" & strAudio.ToLower & "')"
                     End If
-                    strScript = strScript & "hidden:sound(id:'" & strAudio & "')"
-                End If
 
-                strScript = strScript & ")"
+                    'strScript = strScript & ")"
 
-                strSet = getAttribute(objXMLPage, "set")
-                If strSet <> "" Then
-                    strTxtSplit = strSet.Split(",")
-                    strTemp = ",set("
-                    For intloop = 0 To strTxtSplit.Length - 1
-                        strTemp = strTemp & strTxtSplit(intloop) & "#"
-                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
-                            strTemp = strTemp & ","
-                        End If
-                    Next
-                    strTemp = strTemp & ")"
-                    strScript = strScript & strTemp
-                End If
+                    strSet = getAttribute(objXMLPage, "set")
+                    If strSet <> "" Then
+                        strTxtSplit = strSet.Split(",")
+                        strTemp = ",set("
+                        For intloop = 0 To strTxtSplit.Length - 1
+                            strTemp = strTemp & strTxtSplit(intloop) & "#"
+                            If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                                strTemp = strTemp & ","
+                            End If
+                        Next
+                        strTemp = strTemp & ")"
+                        strScript = strScript & strTemp
+                    End If
 
-                strUnSet = getAttribute(objXMLPage, "unset")
-                If strUnSet <> "" Then
-                    strTxtSplit = strUnSet.Split(",")
-                    strTemp = ",unset("
-                    For intloop = 0 To strTxtSplit.Length - 1
-                        strTemp = strTemp & strTxtSplit(intloop) & "#"
-                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
-                            strTemp = strTemp & ","
-                        End If
-                    Next
-                    strTemp = strTemp & ")"
-                    strScript = strScript & strTemp
-                End If
+                    strUnSet = getAttribute(objXMLPage, "unset")
+                    If strUnSet <> "" Then
+                        strTxtSplit = strUnSet.Split(",")
+                        strTemp = ",unset("
+                        For intloop = 0 To strTxtSplit.Length - 1
+                            strTemp = strTemp & strTxtSplit(intloop) & "#"
+                            If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                                strTemp = strTemp & ","
+                            End If
+                        Next
+                        strTemp = strTemp & ")"
+                        strScript = strScript & strTemp
+                    End If
 
-                strIfSet = getAttribute(objXMLPage, "if-set")
-                If strIfSet <> "" Then
-                    strTxtSplit = strIfSet.Split(",")
-                    strTemp = ",must("
-                    For intloop = 0 To strTxtSplit.Length - 1
-                        strTemp = strTemp & strTxtSplit(intloop) & "#"
-                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
-                            strTemp = strTemp & ","
-                        End If
-                    Next
-                    strTemp = strTemp & ")"
-                    strScript = strScript & strTemp
-                End If
+                    strIfSet = getAttribute(objXMLPage, "if-set")
+                    If strIfSet <> "" Then
+                        strTxtSplit = strIfSet.Split(",")
+                        strTemp = ",must("
+                        For intloop = 0 To strTxtSplit.Length - 1
+                            strTemp = strTemp & strTxtSplit(intloop) & "#"
+                            If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                                strTemp = strTemp & ","
+                            End If
+                        Next
+                        strTemp = strTemp & ")"
+                        strScript = strScript & strTemp
+                    End If
 
-                strIfNotSet = getAttribute(objXMLPage, "if-not-set")
-                If strIfNotSet <> "" Then
-                    strTxtSplit = strIfNotSet.Split(",")
-                    strTemp = ",mustnot("
-                    For intloop = 0 To strTxtSplit.Length - 1
-                        strTemp = strTemp & strTxtSplit(intloop) & "#"
-                        If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
-                            strTemp = strTemp & ","
-                        End If
-                    Next
-                    strTemp = strTemp & ")"
-                    strScript = strScript & strTemp
-                End If
+                    strIfNotSet = getAttribute(objXMLPage, "if-not-set")
+                    If strIfNotSet <> "" Then
+                        strTxtSplit = strIfNotSet.Split(",")
+                        strTemp = ",mustnot("
+                        For intloop = 0 To strTxtSplit.Length - 1
+                            strTemp = strTemp & strTxtSplit(intloop) & "#"
+                            If intloop > 0 And intloop <> strTxtSplit.Length - 1 Then
+                                strTemp = strTemp & ","
+                            End If
+                        Next
+                        strTemp = strTemp & ")"
+                        strScript = strScript & strTemp
+                    End If
 
-                'Metronome
-                objXMLMetronome = objXMLPage.selectSingleNode("./Metronome")
-                If Not objXMLMetronome Is Nothing Then
-                    strBPM = getAttribute(objXMLMetronome, "bpm")
-                End If
-                'Video
-                objXMLVideo = objXMLPage.selectSingleNode("./Video")
-                If Not objXMLVideo Is Nothing Then
-                    strVideo = getAttribute(objXMLVideo, "id")
-                End If
-                strScript = strScript & ");" & vbCrLf
+                    'Metronome
+                    objXMLMetronome = objXMLPage.selectSingleNode("./Metronome")
+                    If Not objXMLMetronome Is Nothing Then
+                        strBPM = getAttribute(objXMLMetronome, "bpm")
+                    End If
+                    'Video
+                    objXMLVideo = objXMLPage.selectSingleNode("./Video")
+                    If Not objXMLVideo Is Nothing Then
+                        strVideo = getAttribute(objXMLVideo, "id")
+                    End If
+                    strScript = strScript & ");" & vbCrLf
                 End If
 
             Next

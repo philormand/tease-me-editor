@@ -139,14 +139,14 @@ Partial Class Form1
         Me.txtRawText = New System.Windows.Forms.TextBox
         Me.TabPage5 = New System.Windows.Forms.TabPage
         Me.SplitContainer6 = New System.Windows.Forms.SplitContainer
+        Me.txtRandom = New System.Windows.Forms.TextBox
+        Me.Label21 = New System.Windows.Forms.Label
         Me.btnNyx = New System.Windows.Forms.Button
         Me.txtNyxScript = New System.Windows.Forms.TextBox
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.OpenFileDialogImage = New System.Windows.Forms.OpenFileDialog
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
-        Me.Label21 = New System.Windows.Forms.Label
-        Me.txtRandom = New System.Windows.Forms.TextBox
         Me.TabControl1.SuspendLayout()
         Me.TabPage1.SuspendLayout()
         Me.TabPage2.SuspendLayout()
@@ -743,6 +743,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label16.AutoSize = True
+        Me.Label16.BackColor = System.Drawing.Color.Red
         Me.Label16.Location = New System.Drawing.Point(398, 182)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(52, 13)
@@ -762,6 +763,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label17.AutoSize = True
+        Me.Label17.BackColor = System.Drawing.Color.Red
         Me.Label17.Location = New System.Drawing.Point(273, 182)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(32, 13)
@@ -819,6 +821,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label14.AutoSize = True
+        Me.Label14.BackColor = System.Drawing.Color.Red
         Me.Label14.Location = New System.Drawing.Point(405, 46)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(52, 13)
@@ -838,6 +841,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label15.AutoSize = True
+        Me.Label15.BackColor = System.Drawing.Color.Red
         Me.Label15.Location = New System.Drawing.Point(282, 46)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(32, 13)
@@ -948,12 +952,13 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbVideo.AutoSize = True
+        Me.cbVideo.BackColor = System.Drawing.Color.Red
         Me.cbVideo.Location = New System.Drawing.Point(23, 282)
         Me.cbVideo.Name = "cbVideo"
         Me.cbVideo.Size = New System.Drawing.Size(53, 17)
         Me.cbVideo.TabIndex = 21
         Me.cbVideo.Text = "Video"
-        Me.cbVideo.UseVisualStyleBackColor = True
+        Me.cbVideo.UseVisualStyleBackColor = False
         '
         'btnAudio
         '
@@ -1161,12 +1166,13 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbMetronome.AutoSize = True
+        Me.cbMetronome.BackColor = System.Drawing.Color.Red
         Me.cbMetronome.Location = New System.Drawing.Point(23, 93)
         Me.cbMetronome.Name = "cbMetronome"
         Me.cbMetronome.Size = New System.Drawing.Size(105, 17)
         Me.cbMetronome.TabIndex = 4
         Me.cbMetronome.Text = "Metronome BPM"
-        Me.cbMetronome.UseVisualStyleBackColor = True
+        Me.cbMetronome.UseVisualStyleBackColor = False
         '
         'PictureBox2
         '
@@ -1415,6 +1421,23 @@ Partial Class Form1
         Me.SplitContainer6.SplitterDistance = 35
         Me.SplitContainer6.TabIndex = 0
         '
+        'txtRandom
+        '
+        Me.txtRandom.Location = New System.Drawing.Point(354, 7)
+        Me.txtRandom.Name = "txtRandom"
+        Me.txtRandom.Size = New System.Drawing.Size(100, 20)
+        Me.txtRandom.TabIndex = 2
+        Me.txtRandom.Text = "100"
+        '
+        'Label21
+        '
+        Me.Label21.AutoSize = True
+        Me.Label21.Location = New System.Drawing.Point(172, 7)
+        Me.Label21.Name = "Label21"
+        Me.Label21.Size = New System.Drawing.Size(166, 13)
+        Me.Label21.TabIndex = 1
+        Me.Label21.Text = "Start Number For Random Pages "
+        '
         'btnNyx
         '
         Me.btnNyx.Location = New System.Drawing.Point(10, 7)
@@ -1446,23 +1469,6 @@ Partial Class Form1
         'FontDialog1
         '
         Me.FontDialog1.ShowColor = True
-        '
-        'Label21
-        '
-        Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(172, 7)
-        Me.Label21.Name = "Label21"
-        Me.Label21.Size = New System.Drawing.Size(166, 13)
-        Me.Label21.TabIndex = 1
-        Me.Label21.Text = "Start Number For Random Pages "
-        '
-        'txtRandom
-        '
-        Me.txtRandom.Location = New System.Drawing.Point(354, 7)
-        Me.txtRandom.Name = "txtRandom"
-        Me.txtRandom.Size = New System.Drawing.Size(100, 20)
-        Me.txtRandom.TabIndex = 2
-        Me.txtRandom.Text = "100"
         '
         'Form1
         '
