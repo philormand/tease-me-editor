@@ -1,4 +1,6 @@
-﻿Public Class Form1
+﻿Imports System.Runtime.InteropServices
+
+Public Class Form1
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -13,22 +15,12 @@
     Private MstrComment As String
     Private MobjLogWriter As System.IO.StreamWriter
     Private MblnDebug As Boolean = False
-
-    Private Sub BtnFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnFile.Click
-        Try
-            Dim strNewFile As String
-            If OpenFileDialog1.ShowDialog() = Windows.Forms.DialogResult.OK Then
-                'create backup
-                If System.IO.File.Exists(OpenFileDialog1.FileName) = True Then
-                    strNewFile = OpenFileDialog1.FileName & "." & Now().ToString("yyyyMMddhhmmss") & ".bkp"
-                    System.IO.File.Copy(OpenFileDialog1.FileName, strNewFile, True)
-                End If
-                loadFile(OpenFileDialog1.FileName)
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", BtnFile_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
+    Private thrMyThread As System.Threading.Thread = Nothing
+    Private blnBackup As Boolean
+    Private txtDirectory As String
+    Private MstrImageFilter As String
+    Private MstrAudioFilter As String
+    Private MstrVideoFilter As String
 
     Private Sub loadFile(ByVal strFile As String)
         Try
@@ -48,12 +40,71 @@
             objXMLEl = MobjXMLDoc.selectSingleNode("//Settings")
             cbAutoSetPageWhenSeen.Checked = objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text
             TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
-            Application.DoEvents()
+            System.Windows.Forms.Application.DoEvents()
+            fillListView()
             displaypage()
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", loadFile, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
+
+    Private Sub fillListView()
+        Cursor = Cursors.WaitCursor
+        ListView1.Items.Clear()
+        ListView2.Items.Clear()
+        ListView3.Items.Clear()
+        Dim myImageList = New ImageList()
+        Dim strFiles() As String
+        Dim strFile As String
+        Dim intCount As Integer
+
+        myImageList.ImageSize = New Size(70, 100)
+        myImageList.ColorDepth = ColorDepth.Depth24Bit
+        intCount = -1
+        strFiles = GetPatternedFiles(MstrImageFilter.Split(","))
+        ListView1.LargeImageList = myImageList
+        For Each strFile In strFiles
+            Try
+                myImageList.Images.Add(Image.FromFile(strFile))
+                ListView1.Items.Add(strFile)
+                intCount = intCount + 1
+                ListView1.Items(intCount).ImageIndex = (intCount)
+            Catch ex As Exception
+            End Try
+        Next
+
+        strFiles = GetPatternedFiles(MstrAudioFilter.Split(","))
+        For Each strFile In strFiles
+            Try
+                ListView2.Items.Add(strFile)
+            Catch ex As Exception
+            End Try
+        Next
+
+        strFiles = GetPatternedFiles(MstrVideoFilter.Split(","))
+        For Each strFile In strFiles
+            Try
+                ListView3.Items.Add(strFile)
+            Catch ex As Exception
+            End Try
+        Next
+
+        Cursor = Cursors.Default
+    End Sub
+
+    Private Function GetPatternedFiles(ByVal strPatterns() As String) As String()
+        Dim lrFiles As New ArrayList
+        Dim strPattern As String
+        For Each strPattern In strPatterns
+            Dim strTemp() As String = System.IO.Directory.GetFiles(OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text, strPattern)
+            If strTemp.Length > 0 Then
+                lrFiles.AddRange(strTemp)
+            End If
+        Next
+        Dim strRet(lrFiles.Count) As String
+        Array.Copy(lrFiles.ToArray, strRet, lrFiles.Count)
+        Return StrRet
+    End Function
 
     Private Sub Form1_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
         If MblnDebug Then
@@ -77,22 +128,39 @@
             If objDomSettings.documentElement Is Nothing Then
                 objXMLEl = objDomSettings.createElement("Settings")
                 objXMLEl.setAttribute("directory", "c:\")
+                objXMLEl.setAttribute("backup", "True")
+                objXMLEl.setAttribute("imagefilter", "*.jpg,*.bmp,*.gif")
+                objXMLEl.setAttribute("audiofilter", "*.mp3,*.wav")
+                objXMLEl.setAttribute("videofilter", "*.wmv,*.mp4")
                 objDomSettings.documentElement = objXMLEl
                 saveXml(objDomSettings, My.Application.Info.DirectoryPath & "\Settings.xml")
             End If
             strPath = getAttribute(objDomSettings.documentElement, "directory")
-            txtDefaltDir.Text = strPath
+            blnBackup = getAttribute(objDomSettings.documentElement, "backup")
+            txtDirectory = strPath
             If strPath <> "" Then
                 OpenFileDialog1.InitialDirectory = strPath
             Else
                 OpenFileDialog1.InitialDirectory = My.Application.Info.DirectoryPath
+            End If
+            MstrImageFilter = getAttribute(objDomSettings.documentElement, "imagefilter")
+            If MstrImageFilter = "" Then
+                MstrImageFilter = "*.jpg,*.bmp,*.gif"
+            End If
+            MstrAudioFilter = getAttribute(objDomSettings.documentElement, "audiofilter")
+            If MstrAudioFilter = "" Then
+                MstrAudioFilter = "*.mp3,*.wav"
+            End If
+            MstrVideoFilter = getAttribute(objDomSettings.documentElement, "videofilter")
+            If MstrVideoFilter = "" Then
+                MstrVideoFilter = "*.wmv,*.mp4"
             End If
             ReDim MobjButtons(0)
             MblnDirty = False
             AddHandler btnDelay.Click, AddressOf DynamicButtonClick
             WebBrowser3.DocumentText = "<html><head></head><body></body></html>"
             Do While Not WebBrowser3.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
+                System.Windows.Forms.Application.DoEvents()
             Loop
             txtRawText.Text = ""
             MobjDomDoc = WebBrowser3.Document.DomDocument
@@ -118,8 +186,8 @@
             Dim objXMLPageEl As MSXML2.IXMLDOMElement
             Dim objXMLError As MSXML2.IXMLDOMElement
             Dim objNode As System.Windows.Forms.TreeNode
-            TabPage3.Focus()
-            Application.DoEvents()
+            TabPage.Focus()
+            System.Windows.Forms.Application.DoEvents()
             TreeViewPages.BeginUpdate()
             TreeViewPages.Nodes.Clear()
             For Each objXMLPage In MobjXMLPages.childNodes
@@ -154,7 +222,7 @@
                 strTarget = getAttribute(objXMLDelay, "target")
                 objXMLPage2 = MobjXMLPages.selectSingleNode("Page[@id=""" & strTarget & """]")
                 objTreeNode2 = objTreeNode.Nodes.Add(objXMLPage2.getAttribute("id"))
-                Application.DoEvents()
+                System.Windows.Forms.Application.DoEvents()
                 PopNextTree(objTreeNode2, objXMLPage2)
             End If
 
@@ -166,7 +234,7 @@
                 If objTreeNodeTest Is Nothing Then
                     objXMLPage2 = MobjXMLPages.selectSingleNode("Page[@id=""" & strButtonTarget & """]")
                     objTreeNode2 = objTreeNode.Nodes.Add(getAttribute(objXMLPage2, "id"))
-                    Application.DoEvents()
+                    System.Windows.Forms.Application.DoEvents()
                     PopNextTree(objTreeNode2, objXMLPage2)
                 End If
             Next
@@ -180,7 +248,7 @@
             If MblnDirty Then
                 Select Case MsgBox("Do you want to saved changes?" & vbCrLf & "Select Yes to save and move to the selected page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
                     Case MsgBoxResult.Yes
-                        savepage(False)
+                        SavePage(False)
                         MblnDirty = False
                         displaypage()
                     Case MsgBoxResult.No
@@ -198,7 +266,7 @@
         Try
             Dim strImage As String
             OpenFileDialogImage.InitialDirectory = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text
-            If OpenFileDialogImage.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If OpenFileDialogImage.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 If tbImage.Text <> OpenFileDialogImage.SafeFileName Then
                     tbImage.Text = OpenFileDialogImage.SafeFileName
                     strImage = OpenFileDialogImage.FileName
@@ -241,10 +309,6 @@
     End Sub
 
     Private Sub rbSecret_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbSecret.CheckedChanged
-        MblnDirty = True
-    End Sub
-
-    Private Sub RichTextBox1_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         MblnDirty = True
     End Sub
 
@@ -295,7 +359,7 @@
     Private Sub btnAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAudio.Click
         Try
             OpenFileDialogImage.InitialDirectory = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text
-            If OpenFileDialogImage.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If OpenFileDialogImage.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 If tbAudio.Text <> OpenFileDialogImage.SafeFileName Then
                     tbAudio.Text = OpenFileDialogImage.SafeFileName
                     MblnDirty = True
@@ -309,7 +373,7 @@
     Private Sub btnVideo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVideo.Click
         Try
             OpenFileDialogImage.InitialDirectory = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text
-            If OpenFileDialogImage.ShowDialog() = Windows.Forms.DialogResult.OK Then
+            If OpenFileDialogImage.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 If tbVideo.Text <> OpenFileDialogImage.SafeFileName Then
                     tbVideo.Text = OpenFileDialogImage.SafeFileName
                     MblnDirty = True
@@ -320,13 +384,14 @@
         End Try
     End Sub
 
-    Private Sub cbAudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbAudio.CheckedChanged
+    Private Sub cbAudio_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         MblnDirty = True
     End Sub
 
-    Private Sub cbVideo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cbVideo.CheckedChanged
+    Private Sub cbVideo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         MblnDirty = True
     End Sub
+
     Private Sub DynamicButtonClick(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             Dim objButton As Button
@@ -343,102 +408,9 @@
         End Try
     End Sub
 
-    Private Sub btnSavePage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSavePage.Click
-        savepage(True)
+    Private Sub SavePage()
+        SavePage(True)
         MblnDirty = False
-    End Sub
-
-    Private Sub btnNewPage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewPage.Click
-        Try
-            Dim objXMLText As MSXML2.IXMLDOMElement
-            Dim strText As String
-            Dim strHtml As String
-            Dim DialogBox As New TextDialog()
-            Dim blnDoit As Boolean
-
-            blnDoit = True
-            If MblnDirty Then
-                Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
-                    Case MsgBoxResult.Yes
-                        savepage(False)
-                        MblnDirty = False
-                    Case MsgBoxResult.Cancel
-                        blnDoit = False
-                End Select
-            End If
-
-            If blnDoit Then
-                If DialogBox.ShowDialog = Windows.Forms.DialogResult.OK Then
-                    MstrPage = DialogBox.TextBox1.Text
-                    lblPage.Text = MstrPage
-                    MobjXMLPage = MobjXMLDoc.createElement("Page")
-                    MobjXMLPage.setAttribute("id", MstrPage)
-                    MobjXMLPages.appendChild(MobjXMLPage)
-                    tbImage.Text = ""
-                    If Not PictureBox1.Image Is Nothing Then
-                        PictureBox1.Image.Dispose()
-                        PictureBox1.Image = Nothing
-                    End If
-                    If Not PictureBox1.Image Is Nothing Then
-                        PictureBox2.Image.Dispose()
-                        PictureBox2.Image = Nothing
-                    End If
-                    objXMLText = MobjXMLDoc.createElement("Text")
-                    MobjXMLPage.appendChild(objXMLText)
-                    strText = ""
-                    strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
-                    WebBrowser1.DocumentText = strHtml
-                    Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
-                        Application.DoEvents()
-                    Loop
-                    WebBrowser2.DocumentText = strHtml
-                    Do While Not WebBrowser2.ReadyState = WebBrowserReadyState.Complete
-                        Application.DoEvents()
-                    Loop
-                    txtRawText.Text = WebBrowser1.Document.Body.InnerHtml
-                    cbDelay.Checked = False
-                    tbDelaySeconds.Text = ""
-                    tbDelayTarget.Text = ""
-                    rbHidden.Checked = False
-                    rbNormal.Checked = False
-                    rbSecret.Checked = False
-                    btnDelay.Tag = ""
-                    btnDelay.Enabled = False
-                    lblTimer.Text = ""
-                    cbMetronome.Checked = False
-                    tbMetronome.Text = ""
-                    cbAudio.Checked = False
-                    tbAudio.Text = ""
-                    btnPlayAudio.Enabled = False
-                    cbVideo.Checked = False
-                    tbVideo.Text = ""
-                    DataGridView1.Rows.Clear()
-                    For intloop = MobjButtons.GetUpperBound(0) To 1 Step -1
-                        FlowLayoutPanel1.Controls.Remove(MobjButtons(intloop))
-                        MobjButtons(intloop).Dispose()
-                    Next
-                    MblnDirty = False
-                    PopPageTree()
-                    TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
-                End If
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnNewPage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnDeletePage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDeletePage.Click
-        Try
-            If MsgBox("Are you sure you want to delete " & MstrPage & "?", MsgBoxStyle.YesNo, "Delete Page") = MsgBoxResult.Yes Then
-                MobjXMLPage = MobjXMLPages.selectSingleNode("./Page[@id=""" & MstrPage & """]")
-                MobjXMLPages.removeChild(MobjXMLPage)
-                saveXml(MobjXMLDoc, TextBox1.Text)
-                PopPageTree()
-                TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnDeletePage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
     End Sub
 
     Private Sub btnPlayAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayAudio.Click
@@ -474,6 +446,7 @@
             addAttribute(MobjXMLPage, "if-set", txtPageIfSet.Text)
             addAttribute(MobjXMLPage, "if-not-set", txtPageIfNotSet.Text)
 
+            'Image
             objXMLImage = MobjXMLPage.selectSingleNode("Image")
             If Not objXMLImage Is Nothing Then
                 objXMLImage.setAttribute("id", tbImage.Text)
@@ -482,15 +455,18 @@
                 objXMLImage.setAttribute("id", tbImage.Text)
                 MobjXMLPage.appendChild(objXMLImage)
             End If
+
+            'Text
             objXMLText = MobjXMLPage.selectSingleNode("./Text")
             If objXMLText Is Nothing Then
                 objXMLText = MobjXMLDoc.createElement("Text")
                 MobjXMLPage.appendChild(objXMLText)
             End If
-            strStyle = HtmlAsXml(WebBrowser2.Document.Body.InnerHtml)
+            strStyle = tbPageText.Text
             strStyle = strStyle.Replace("<BR>", "<BR/>")
             strStyle = strStyle.Replace("&nbsp;", "<BR/>")
             strStyle = strStyle.Trim(" ")
+            strStyle = HtmlAsXml(strStyle)
             MobjXMLDocFrag.loadXML(strStyle)
             If MobjXMLDocFrag.documentElement Is Nothing Then
                 strStyle = "<DIV>" & strStyle & "</DIV>"
@@ -505,6 +481,8 @@
                 End If
             Next
             objXMLText.appendChild(MobjXMLDocFrag.documentElement)
+
+            'Delay
             objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
             If objXMLDelay Is Nothing Then
                 If cbDelay.Checked Then
@@ -512,6 +490,7 @@
                     MobjXMLPage.appendChild(objXMLDelay)
                     objXMLDelay.setAttribute("seconds", tbDelaySeconds.Text)
                     objXMLDelay.setAttribute("target", tbDelayTarget.Text)
+                    objXMLDelay.setAttribute("start-with", tbDelayStartWith.Text)
                     Select Case True
                         Case rbHidden.Checked
                             strStyle = "hidden"
@@ -528,6 +507,7 @@
                 If cbDelay.Checked Then
                     objXMLDelay.setAttribute("seconds", tbDelaySeconds.Text)
                     objXMLDelay.setAttribute("target", tbDelayTarget.Text)
+                    objXMLDelay.setAttribute("start-with", tbDelayStartWith.Text)
                     Select Case True
                         Case rbHidden.Checked
                             strStyle = "hidden"
@@ -549,6 +529,7 @@
                 End If
             End If
 
+            'Metronome
             objXMLMetronome = MobjXMLPage.selectSingleNode("./Metronome")
             If objXMLMetronome Is Nothing Then
                 If cbMetronome.Checked Then
@@ -563,34 +544,52 @@
                     MobjXMLPage.removeChild(objXMLMetronome)
                 End If
             End If
+
+            'Audio
             objXMLAudio = MobjXMLPage.selectSingleNode("./Audio")
             If objXMLAudio Is Nothing Then
-                If cbAudio.Checked Then
+                If tbAudio.Text <> "" Then
                     objXMLAudio = MobjXMLDoc.createElement("Audio")
                     MobjXMLPage.appendChild(objXMLAudio)
                     objXMLAudio.setAttribute("id", tbAudio.Text)
+                    addAttribute(objXMLAudio, "target", tbAudioTarget.Text)
+                    addAttribute(objXMLAudio, "start-at", tbAudioStartAt.Text)
+                    addAttribute(objXMLAudio, "stop-at", tbAudioStopAt.Text)
                 End If
             Else
-                If cbAudio.Checked Then
+                If tbAudio.Text <> "" Then
                     objXMLAudio.setAttribute("id", tbAudio.Text)
+                    addAttribute(objXMLAudio, "target", tbAudioTarget.Text)
+                    addAttribute(objXMLAudio, "start-at", tbAudioStartAt.Text)
+                    addAttribute(objXMLAudio, "stop-at", tbAudioStopAt.Text)
                 Else
                     MobjXMLPage.removeChild(objXMLAudio)
                 End If
             End If
+
+            'Video
             objXMLVideo = MobjXMLPage.selectSingleNode("./Video")
             If objXMLVideo Is Nothing Then
-                If cbVideo.Checked Then
+                If tbVideo.Text <> "" Then
                     objXMLVideo = MobjXMLDoc.createElement("Video")
                     MobjXMLPage.appendChild(objXMLVideo)
                     objXMLVideo.setAttribute("id", tbVideo.Text)
+                    addAttribute(objXMLVideo, "target", tbVideoTarget.Text)
+                    addAttribute(objXMLVideo, "start-at", tbVideoStartAt.Text)
+                    addAttribute(objXMLVideo, "stop-at", tbVideoStopAt.Text)
                 End If
             Else
-                If cbVideo.Checked Then
+                If tbVideo.Text <> "" Then
                     objXMLVideo.setAttribute("id", tbVideo.Text)
+                    addAttribute(objXMLVideo, "target", tbVideoTarget.Text)
+                    addAttribute(objXMLVideo, "start-at", tbVideoStartAt.Text)
+                    addAttribute(objXMLVideo, "stop-at", tbVideoStopAt.Text)
                 Else
                     MobjXMLPage.removeChild(objXMLVideo)
                 End If
             End If
+
+            'Buttons
             objXMLButtons = MobjXMLPage.selectNodes("./Button")
             For intloop = objXMLButtons.length - 1 To 0 Step -1
                 objXMLButton = objXMLButtons.item(intloop)
@@ -606,7 +605,11 @@
                 addAttribute(objXMLButton, "if-not-set", DataGridView1.Rows(intloop).Cells(5).Value)
                 MobjXMLPage.appendChild(objXMLButton)
             Next
+
+            'Save XML File
             saveXml(MobjXMLDoc, TextBox1.Text)
+
+            'Display Page
             If blnRefresh Then
                 displaypage()
             End If
@@ -679,8 +682,6 @@
             Dim objXMLError As MSXML2.IXMLDOMElement
             Dim objXMLComment As MSXML2.IXMLDOMNode
             Dim strImage As String
-            Dim strAudio As String
-            Dim strVideo As String
             Dim strText As String
             Dim strHtml As String
             Dim strSeconds As String
@@ -697,6 +698,9 @@
             Dim intButtons As Integer
             Dim intSeconds As Integer
             Dim intMinutes As Integer
+            Dim strFiles() As String
+            Dim intRand As Integer
+            Dim objRandom As New Random
 
             MstrPage = TreeViewPages.SelectedNode.Text
             lblPage.Text = MstrPage
@@ -707,12 +711,13 @@
             txtPageUnSet.Text = getAttribute(MobjXMLPage, "unset")
             txtPageIfSet.Text = getAttribute(MobjXMLPage, "if-set")
             txtPageIfNotSet.Text = getAttribute(MobjXMLPage, "if-not-set")
-            txtRawText.Text = ""
+            'txtRawText.Text = ""
+
             'image
             objXMLImage = MobjXMLPage.selectSingleNode("Image")
             If Not objXMLImage Is Nothing Then
                 tbImage.Text = getAttribute(objXMLImage, "id")
-                If tbImage.Text = "" Or tbImage.Text.IndexOf("*") > -1 Then
+                If tbImage.Text = "" Then
                     If Not PictureBox1.Image Is Nothing Then
                         PictureBox1.Image.Dispose()
                         PictureBox1.Image = Nothing
@@ -722,7 +727,13 @@
                         PictureBox2.Image = Nothing
                     End If
                 Else
-                    strImage = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & getAttribute(objXMLImage, "id")
+                    If tbImage.Text.IndexOf("*") > -1 Then
+                        strFiles = System.IO.Directory.GetFiles(OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\", getAttribute(objXMLImage, "id"))
+                        intRand = objRandom.Next(0, strFiles.Length)
+                        strImage = strFiles(intRand)
+                    Else
+                        strImage = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & getAttribute(objXMLImage, "id")
+                    End If
                     PictureBox1.Load(strImage)
                     PictureBox2.Load(strImage)
                 End If
@@ -737,6 +748,7 @@
                     PictureBox2.Image = Nothing
                 End If
             End If
+
             'text
             objXMLText = MobjXMLPage.selectSingleNode("./Text")
             If objXMLText Is Nothing Then
@@ -750,22 +762,22 @@
             End If
             WebBrowser1.DocumentText = strHtml
             Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
-            Loop
-            WebBrowser2.DocumentText = strHtml
-            Do While Not WebBrowser2.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
+                System.Windows.Forms.Application.DoEvents()
             Loop
             If Not WebBrowser1.Document.Body Is Nothing Then
-                txtRawText.Text = WebBrowser1.Document.Body.InnerHtml
+                tbPageText.Text = WebBrowser1.Document.Body.InnerHtml
             End If
-            'delay
-            objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
+            'If Not WebBrowser1.Document.Body Is Nothing Then
+            '    txtRawText.Text = WebBrowser1.Document.Body.InnerHtml
+            'End If
+
             'Delay
+            objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
             If objXMLDelay Is Nothing Then
                 cbDelay.Checked = False
                 tbDelaySeconds.Text = ""
                 tbDelayTarget.Text = ""
+                tbDelayStartWith.Text = ""
                 rbHidden.Checked = False
                 rbNormal.Checked = False
                 rbSecret.Checked = False
@@ -783,6 +795,7 @@
                 strStyle = getAttribute(objXMLDelay, "style")
                 tbDelaySeconds.Text = strSeconds
                 tbDelayTarget.Text = strTarget
+                tbDelayStartWith.Text = getAttribute(objXMLDelay, "start-with")
                 btnDelay.Tag = strTarget
                 btnDelay.Enabled = True
                 Select Case strStyle
@@ -815,6 +828,7 @@
                 txtDelayIfSet.Text = getAttribute(objXMLDelay, "if-set")
                 txtDelayIfNotSet.Text = getAttribute(objXMLDelay, "if-not-set")
             End If
+
             'Metronome
             objXMLMetronome = MobjXMLPage.selectSingleNode("./Metronome")
             If objXMLMetronome Is Nothing Then
@@ -825,28 +839,37 @@
                 strBPM = getAttribute(objXMLMetronome, "bpm")
                 tbMetronome.Text = strBPM
             End If
+
             'Audio
             objXMLAudio = MobjXMLPage.selectSingleNode("./Audio")
             If objXMLAudio Is Nothing Then
-                cbAudio.Checked = False
                 tbAudio.Text = ""
+                tbAudioTarget.Text = ""
+                tbAudioStartAt.Text = ""
+                tbAudioStopAt.Text = ""
                 btnPlayAudio.Enabled = False
             Else
-                cbAudio.Checked = True
-                strAudio = getAttribute(objXMLAudio, "id")
-                tbAudio.Text = strAudio
+                tbAudio.Text = getAttribute(objXMLAudio, "id")
+                tbAudioTarget.Text = getAttribute(objXMLAudio, "target")
+                tbAudioStartAt.Text = getAttribute(objXMLAudio, "start-at")
+                tbAudioStopAt.Text = getAttribute(objXMLAudio, "stop-at")
                 btnPlayAudio.Enabled = True
             End If
+
             'Video
             objXMLVideo = MobjXMLPage.selectSingleNode("./Video")
             If objXMLVideo Is Nothing Then
-                cbVideo.Checked = False
                 tbVideo.Text = ""
+                tbVideoTarget.Text = ""
+                tbVideoStartAt.Text = ""
+                tbVideoStopAt.Text = ""
             Else
-                cbVideo.Checked = True
-                strVideo = getAttribute(objXMLVideo, "id")
-                tbVideo.Text = strVideo
+                tbVideo.Text = getAttribute(objXMLVideo, "id")
+                tbVideoTarget.Text = getAttribute(objXMLVideo, "target")
+                tbVideoStartAt.Text = getAttribute(objXMLVideo, "start-at")
+                tbVideoStopAt.Text = getAttribute(objXMLVideo, "stop-at")
             End If
+
             'Buttons
             objXMLButtons = MobjXMLPage.selectNodes("./Button")
             'clear buttons from previous page
@@ -881,12 +904,14 @@
                 AddHandler MobjButtons(intButtons).Click, AddressOf DynamicButtonClick
                 FlowLayoutPanel1.Controls.Add(MobjButtons(intButtons))
             Next
+
+            'Error Nodes from downloaded tease
             objXMLError = MobjXMLPage.selectSingleNode("./Errors")
             If objXMLError Is Nothing Then
                 MstrComment = ""
                 MstrError = ""
-                btnErrors.Enabled = False
-                btnDelError.Enabled = False
+                MenuPageDownLoadError.Enabled = False
+                MenuPageDeleteError.Enabled = False
             Else
                 MstrError = objXMLError.xml
                 MstrComment = ""
@@ -895,8 +920,8 @@
                         MstrComment = MstrComment & objXMLComment.xml
                     End If
                 Next
-                btnErrors.Enabled = True
-                btnDelError.Enabled = True
+                MenuPageDownLoadError.Enabled = True
+                MenuPageDeleteError.Enabled = True
             End If
 
             MblnDirty = False
@@ -926,7 +951,7 @@
             Dim strSize As String
             Dim intSize As Integer
             Dim strFamily As String
-            Dim objFont As Font
+            Dim objFont As Drawing.Font
             Dim objFontStyle As System.Drawing.FontStyle
             Dim blnBold As Boolean
             Dim blnItalic As Boolean
@@ -959,9 +984,9 @@
             If blnItalic Then
                 objFontStyle = objFontStyle + FontStyle.Italic
             End If
-            objFont = New Font(strFamily, intSize, objFontStyle)
+            objFont = New Drawing.Font(strFamily, intSize, objFontStyle)
             FontDialog1.Font = objFont
-            If FontDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If FontDialog1.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 MobjDomDoc.execCommand("RemoveFormat", False, Nothing)
                 strColour = ColorTranslator.ToHtml(FontDialog1.Color)
                 MobjDomDoc.execCommand("ForeColor", False, strColour)
@@ -995,19 +1020,19 @@
         End Try
     End Sub
 
-    Private Sub WebBrowser2_DocumentCompleted(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser2.DocumentCompleted
+    Private Sub WebBrowser1_DocumentCompleted(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser1.DocumentCompleted
         Try
             Dim objDomDoc As IHTMLDocument2
-            objDomDoc = WebBrowser2.Document.DomDocument
-            MobjDomDoc = WebBrowser3.Document.DomDocument
-            MobjDomDoc.designMode = "On"
-            objDomDoc.execCommand("SelectAll", False, Nothing)
-            MobjDomDoc.execCommand("SelectAll", False, Nothing)
-            MobjDomDoc.execCommand("Cut", False, Nothing)
-            objDomDoc.execCommand("Copy", False, Nothing)
-            MobjDomDoc.execCommand("Paste", False, Nothing)
-            objDomDoc.execCommand("Unselect", False, Nothing)
-            MobjDomDoc.execCommand("Unselect", False, Nothing)
+            objDomDoc = WebBrowser1.Document.DomDocument
+            'MobjDomDoc = WebBrowser3.Document.DomDocument
+            'MobjDomDoc.designMode = "On"
+            'objDomDoc.execCommand("SelectAll", False, Nothing)
+            'MobjDomDoc.execCommand("SelectAll", False, Nothing)
+            'MobjDomDoc.execCommand("Cut", False, Nothing)
+            'objDomDoc.execCommand("Copy", False, Nothing)
+            'MobjDomDoc.execCommand("Paste", False, Nothing)
+            'objDomDoc.execCommand("Unselect", False, Nothing)
+            'MobjDomDoc.execCommand("Unselect", False, Nothing)
             MobjDomDoc.bgColor = objDomDoc.bgColor
             MobjDomDoc.fgColor = objDomDoc.fgColor
         Catch ex As Exception
@@ -1029,30 +1054,12 @@
         End Try
     End Function
 
-    Private Sub tscbUpdate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbUpdate.Click
-        Try
-            WebBrowser1.Document.Body.InnerHtml = WebBrowser3.Document.Body.InnerHtml
-            Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
-            Loop
-            WebBrowser2.Document.Body.InnerHtml = WebBrowser3.Document.Body.InnerHtml
-            Do While Not WebBrowser2.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
-            Loop
-            txtRawText.Text = WebBrowser1.Document.Body.InnerHtml
-            savepage(True)
-            MblnDirty = False
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", tscbUpdate_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnSaveFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveFile.Click
+    Private Sub SaveFile()
         Try
             Dim objXMLEl As MSXML2.IXMLDOMElement
             Dim objXMLEl2 As MSXML2.IXMLDOMElement
             If MblnDirty Then
-                savepage(False)
+                SavePage(False)
                 MblnDirty = False
             End If
             MobjXMLDoc.selectSingleNode("//MediaDirectory").text = tbMediaDirectory.Text
@@ -1078,7 +1085,232 @@
         End Try
     End Sub
 
-    Private Sub btnNewFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewFile.Click
+    Private Function getAttribute(ByVal objXMLEL As MSXML2.IXMLDOMElement, ByVal strAttName As String) As String
+        Dim strAttVal As String = ""
+        Try
+            Dim objXMLAt As MSXML2.IXMLDOMAttribute
+            strAttVal = ""
+            objXMLAt = objXMLEL.getAttributeNode(strAttName)
+            If Not objXMLAt Is Nothing Then
+                strAttVal = objXMLAt.text
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", getAttribute, " & ex.Message & ", " & ex.TargetSite.Name)
+        Finally
+            getAttribute = strAttVal
+        End Try
+    End Function
+
+    Private Sub addAttribute(ByVal objXMLElement As MSXML2.IXMLDOMElement, ByVal strAttName As String, ByVal strValue As String)
+        Try
+            If strValue = "" Then
+                objXMLElement.removeAttribute(strAttName)
+            Else
+                objXMLElement.setAttribute(strAttName, strValue)
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", addAttribute, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub btnPrevNode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPrevNode.Click
+        Try
+            If Not TreeViewPages.SelectedNode.PrevNode Is Nothing Then
+                TreeViewPages.SelectedNode = TreeViewPages.SelectedNode.PrevNode
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnPrevNode_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub btnNextNode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNextNode.Click
+        Try
+            If Not TreeViewPages.SelectedNode.NextNode Is Nothing Then
+                TreeViewPages.SelectedNode = TreeViewPages.SelectedNode.NextNode
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnNextNode_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub saveXml(ByRef objXMLDom As MSXML2.IXMLDOMDocument2, ByVal strFileName As String)
+        Try
+            Dim objDoc As New Xml.XmlDocument
+            Dim writer As System.Xml.XmlTextWriter = New System.Xml.XmlTextWriter(strFileName, Nothing)
+            writer.Formatting = Xml.Formatting.Indented
+            objDoc.LoadXml(objXMLDom.xml)
+            objDoc.Save(writer)
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", saveXml, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MoveRow(ByVal i As Integer)
+        Try
+            If (DataGridView1.SelectedCells.Count > 0) Then
+                Dim curr_index As Integer = DataGridView1.CurrentCell.RowIndex
+                Dim curr_col_index As Integer = DataGridView1.CurrentCell.ColumnIndex
+                Dim curr_row As DataGridViewRow = DataGridView1.CurrentRow
+                DataGridView1.Rows.Remove(curr_row)
+                DataGridView1.Rows.Insert(curr_index + i, curr_row)
+                DataGridView1.CurrentCell = DataGridView1(curr_col_index, curr_index + i)
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MoveRow, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub btnRowUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRowUp.Click
+        MoveRow(-1)
+    End Sub
+
+    Private Sub btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveDown.Click
+        MoveRow(1)
+    End Sub
+
+    Private Function GrammarCheck(ByVal TextToCheck As String) As String
+
+        Dim strReturn As String = TextToCheck
+        Try
+            ' Create Word and temporary document objects.
+            Dim objWord As Microsoft.Office.Interop.Word.Application
+            Dim objTempDoc As Microsoft.Office.Interop.Word.Document
+            ' If there is no data to spell check, then exit sub here.
+            If TextToCheck = "" Then
+                Return ""
+            End If
+
+            objWord = New Microsoft.Office.Interop.Word.Application
+            objTempDoc = objWord.Documents.Add
+            objWord.Visible = True
+
+            Dim para As Paragraph = objTempDoc.Paragraphs.Add()
+            para.Range.Text = TextToCheck
+
+            objTempDoc.CheckGrammar()
+            strReturn = objTempDoc.Range.Text
+            objTempDoc.Saved = True
+            objTempDoc.Close()
+
+            objWord.Quit()
+
+            ' Microsoft Word must be installed. 
+        Catch COMExcep As COMException
+            MessageBox.Show( _
+                "Microsoft Word must be installed for Spell/Grammar Check " _
+                & "to run.", "Spell Checker")
+
+        Catch Excep As Exception
+            MessageBox.Show("An error has occured.", "Spell Checker")
+
+        End Try
+        Return strReturn
+    End Function
+
+    Private Sub PageExists(ByVal objXMLNodes As MSXML2.IXMLDOMNodeList, ByVal strPages(,) As String, ByVal intPages As Integer, ByRef strOutput As String)
+        Dim intloop As Integer
+        Dim objXMLElement As MSXML2.IXMLDOMElement
+        Dim strTarget As String
+        Dim intPos1 As Integer
+        Dim intPos2 As Integer
+        Dim intPos3 As Integer
+        Dim strPre As String
+        Dim strPost As String
+        Dim strMin As String
+        Dim strMax As String
+        Dim intMin As Long
+        Dim IntMax As Long
+        Dim strPageName As String
+        Dim blnFound As Boolean
+        Dim strNode As String
+        Dim strPage As String
+
+        For intloop = objXMLNodes.length - 1 To 0 Step -1
+            objXMLElement = objXMLNodes.item(intloop)
+            strNode = objXMLElement.nodeName
+            strPage = getAttribute(objXMLElement.parentNode, "id")
+            strTarget = getAttribute(objXMLElement, "target")
+            If strTarget <> "" Then
+                strPre = ""
+                strPost = ""
+                intPos1 = strTarget.IndexOf("(")
+                If intPos1 > -1 Then
+                    intPos2 = strTarget.IndexOf("..", intPos1)
+                    If (intPos2 > -1) Then
+                        intPos3 = strTarget.IndexOf(")", intPos2)
+                        If (intPos3 > -1) Then
+                            intPos1 = intPos1 + 1
+                            intPos2 = intPos2 + 2
+                            intPos3 = intPos3 + 1
+                            strMin = strTarget.Substring(intPos1, intPos2 - intPos1 - 2)
+                            intMin = Long.Parse(strMin)
+                            strMax = strTarget.Substring(intPos2, intPos3 - intPos2 - 1)
+                            IntMax = Long.Parse(strMax)
+                            If (intPos1 > 1) Then
+                                strPre = strTarget.Substring(0, intPos1 - 1)
+                            Else
+                                strPre = ""
+                            End If
+                            strPost = strTarget.Substring(intPos3)
+                            For i = intMin To IntMax
+                                strPageName = strPre & i & strPost
+                                blnFound = False
+                                For intLoop2 = 0 To intPages - 1
+                                    If strPages(0, intLoop2) = strPageName Then
+                                        strPages(1, intLoop2) = "Y"
+                                        blnFound = True
+                                        Exit For
+                                    End If
+                                Next
+                                If Not blnFound Then
+                                    strOutput = strOutput & strPage & " " & strNode & " Page not found " & strPageName & vbCrLf
+                                End If
+                            Next
+                        End If
+                    End If
+                Else
+                    blnFound = False
+                    For intLoop2 = 0 To intPages - 1
+                        If strPages(0, intLoop2) = strTarget Then
+                            strPages(1, intLoop2) = "Y"
+                            blnFound = True
+                            Exit For
+                        End If
+                    Next
+                    If Not blnFound Then
+                        strOutput = strOutput & strPage & " " & strNode & " Page not found " & strTarget & vbCrLf
+                    End If
+                End If
+            End If
+        Next
+
+    End Sub
+
+    Private Sub MenuFileSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuFileSave.Click
+        SaveFile()
+    End Sub
+
+    Private Sub MenuFileLoad_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuFileLoad.Click
+        Try
+            Dim strNewFile As String
+            If OpenFileDialog1.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+                'create backup
+                If System.IO.File.Exists(OpenFileDialog1.FileName) = True And blnBackup Then
+                    strNewFile = OpenFileDialog1.FileName & "." & Now().ToString("yyyyMMddhhmmss") & ".bkp"
+                    System.IO.File.Copy(OpenFileDialog1.FileName, strNewFile, True)
+                End If
+                loadFile(OpenFileDialog1.FileName)
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", BtnFile_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuPageSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageSave.Click
+        SavePage()
+    End Sub
+
+    Private Sub MenuFileNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuFileNew.Click
         Try
             Dim DialogBox As New TextDialog()
             Dim strName As String
@@ -1087,12 +1319,12 @@
             Dim objXMLEl2 As MSXML2.IXMLDOMElement
             Dim objXMLEl3 As MSXML2.IXMLDOMElement
             DialogBox.Text = "File Name"
-            If DialogBox.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If DialogBox.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 strName = DialogBox.TextBox1.Text
                 If strName.IndexOf(".xml") = -1 Then
                     strName = strName & ".xml"
                 End If
-                TextBox1.Text = txtDefaltDir.Text & "\" & OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & strName
+                TextBox1.Text = txtDirectory & "\" & OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & strName
                 objXMLRoot = MobjXMLDoc.createElement("Tease")
                 objXMLRoot.setAttribute("scriptVersion", "v0.1")
                 objXMLRoot.setAttribute("id", "")
@@ -1140,41 +1372,431 @@
         End Try
     End Sub
 
-    Private Function getAttribute(ByVal objXMLEL As MSXML2.IXMLDOMElement, ByVal strAttName As String) As String
-        Dim strAttVal As String = ""
-        Try
-            Dim objXMLAt As MSXML2.IXMLDOMAttribute
-            strAttVal = ""
-            objXMLAt = objXMLEL.getAttributeNode(strAttName)
-            If Not objXMLAt Is Nothing Then
-                strAttVal = objXMLAt.text
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", getAttribute, " & ex.Message & ", " & ex.TargetSite.Name)
-        Finally
-            getAttribute = strAttVal
-        End Try
-    End Function
+    Private Sub MenuFileExit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuFileExit.Click
+        Me.Close()
+    End Sub
 
-    Private Sub btnSaveDir_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveDir.Click
+    Private Sub MenuPageNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageNew.Click
         Try
-            Dim strPath As String
-            Dim objDomSettings As New MSXML2.DOMDocument
-            Dim objXMLEl As MSXML2.IXMLDOMElement
-            strPath = txtDefaltDir.Text
-            objDomSettings.load(My.Application.Info.DirectoryPath & "\Settings.xml")
-            objXMLEl = objDomSettings.documentElement
-            objXMLEl.setAttribute("directory", strPath)
-            saveXml(objDomSettings, My.Application.Info.DirectoryPath & "\Settings.xml")
-            If strPath <> "" Then
-                OpenFileDialog1.InitialDirectory = strPath
+            Dim objXMLText As MSXML2.IXMLDOMElement
+            Dim strText As String
+            Dim strHtml As String
+            Dim DialogBox As New TextDialog()
+            Dim blnDoit As Boolean
+
+            blnDoit = True
+            If MblnDirty Then
+                Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
+                    Case MsgBoxResult.Yes
+                        SavePage(False)
+                        MblnDirty = False
+                    Case MsgBoxResult.Cancel
+                        blnDoit = False
+                End Select
+            End If
+
+            If blnDoit Then
+                If DialogBox.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+                    MstrPage = DialogBox.TextBox1.Text
+                    lblPage.Text = MstrPage
+                    MobjXMLPage = MobjXMLDoc.createElement("Page")
+                    MobjXMLPage.setAttribute("id", MstrPage)
+                    MobjXMLPages.appendChild(MobjXMLPage)
+                    tbImage.Text = ""
+                    If Not PictureBox1.Image Is Nothing Then
+                        PictureBox1.Image.Dispose()
+                        PictureBox1.Image = Nothing
+                    End If
+                    If Not PictureBox1.Image Is Nothing Then
+                        PictureBox2.Image.Dispose()
+                        PictureBox2.Image = Nothing
+                    End If
+                    objXMLText = MobjXMLDoc.createElement("Text")
+                    MobjXMLPage.appendChild(objXMLText)
+                    strText = ""
+                    strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
+                    WebBrowser1.DocumentText = strHtml
+                    Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
+                        System.Windows.Forms.Application.DoEvents()
+                    Loop
+                    tbPageText.Text = WebBrowser1.Document.Body.InnerHtml
+                    'txtRawText.Text = WebBrowser1.Document.Body.InnerHtml
+                    cbDelay.Checked = False
+                    tbDelaySeconds.Text = ""
+                    tbDelayTarget.Text = ""
+                    tbDelayStartWith.Text = ""
+                    rbHidden.Checked = False
+                    rbNormal.Checked = False
+                    rbSecret.Checked = False
+                    btnDelay.Tag = ""
+                    btnDelay.Enabled = False
+                    lblTimer.Text = ""
+                    cbMetronome.Checked = False
+                    tbMetronome.Text = ""
+                    tbAudio.Text = ""
+                    tbAudioTarget.Text = ""
+                    tbAudioStartAt.Text = ""
+                    tbAudioStopAt.Text = ""
+                    btnPlayAudio.Enabled = False
+                    tbVideo.Text = ""
+                    tbVideoTarget.Text = ""
+                    tbVideoStartAt.Text = ""
+                    tbVideoStopAt.Text = ""
+                    DataGridView1.Rows.Clear()
+                    For intloop = MobjButtons.GetUpperBound(0) To 1 Step -1
+                        FlowLayoutPanel1.Controls.Remove(MobjButtons(intloop))
+                        MobjButtons(intloop).Dispose()
+                    Next
+                    MblnDirty = False
+                    PopPageTree()
+                    TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
+                End If
             End If
         Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnSaveDir_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnNewPage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
 
-    Private Sub btnNyx_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNyx.Click
+    Private Sub MenuPageDelete_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageDelete.Click
+        Try
+            If MsgBox("Are you sure you want to delete " & MstrPage & "?", MsgBoxStyle.YesNo, "Delete Page") = MsgBoxResult.Yes Then
+                MobjXMLPage = MobjXMLPages.selectSingleNode("./Page[@id=""" & MstrPage & """]")
+                MobjXMLPages.removeChild(MobjXMLPage)
+                saveXml(MobjXMLDoc, TextBox1.Text)
+                PopPageTree()
+                TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnDeletePage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuPageCopy_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageCopy.Click
+        Try
+            Dim DialogBox As New TextDialog()
+            Dim blnDoit As Boolean
+            Dim objXMLPage1 As MSXML2.IXMLDOMElement
+            objXMLPage1 = MobjXMLPage
+
+            blnDoit = True
+            If MblnDirty Then
+                Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
+                    Case MsgBoxResult.Yes
+                        SavePage(False)
+                        MblnDirty = False
+                    Case MsgBoxResult.Cancel
+                        blnDoit = False
+                End Select
+            End If
+
+            If blnDoit Then
+                If DialogBox.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+                    MstrPage = DialogBox.TextBox1.Text
+                    MobjXMLPage = MobjXMLDoc.createElement("Page")
+                    MobjXMLPage.setAttribute("id", MstrPage)
+                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1)
+                    lblPage.Text = MstrPage
+                    PopPageTree()
+                    SavePage(False)
+                    TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
+                    MblnDirty = False
+                    displaypage()
+                End If
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnCopyPage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuPageSplit_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageSplit.Click
+        Try
+            Dim objXMLPage1 As MSXML2.IXMLDOMElement
+            Dim DialogBox As New TextDialog()
+            Dim blnDoit As Boolean
+            Dim strPage As String
+
+            blnDoit = True
+            If MblnDirty Then
+                Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
+                    Case MsgBoxResult.Yes
+                        SavePage(False)
+                        MblnDirty = False
+                    Case MsgBoxResult.Cancel
+                        blnDoit = False
+                End Select
+            End If
+
+            If blnDoit Then
+                If DialogBox.ShowDialog = System.Windows.Forms.DialogResult.OK Then
+                    strPage = DialogBox.TextBox1.Text
+                    Dim objXMLDelay As MSXML2.IXMLDOMElement
+                    Dim objXMLButtons As MSXML2.IXMLDOMNodeList
+                    Dim objXMLButton As MSXML2.IXMLDOMElement
+                    Dim intloop As Integer
+
+                    objXMLPage1 = MobjXMLPage.nextSibling
+
+                    'page set options
+                    addAttribute(MobjXMLPage, "set", "")
+                    addAttribute(MobjXMLPage, "unset", "")
+                    addAttribute(MobjXMLPage, "if-set", "")
+                    addAttribute(MobjXMLPage, "if-not-set", "")
+                    objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
+                    If Not objXMLDelay Is Nothing Then
+                        MobjXMLPage.removeChild(objXMLDelay)
+                    End If
+                    objXMLButtons = MobjXMLPage.selectNodes("./Button")
+                    For intloop = objXMLButtons.length - 1 To 0 Step -1
+                        objXMLButton = objXMLButtons.item(intloop)
+                        MobjXMLPage.removeChild(objXMLButton)
+                    Next
+                    objXMLButton = MobjXMLDoc.createElement("Button")
+                    objXMLButton.setAttribute("target", strPage)
+                    objXMLButton.text = "Continue"
+                    MobjXMLPage.appendChild(objXMLButton)
+
+                    MstrPage = DialogBox.TextBox1.Text
+                    MobjXMLPage = MobjXMLDoc.createElement("Page")
+                    MobjXMLPage.setAttribute("id", MstrPage)
+                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1)
+                    lblPage.Text = MstrPage
+                    PopPageTree()
+                    SavePage(False)
+                    TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
+                    MblnDirty = False
+                    displaypage()
+                End If
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnCopyPage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuPageDownLoadError_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageDownLoadError.Click
+        Try
+            Dim frmDialogue As New ErrorPopUp
+            frmDialogue.txtComment.Text = MstrComment
+            frmDialogue.txtError.Text = MstrError
+            frmDialogue.ShowDialog()
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnErrors_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuPageDeleteError_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageDeleteError.Click
+        Try
+            Dim objXMLError As MSXML2.IXMLDOMElement
+            Dim objXMLComment As MSXML2.IXMLDOMNode
+            objXMLError = MobjXMLPage.selectSingleNode("./Errors")
+            If Not objXMLError Is Nothing Then
+                MobjXMLPage.removeChild(objXMLError)
+            End If
+            For Each objXMLComment In MobjXMLPage.childNodes
+                MobjXMLPage.removeChild(objXMLComment)
+            Next
+            SavePage(True)
+            PopPageTree()
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnDelError_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuToolsUpload_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsUpload.Click
+        Try
+            Dim objXMLMediaFiles As MSXML2.IXMLDOMNodeList
+            Dim objXMLMediaFile As MSXML2.IXMLDOMElement
+            Dim intLoop As Integer
+            Dim intLoop2 As Integer
+            Dim strMediaFile As String
+            Dim strUpload As String
+            Dim strMediaFileDir As String
+            Dim strUploadDir As String
+            Dim strFiles() As String
+            strMediaFileDir = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text
+            strUploadDir = strMediaFileDir & "\Upload"
+            If Not System.IO.Directory.Exists(strUploadDir) Then
+                System.IO.Directory.CreateDirectory(strUploadDir)
+            End If
+            strFiles = System.IO.Directory.GetFiles(strUploadDir)
+            If Not strFiles Is Nothing Then
+                For intLoop = 0 To strFiles.Length - 1
+                    System.IO.File.Delete(strFiles(intLoop))
+                Next
+            End If
+
+            'Images
+            objXMLMediaFiles = MobjXMLDoc.selectNodes("//Image")
+            For intLoop = 0 To objXMLMediaFiles.length - 1
+                objXMLMediaFile = objXMLMediaFiles.item(intLoop)
+                strMediaFile = strMediaFileDir & "\" & getAttribute(objXMLMediaFile, "id")
+                If strMediaFile.IndexOf("*") > -1 Then
+                    strFiles = System.IO.Directory.GetFiles(strMediaFileDir, getAttribute(objXMLMediaFile, "id"))
+                    If Not strFiles Is Nothing Then
+                        For intLoop2 = 0 To strFiles.Length - 1
+                            strUpload = strUploadDir & strFiles(intLoop2).Substring(strFiles(intLoop2).LastIndexOf("\"))
+                            If System.IO.File.Exists(strFiles(intLoop2)) And Not System.IO.File.Exists(strUpload) Then
+                                System.IO.File.Copy(strFiles(intLoop2), strUpload)
+                            End If
+                        Next
+                    End If
+                Else
+                    strUpload = strUploadDir & "\" & getAttribute(objXMLMediaFile, "id")
+                    If System.IO.File.Exists(strMediaFile) And Not System.IO.File.Exists(strUpload) Then
+                        System.IO.File.Copy(strMediaFile, strUpload)
+                    End If
+                End If
+            Next
+
+            'Audio
+            objXMLMediaFiles = MobjXMLDoc.selectNodes("//Audio")
+            For intLoop = 0 To objXMLMediaFiles.length - 1
+                objXMLMediaFile = objXMLMediaFiles.item(intLoop)
+                strMediaFile = strMediaFileDir & "\" & getAttribute(objXMLMediaFile, "id")
+                If strMediaFile.IndexOf("*") > -1 Then
+                    strFiles = System.IO.Directory.GetFiles(strMediaFileDir, getAttribute(objXMLMediaFile, "id"))
+                    If Not strFiles Is Nothing Then
+                        For intLoop2 = 0 To strFiles.Length - 1
+                            strUpload = strUploadDir & strFiles(intLoop2).Substring(strFiles(intLoop2).LastIndexOf("\"))
+                            If System.IO.File.Exists(strFiles(intLoop2)) And Not System.IO.File.Exists(strUpload) Then
+                                System.IO.File.Copy(strFiles(intLoop2), strUpload)
+                            End If
+                        Next
+                    End If
+                Else
+                    strUpload = strUploadDir & "\" & getAttribute(objXMLMediaFile, "id")
+                    If System.IO.File.Exists(strMediaFile) And Not System.IO.File.Exists(strUpload) Then
+                        System.IO.File.Copy(strMediaFile, strUpload)
+                    End If
+                End If
+            Next
+
+            'Video
+            objXMLMediaFiles = MobjXMLDoc.selectNodes("//Video")
+            For intLoop = 0 To objXMLMediaFiles.length - 1
+                objXMLMediaFile = objXMLMediaFiles.item(intLoop)
+                strMediaFile = strMediaFileDir & "\" & getAttribute(objXMLMediaFile, "id")
+                If strMediaFile.IndexOf("*") > -1 Then
+                    strFiles = System.IO.Directory.GetFiles(strMediaFileDir, getAttribute(objXMLMediaFile, "id"))
+                    If Not strFiles Is Nothing Then
+                        For intLoop2 = 0 To strFiles.Length - 1
+                            strUpload = strUploadDir & strFiles(intLoop2).Substring(strFiles(intLoop2).LastIndexOf("\"))
+                            If System.IO.File.Exists(strFiles(intLoop2)) And Not System.IO.File.Exists(strUpload) Then
+                                System.IO.File.Copy(strFiles(intLoop2), strUpload)
+                            End If
+                        Next
+                    End If
+                Else
+                    strUpload = strUploadDir & "\" & getAttribute(objXMLMediaFile, "id")
+                    If System.IO.File.Exists(strMediaFile) And Not System.IO.File.Exists(strUpload) Then
+                        System.IO.File.Copy(strMediaFile, strUpload)
+                    End If
+                End If
+            Next
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnUpLoad_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuToolsSort_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsSort.Click
+        Dim blnFinished As Boolean
+        Dim intLoop As Integer
+        Dim objXMLPage1 As MSXML2.IXMLDOMElement
+        Dim objXMLPage2 As MSXML2.IXMLDOMElement
+        Dim strId1 As String
+        Dim strId2 As String
+        Me.Cursor = Cursors.WaitCursor
+        Do
+            blnFinished = True
+            For intLoop = 0 To MobjXMLPages.childNodes.length - 2
+                If MobjXMLPages.childNodes(intLoop).nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
+                    objXMLPage1 = MobjXMLPages.childNodes(intLoop)
+                    strId1 = getAttribute(objXMLPage1, "id")
+                    If objXMLPage1.nextSibling.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
+                        objXMLPage2 = objXMLPage1.nextSibling
+                        strId2 = getAttribute(objXMLPage2, "id")
+                        If Not strId1.ToLower = "start" Then
+                            If strId2.ToLower = "start" Then
+                                blnFinished = False
+                                MobjXMLPages.insertBefore(objXMLPage2, objXMLPage1)
+                            Else
+                                If strId2.ToLower < strId1.ToLower Then
+                                    blnFinished = False
+                                    MobjXMLPages.insertBefore(objXMLPage2, objXMLPage1)
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            Next
+            If blnFinished Then
+                Exit Do
+            End If
+        Loop
+        saveXml(MobjXMLDoc, TextBox1.Text)
+        PopPageTree()
+        TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
+        Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub MenuToolsCheck_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsCheck.Click
+        Dim objXMLNodes As MSXML2.IXMLDOMNodeList
+        Dim objXMLElement As MSXML2.IXMLDOMElement
+        Dim strTarget As String
+        Dim strOutput As String
+        Dim intLoop As Integer
+        Dim intLoop2 As Integer
+        Dim intPages As Integer
+        Dim blnFound As Boolean
+        Dim strPages(2, 1) As String
+
+        strOutput = ""
+        strPages(0, 0) = ""
+        strPages(1, 0) = "N"
+        intPages = 0
+        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page")
+        For intLoop = objXMLNodes.length - 1 To 0 Step -1
+            objXMLElement = objXMLNodes.item(intLoop)
+            strTarget = getAttribute(objXMLElement, "id")
+            blnFound = False
+            For intLoop2 = 0 To intPages - 1
+                If strPages(0, intLoop2) = strTarget Then
+                    blnFound = True
+                    strOutput = strOutput & "Duplicate Page found " & strTarget & vbCrLf
+                    Exit For
+                End If
+            Next
+            If Not blnFound Then
+                If strPages(0, 0) = "" Then
+                    strPages(0, 0) = strTarget
+                    intPages = intPages + 1
+                Else
+                    intPages = intPages + 1
+                    ReDim Preserve strPages(2, intPages)
+                    strPages(0, intPages - 1) = strTarget
+                    strPages(1, intPages - 1) = "N"
+                End If
+            End If
+        Next
+        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Button")
+        PageExists(objXMLNodes, strPages, intPages, strOutput)
+        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Delay")
+        PageExists(objXMLNodes, strPages, intPages, strOutput)
+        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Audio")
+        PageExists(objXMLNodes, strPages, intPages, strOutput)
+        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Video")
+        PageExists(objXMLNodes, strPages, intPages, strOutput)
+        For intLoop2 = 0 To intPages - 1
+            If strPages(1, intLoop2) = "N" And strPages(0, intLoop2) <> "start" Then
+                strOutput = strOutput & "Page not referenced " & strPages(0, intLoop2) & vbCrLf
+            End If
+        Next
+
+        Dim frmDialogue As New CheckPopUp
+        frmDialogue.txtCheck.Text = strOutput
+        frmDialogue.ShowDialog()
+    End Sub
+
+    Private Sub MenuToolsNyx_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsNyx.Click
         Try
             Dim objXMLDomText As New MSXML2.DOMDocument
             Dim objXMLPageNode As MSXML2.IXMLDOMNode
@@ -1191,7 +1813,6 @@
             Dim strAudio As String
             Dim strVideo As String
             Dim strText As String
-            Dim strHtml As String
             Dim strSeconds As String
             Dim strTarget As String
             Dim strStyle As String
@@ -1204,9 +1825,6 @@
             Dim strIfNotSet As String
             Dim intloop As Integer
             Dim intloop2 As Integer
-            Dim intButtons As Integer
-            Dim intSeconds As Integer
-            Dim intMinutes As Integer
             Dim strScript As String = ""
             Dim strTxtSplit() As String
             Dim strTemp As String
@@ -1484,221 +2102,156 @@
         End Try
     End Sub
 
-    Private Sub addAttribute(ByVal objXMLElement As MSXML2.IXMLDOMElement, ByVal strAttName As String, ByVal strValue As String)
+    Private Sub tscbTextToVisual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbTextToVisual.Click
         Try
-            If strValue = "" Then
-                objXMLElement.removeAttribute(strAttName)
-            Else
-                objXMLElement.setAttribute(strAttName, strValue)
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", addAttribute, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnPrevNode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPrevNode.Click
-        Try
-            If Not TreeViewPages.SelectedNode.PrevNode Is Nothing Then
-                TreeViewPages.SelectedNode = TreeViewPages.SelectedNode.PrevNode
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnPrevNode_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnNextNode_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNextNode.Click
-        Try
-            If Not TreeViewPages.SelectedNode.NextNode Is Nothing Then
-                TreeViewPages.SelectedNode = TreeViewPages.SelectedNode.NextNode
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnNextNode_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnCopyPage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopyPage.Click
-        Try
-            Dim DialogBox As New TextDialog()
-            Dim blnDoit As Boolean
-            Dim objXMLPage1 As MSXML2.IXMLDOMElement
-            objXMLPage1 = MobjXMLPage
-
-            blnDoit = True
-            If MblnDirty Then
-                Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
-                    Case MsgBoxResult.Yes
-                        savepage(False)
-                        MblnDirty = False
-                    Case MsgBoxResult.Cancel
-                        blnDoit = False
-                End Select
-            End If
-
-            If blnDoit Then
-                If DialogBox.ShowDialog = Windows.Forms.DialogResult.OK Then
-                    MstrPage = DialogBox.TextBox1.Text
-                    MobjXMLPage = MobjXMLDoc.createElement("Page")
-                    MobjXMLPage.setAttribute("id", MstrPage)
-                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1)
-                    lblPage.Text = MstrPage
-                    PopPageTree()
-                    savepage(False)
-                    TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
-                    MblnDirty = False
-                    displaypage()
-                End If
-            End If
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnCopyPage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnErrors_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnErrors.Click
-        Try
-            Dim frmDialogue As New ErrorPopUp
-            frmDialogue.txtComment.Text = MstrComment
-            frmDialogue.txtError.Text = MstrError
-            frmDialogue.ShowDialog()
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnErrors_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnUpLoad_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUpLoad.Click
-        Try
-            Dim objXMLImages As MSXML2.IXMLDOMNodeList
-            Dim objXMLImage As MSXML2.IXMLDOMElement
-            Dim intLoop As Integer
-            Dim intLoop2 As Integer
-            Dim strImage As String
-            Dim strUpload As String
-            Dim strImageDir As String
-            Dim strUploadDir As String
-            Dim strFiles() As String
-            strImageDir = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text
-            strUploadDir = strImageDir & "\Upload"
-            If Not System.IO.Directory.Exists(strUploadDir) Then
-                System.IO.Directory.CreateDirectory(strUploadDir)
-            End If
-            strFiles = System.IO.Directory.GetFiles(strUploadDir)
-            If Not strFiles Is Nothing Then
-                For intLoop = 0 To strFiles.Length - 1
-                    System.IO.File.Delete(strFiles(intLoop))
-                Next
-            End If
-            objXMLImages = MobjXMLDoc.selectNodes("//Image")
-            For intLoop = 0 To objXMLImages.length - 1
-                objXMLImage = objXMLImages.item(intLoop)
-                tbImage.Text = getAttribute(objXMLImage, "id")
-                strImage = strImageDir & "\" & getAttribute(objXMLImage, "id")
-                If strImage.IndexOf("*") > -1 Then
-                    strFiles = System.IO.Directory.GetFiles(strImageDir, getAttribute(objXMLImage, "id"))
-                    If Not strFiles Is Nothing Then
-                        For intLoop2 = 0 To strFiles.Length - 1
-                            strUpload = strUploadDir & strFiles(intLoop2).Substring(strFiles(intLoop2).LastIndexOf("\"))
-                            If System.IO.File.Exists(strFiles(intLoop2)) And Not System.IO.File.Exists(strUpload) Then
-                                System.IO.File.Copy(strFiles(intLoop2), strUpload)
-                            End If
-                        Next
-                    End If
-                Else
-                    strUpload = strUploadDir & "\" & getAttribute(objXMLImage, "id")
-                    If System.IO.File.Exists(strImage) And Not System.IO.File.Exists(strUpload) Then
-                        System.IO.File.Copy(strImage, strUpload)
-                    End If
-                End If
-            Next
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnUpLoad_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub saveXml(ByRef objXMLDom As MSXML2.IXMLDOMDocument2, ByVal strFileName As String)
-        Try
-            Dim objDoc As New Xml.XmlDocument
-            Dim writer As System.Xml.XmlTextWriter = New System.Xml.XmlTextWriter(strFileName, Nothing)
-            writer.Formatting = Xml.Formatting.Indented
-            objDoc.LoadXml(objXMLDom.xml)
-            objDoc.Save(writer)
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", saveXml, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub btnDelError_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelError.Click
-        Try
-            Dim objXMLError As MSXML2.IXMLDOMElement
-            Dim objXMLComment As MSXML2.IXMLDOMNode
-            objXMLError = MobjXMLPage.selectSingleNode("./Errors")
-            If Not objXMLError Is Nothing Then
-                MobjXMLPage.removeChild(objXMLError)
-            End If
-            For Each objXMLComment In MobjXMLPage.childNodes
-                MobjXMLPage.removeChild(objXMLComment)
-            Next
-            savepage(True)
-            PopPageTree()
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnDelError_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub BtnRawText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnRawText.Click
-        Try
-            WebBrowser1.Document.Body.InnerHtml = txtRawText.Text
-            Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
-            Loop
-            WebBrowser2.Document.Body.InnerHtml = txtRawText.Text
-            Do While Not WebBrowser2.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
-            Loop
             WebBrowser3.Document.Body.InnerHtml = txtRawText.Text
             Do While Not WebBrowser3.ReadyState = WebBrowserReadyState.Complete
-                Application.DoEvents()
+                System.Windows.Forms.Application.DoEvents()
             Loop
-            savepage(True)
-            MblnDirty = False
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", BtnRawText_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
 
-    Private Sub MoveRow(ByVal i As Integer)
+    Private Sub tscbVisualToText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbVisualToText.Click
         Try
-            If (DataGridView1.SelectedCells.Count > 0) Then
-                Dim curr_index As Integer = DataGridView1.CurrentCell.RowIndex
-                Dim curr_col_index As Integer = DataGridView1.CurrentCell.ColumnIndex
-                Dim curr_row As DataGridViewRow = DataGridView1.CurrentRow
-                DataGridView1.Rows.Remove(curr_row)
-                DataGridView1.Rows.Insert(curr_index + i, curr_row)
-                DataGridView1.CurrentCell = DataGridView1(curr_col_index, curr_index + i)
-            End If
+            txtRawText.Text = WebBrowser3.Document.Body.InnerHtml
         Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MoveRow, " & ex.Message & ", " & ex.TargetSite.Name)
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", tscbUpdate_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
 
-    Private Sub btnRowUp_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRowUp.Click
-        MoveRow(-1)
+    Private Sub tbDelayStartWith_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbDelayStartWith.TextChanged
+        MblnDirty = True
     End Sub
 
-    Private Sub btnMoveDown_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMoveDown.Click
-        MoveRow(1)
+    Private Sub tbAudioTarget_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbAudioTarget.TextChanged
+        MblnDirty = True
     End Sub
 
-    Private Sub btnSplitPage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSplitPage.Click
+    Private Sub tbAudioStartAt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbAudioStartAt.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub tbAudioStopAt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbAudioStopAt.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub tbAudio_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbAudio.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub tbVideo_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbVideo.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub tbVideoTarget_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbVideoTarget.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub tbVideoStartAt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbVideoStartAt.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub tbVideoStopAt_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbVideoStopAt.TextChanged
+        MblnDirty = True
+    End Sub
+
+    Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click
+        Dim strChecked As String
+        strChecked = GrammarCheck(txtRawText.Text)
+        txtRawText.Text = strChecked
+    End Sub
+
+    Private Sub ListView1_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView1.SelectedIndexChanged
+        Dim strImage As String
+        If ListView1.SelectedItems.Count > 0 Then
+            strImage = ListView1.SelectedItems(0).Text
+            OpenFileDialogImage.FileName = strImage
+            tbImage.Text = OpenFileDialogImage.SafeFileName
+            PictureBox1.Load(strImage)
+            PictureBox2.Load(strImage)
+            MblnDirty = True
+        End If
+    End Sub
+
+    Private Sub ToolStripButton2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton2.Click
+        txtRawText.Text = tbPageText.Text
+        WebBrowser3.Document.Body.InnerHtml = txtRawText.Text
+        Do While Not WebBrowser3.ReadyState = WebBrowserReadyState.Complete
+            System.Windows.Forms.Application.DoEvents()
+        Loop
+    End Sub
+
+    Private Sub ToolStripButton3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton3.Click
+        tbPageText.Text = txtRawText.Text
+    End Sub
+
+    Private Sub tbPageText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbPageText.TextChanged
+        MblnDirty = True
+        If Not WebBrowser1.Document.Body Is Nothing Then
+            WebBrowser1.Document.Body.InnerHtml = tbPageText.Text
+        End If
+    End Sub
+
+    Private Sub txtRawText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRawText.TextChanged
         Try
-            Dim objXMLPage1 As MSXML2.IXMLDOMElement
+            WebBrowser3.Document.Body.InnerHtml = txtRawText.Text
+            Do While Not WebBrowser3.ReadyState = WebBrowserReadyState.Complete
+                System.Windows.Forms.Application.DoEvents()
+            Loop
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", BtnRawText_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub WebBrowser3_DockChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles WebBrowser3.DockChanged
+        Try
+            txtRawText.Text = WebBrowser3.Document.Body.InnerHtml
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", tscbUpdate_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuToolsOptions_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsOptions.Click
+        Dim objDomSettings As New MSXML2.DOMDocument
+        Dim objXMLEl As MSXML2.IXMLDOMElement
+        Dim frmDialogue As New OptionsPopUp
+        frmDialogue.txtDefaltDir.Text = txtDirectory
+        frmDialogue.cbBackup.Checked = blnBackup
+        frmDialogue.tbImageFiles.Text = MstrImageFilter
+        frmDialogue.tbAudioFiles.Text = MstrAudioFilter
+        frmDialogue.tbVideoFiles.Text = MstrVideoFilter
+        If frmDialogue.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+            txtDirectory = frmDialogue.txtDefaltDir.Text
+            blnBackup = frmDialogue.cbBackup.Checked
+            MstrImageFilter = frmDialogue.tbImageFiles.Text
+            MstrAudioFilter = frmDialogue.tbAudioFiles.Text
+            MstrVideoFilter = frmDialogue.tbVideoFiles.Text
+            objDomSettings.load(My.Application.Info.DirectoryPath & "\Settings.xml")
+            objXMLEl = objDomSettings.documentElement
+            objXMLEl.setAttribute("directory", txtDirectory)
+            objXMLEl.setAttribute("backup", blnBackup)
+            objXMLEl.setAttribute("imagefilter", MstrImageFilter)
+            objXMLEl.setAttribute("audiofilter", MstrAudioFilter)
+            objXMLEl.setAttribute("videofilter", MstrVideoFilter)
+            saveXml(objDomSettings, My.Application.Info.DirectoryPath & "\Settings.xml")
+            If txtDirectory <> "" Then
+                OpenFileDialog1.InitialDirectory = txtDirectory
+            End If
+        End If
+    End Sub
+
+    Private Sub MenuPageRename_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageRename.Click
+        Try
             Dim DialogBox As New TextDialog()
             Dim blnDoit As Boolean
-            Dim strPage As String
 
             blnDoit = True
             If MblnDirty Then
                 Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
                     Case MsgBoxResult.Yes
-                        savepage(False)
+                        SavePage(False)
                         MblnDirty = False
                     Case MsgBoxResult.Cancel
                         blnDoit = False
@@ -1706,85 +2259,43 @@
             End If
 
             If blnDoit Then
-                If DialogBox.ShowDialog = Windows.Forms.DialogResult.OK Then
-                    strPage = DialogBox.TextBox1.Text
-                    Dim objXMLDelay As MSXML2.IXMLDOMElement
-                    Dim objXMLButtons As MSXML2.IXMLDOMNodeList
-                    Dim objXMLButton As MSXML2.IXMLDOMElement
-                    Dim intloop As Integer
-
-                    objXMLPage1 = MobjXMLPage.nextSibling
-
-                    'page set options
-                    addAttribute(MobjXMLPage, "set", "")
-                    addAttribute(MobjXMLPage, "unset", "")
-                    addAttribute(MobjXMLPage, "if-set", "")
-                    addAttribute(MobjXMLPage, "if-not-set", "")
-                    objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
-                    If Not objXMLDelay Is Nothing Then
-                        MobjXMLPage.removeChild(objXMLDelay)
-                    End If
-                    objXMLButtons = MobjXMLPage.selectNodes("./Button")
-                    For intloop = objXMLButtons.length - 1 To 0 Step -1
-                        objXMLButton = objXMLButtons.item(intloop)
-                        MobjXMLPage.removeChild(objXMLButton)
-                    Next
-                    objXMLButton = MobjXMLDoc.createElement("Button")
-                    objXMLButton.setAttribute("target", strPage)
-                    objXMLButton.text = "Continue"
-                    MobjXMLPage.appendChild(objXMLButton)
-
+                If DialogBox.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                     MstrPage = DialogBox.TextBox1.Text
-                    MobjXMLPage = MobjXMLDoc.createElement("Page")
                     MobjXMLPage.setAttribute("id", MstrPage)
-                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1)
                     lblPage.Text = MstrPage
                     PopPageTree()
-                    savepage(False)
+                    SavePage(False)
                     TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
                     MblnDirty = False
                     displaypage()
                 End If
             End If
         Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnCopyPage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnRenamePage_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
 
-    Private Sub btnSortPages_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSortPages.Click
-        Dim blnFinished As Boolean
-        Dim intLoop As Integer
-        Dim objXMLPage1 As MSXML2.IXMLDOMElement
-        Dim objXMLPage2 As MSXML2.IXMLDOMElement
-        Dim strId1 As String
-        Dim strId2 As String
-        Me.Cursor = Cursors.WaitCursor
-        Do
-            blnFinished = True
-            For intLoop = 0 To MobjXMLPages.childNodes.length - 2
-                objXMLPage1 = MobjXMLPages.childNodes(intLoop)
-                strId1 = getAttribute(objXMLPage1, "id")
-                objXMLPage2 = objXMLPage1.nextSibling
-                strId2 = getAttribute(objXMLPage2, "id")
-                If Not strId1.ToLower = "start" Then
-                    If strId2.ToLower = "start" Then
-                        blnFinished = False
-                        MobjXMLPages.insertBefore(objXMLPage2, objXMLPage1)
-                    Else
-                        If strId2.ToLower < strId1.ToLower Then
-                            blnFinished = False
-                            MobjXMLPages.insertBefore(objXMLPage2, objXMLPage1)
-                        End If
-                    End If
-                End If
-            Next
-            If blnFinished Then
-                Exit Do
-            End If
-        Loop
-        saveXml(MobjXMLDoc, TextBox1.Text)
-        PopPageTree()
-        TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
-        Me.Cursor = Cursors.Default
+    Private Sub MenuToolsRefreshMedia_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsRefreshMedia.Click
+        fillListView()
+    End Sub
+
+    Private Sub ListView2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView2.SelectedIndexChanged
+        Dim strAudio As String
+        If ListView2.SelectedItems.Count > 0 Then
+            strAudio = ListView2.SelectedItems(0).Text
+            OpenFileDialogImage.FileName = strAudio
+            tbAudio.Text = OpenFileDialogImage.SafeFileName
+            MblnDirty = True
+        End If
+    End Sub
+
+    Private Sub ListView3_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ListView3.SelectedIndexChanged
+        Dim strVideo As String
+        If ListView3.SelectedItems.Count > 0 Then
+            strVideo = ListView3.SelectedItems(0).Text
+            OpenFileDialogImage.FileName = strVideo
+            tbVideo.Text = OpenFileDialogImage.SafeFileName
+            MblnDirty = True
+        End If
     End Sub
 End Class
