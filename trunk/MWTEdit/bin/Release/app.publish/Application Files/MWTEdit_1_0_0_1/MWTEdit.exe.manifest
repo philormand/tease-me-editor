@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly manifestVersion="1.0" xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1">
+  <asmv1:assemblyIdentity version="1.0.0.1" name="MWTEdit.exe" publicKeyToken="332a02b9eb8d8107" language="en-GB" processorArchitecture="msil" type="win32" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="MWTEdit" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="MWTEdit.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!-- UAC Manifest Options
+            If you want to change the Windows User Account Control level replace the 
+            requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+            If you want to utilize File and Registry Virtualization for backward 
+            compatibility then delete the requestedExecutionLevel node.
+        -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="2.0.50727.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.DirectX" version="1.0.2902.0" publicKeyToken="31BF3856AD364E35" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.DirectX.AudioVideoPlayback" version="1.0.2902.0" publicKeyToken="31BF3856AD364E35" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.DirectX.Direct3D" version="1.0.2902.0" publicKeyToken="31BF3856AD364E35" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.mshtml" version="7.0.3300.0" publicKeyToken="B03F5F7F11D50A3A" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Office.Interop.Word" version="12.0.0.0" publicKeyToken="71E9BCE111E9429C" language="neutral" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Vbe.Interop" version="14.0.0.0" publicKeyToken="71E9BCE111E9429C" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="office" version="14.0.0.0" publicKeyToken="71E9BCE111E9429C" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="System.Core" version="3.5.0.0" publicKeyToken="b77a5c561934e089" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="WindowsBase" version="3.0.0.0" publicKeyToken="31bf3856ad364e35" language="neutral" processorArchitecture="msil" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Interop.MSXML2.dll" size="212992">
+      <assemblyIdentity name="Interop.MSXML2" version="3.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>K92xYRFsPtIu2x2H++rBxptG/y8=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MWTEdit.exe" size="116224">
+      <assemblyIdentity name="MWTEdit" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>dwn5Y1KoLT4YcvkgUxKU2kOdnLY=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+<publisherIdentity name="CN=James-PC\James" issuerKeyHash="dbe13648019af3f4430763fca2575c0142c05826" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>LjR4bjqOBB5A4Ofmo3WnQEeLFEM=</DigestValue></Reference></SignedInfo><SignatureValue>WQg2Jjh1MvgyhKGfyUnsW8Klo3+IRyvqd7gxGgufVIoXxmo7UfFSVGXCg26jMOXNHZ+NWsxqSQQRRfarKLgY8+cFybmGfUFIRQjMplwqpj0KR6NeQqby8apvkLDPrhY+CG3aiXgQKcN94o60AEtigEu5MZy+xFbkL3IDoNFnX8I=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>iDcIuStJ7c+JYuoxorrHC0KXWWMCQeckQ0h1Juq8AOFW7DOYuLzEF10hV6xujxA9gzMi6ZLL/CIHkiZfBBrHHwjhdRnDQ48RYVdcqtgPWm3BW0pKjWg1uee4WqIhEottGgVE9add+C4+3oRPf7yerudf5uYsgcpP27nbOpspdhE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="43148b4740a775a3e6e7e0401e048e3a6e78342e" Description="" Url=""><as:assemblyIdentity version="1.0.0.1" name="MWTEdit.exe" publicKeyToken="332a02b9eb8d8107" language="en-GB" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=James-PC\James</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>0R5fz2wlVd98bDeIbu9fuPaKM20=</DigestValue></Reference></SignedInfo><SignatureValue>NnymlZs4n0pVLuZu+7tLDxBGD++1GcykCI2+anWcxGcOtw9DssW4gP3lSDvniPqxZGNW96u2rCIhSjQjWe0rWpUVb3qmeCHBHJmIfjmatpNZsgMKgzr6/WLColTOVueZCmdR7053zHLCxWiGVbckzy7g6m5NXjylZsQGHnd7p1A=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>iDcIuStJ7c+JYuoxorrHC0KXWWMCQeckQ0h1Juq8AOFW7DOYuLzEF10hV6xujxA9gzMi6ZLL/CIHkiZfBBrHHwjhdRnDQ48RYVdcqtgPWm3BW0pKjWg1uee4WqIhEottGgVE9add+C4+3oRPf7yerudf5uYsgcpP27nbOpspdhE=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB0TCCATqgAwIBAgIQeYr3tiY2L4NEPm/N/mhpjDANBgkqhkiG9w0BAQUFADAnMSUwIwYDVQQDHhwASgBhAG0AZQBzAC0AUABDAFwASgBhAG0AZQBzMB4XDTEyMDUyNTE5MzcyNVoXDTEzMDUyNjAxMzcyNVowJzElMCMGA1UEAx4cAEoAYQBtAGUAcwAtAFAAQwBcAEoAYQBtAGUAczCBnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEAiDcIuStJ7c+JYuoxorrHC0KXWWMCQeckQ0h1Juq8AOFW7DOYuLzEF10hV6xujxA9gzMi6ZLL/CIHkiZfBBrHHwjhdRnDQ48RYVdcqtgPWm3BW0pKjWg1uee4WqIhEottGgVE9add+C4+3oRPf7yerudf5uYsgcpP27nbOpspdhECAwEAATANBgkqhkiG9w0BAQUFAAOBgQBqSc+iKMAZP1GL8eIvxA3u87x+nMDtglN2S1cBSGXIpAyofKRzBI15ZS5kJLpFDtmqXVO1AAMOsczRNH9RP3shO0TTQ6gRWik3PxkYPylEXQFRAq6ZuqwVZdndcRPq+j6lq9eZtH+Q1ZpIxrh3uPAUPuD55SX28iOSVLJdZo3ATg==</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
