@@ -1,4 +1,4 @@
-http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/general.png
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/GeneralTab.png
 
 =Description=
 Most of the fields on this page are downloaded from milovana if you are creating a tease you only need to fill in title and author
