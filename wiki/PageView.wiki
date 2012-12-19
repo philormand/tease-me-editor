@@ -1,5 +1,7 @@
-http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/PageView.png
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/PageViewTab.png
 =Description=
+The pages in the tease will be displayed on the left. Pages in Red have Nyx download error information. Clicking on a page name on the left will display it on the right (this will also change what is displayed on the editing tabs)
+
 This will give you a rough view of what the page will look like in teaseme.
 
 The tease buttons will work if they go to a single page, but not random one.
