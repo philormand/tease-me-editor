@@ -1,1 +1,3 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/DelayTab.png
+
+A delay allows you to change the page after a certain number of seconds.
