@@ -24,12 +24,7 @@ Partial Class Form1
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(Form1))
         Me.TabControl1 = New System.Windows.Forms.TabControl
-        Me.TabPage1 = New System.Windows.Forms.TabPage
-        Me.btnSortPages = New System.Windows.Forms.Button
-        Me.btnUpLoad = New System.Windows.Forms.Button
-        Me.btnSaveDir = New System.Windows.Forms.Button
-        Me.Label20 = New System.Windows.Forms.Label
-        Me.txtDefaltDir = New System.Windows.Forms.TextBox
+        Me.TabGeneral = New System.Windows.Forms.TabPage
         Me.cbAutoSetPageWhenSeen = New System.Windows.Forms.CheckBox
         Me.Label11 = New System.Windows.Forms.Label
         Me.tbMWTId = New System.Windows.Forms.TextBox
@@ -46,11 +41,10 @@ Partial Class Form1
         Me.tbMediaDirectory = New System.Windows.Forms.TextBox
         Me.Label4 = New System.Windows.Forms.Label
         Me.tbTitle = New System.Windows.Forms.TextBox
-        Me.btnSaveFile = New System.Windows.Forms.Button
-        Me.btnNewFile = New System.Windows.Forms.Button
-        Me.BtnFile = New System.Windows.Forms.Button
         Me.TextBox1 = New System.Windows.Forms.TextBox
-        Me.TabPage2 = New System.Windows.Forms.TabPage
+        Me.TabPageView = New System.Windows.Forms.TabPage
+        Me.SplitContainer8 = New System.Windows.Forms.SplitContainer
+        Me.TreeViewPages = New System.Windows.Forms.TreeView
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
         Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer
@@ -63,23 +57,9 @@ Partial Class Form1
         Me.btnDelay = New System.Windows.Forms.Button
         Me.WebBrowser1 = New System.Windows.Forms.WebBrowser
         Me.FlowLayoutPanel1 = New System.Windows.Forms.FlowLayoutPanel
-        Me.TabPage3 = New System.Windows.Forms.TabPage
-        Me.SplitContainer1 = New System.Windows.Forms.SplitContainer
-        Me.TreeViewPages = New System.Windows.Forms.TreeView
-        Me.btnSplitPage = New System.Windows.Forms.Button
-        Me.btnMoveDown = New System.Windows.Forms.Button
-        Me.btnRowUp = New System.Windows.Forms.Button
-        Me.btnDelError = New System.Windows.Forms.Button
-        Me.btnErrors = New System.Windows.Forms.Button
-        Me.btnCopyPage = New System.Windows.Forms.Button
-        Me.Label16 = New System.Windows.Forms.Label
-        Me.txtDelayIfNotSet = New System.Windows.Forms.TextBox
-        Me.Label17 = New System.Windows.Forms.Label
-        Me.txtDelayIfSet = New System.Windows.Forms.TextBox
-        Me.Label18 = New System.Windows.Forms.Label
-        Me.txtDelayUnSet = New System.Windows.Forms.TextBox
-        Me.Label19 = New System.Windows.Forms.Label
-        Me.txtDelaySet = New System.Windows.Forms.TextBox
+        Me.TabPage = New System.Windows.Forms.TabPage
+        Me.Label32 = New System.Windows.Forms.Label
+        Me.tbPageText = New System.Windows.Forms.TextBox
         Me.Label14 = New System.Windows.Forms.Label
         Me.txtPageIfNotSet = New System.Windows.Forms.TextBox
         Me.Label15 = New System.Windows.Forms.Label
@@ -88,24 +68,49 @@ Partial Class Form1
         Me.txtPageUnSet = New System.Windows.Forms.TextBox
         Me.Label12 = New System.Windows.Forms.Label
         Me.txtPageSet = New System.Windows.Forms.TextBox
-        Me.WebBrowser2 = New System.Windows.Forms.WebBrowser
-        Me.btnDeletePage = New System.Windows.Forms.Button
-        Me.btnNewPage = New System.Windows.Forms.Button
-        Me.btnSavePage = New System.Windows.Forms.Button
-        Me.cbAudio = New System.Windows.Forms.CheckBox
-        Me.cbVideo = New System.Windows.Forms.CheckBox
+        Me.lblPage = New System.Windows.Forms.Label
+        Me.TabImage = New System.Windows.Forms.TabPage
+        Me.ListView1 = New System.Windows.Forms.ListView
+        Me.bntImage = New System.Windows.Forms.Button
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.tbImage = New System.Windows.Forms.TextBox
+        Me.TabAudio = New System.Windows.Forms.TabPage
+        Me.ListView2 = New System.Windows.Forms.ListView
+        Me.Label30 = New System.Windows.Forms.Label
+        Me.Label26 = New System.Windows.Forms.Label
+        Me.tbAudioStartAt = New System.Windows.Forms.TextBox
+        Me.Label25 = New System.Windows.Forms.Label
+        Me.tbAudioStopAt = New System.Windows.Forms.TextBox
+        Me.Label23 = New System.Windows.Forms.Label
+        Me.tbAudioTarget = New System.Windows.Forms.TextBox
         Me.btnAudio = New System.Windows.Forms.Button
         Me.tbAudio = New System.Windows.Forms.TextBox
+        Me.TabVideo = New System.Windows.Forms.TabPage
+        Me.ListView3 = New System.Windows.Forms.ListView
+        Me.Label31 = New System.Windows.Forms.Label
+        Me.Label27 = New System.Windows.Forms.Label
+        Me.tbVideoStartAt = New System.Windows.Forms.TextBox
+        Me.Label28 = New System.Windows.Forms.Label
+        Me.tbVideoStopAt = New System.Windows.Forms.TextBox
+        Me.Label29 = New System.Windows.Forms.Label
+        Me.tbVideoTarget = New System.Windows.Forms.TextBox
         Me.btnVideo = New System.Windows.Forms.Button
         Me.tbVideo = New System.Windows.Forms.TextBox
-        Me.bntImage = New System.Windows.Forms.Button
-        Me.DataGridView1 = New System.Windows.Forms.DataGridView
-        Me.btnText = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.btnTarget = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.btnSet = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.btnUnset = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.btnIfSet = New System.Windows.Forms.DataGridViewTextBoxColumn
-        Me.bntIfUnSet = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.TabMetronome = New System.Windows.Forms.TabPage
+        Me.tbMetronome = New System.Windows.Forms.TextBox
+        Me.cbMetronome = New System.Windows.Forms.CheckBox
+        Me.TabDelay = New System.Windows.Forms.TabPage
+        Me.Label22 = New System.Windows.Forms.Label
+        Me.tbDelayStartWith = New System.Windows.Forms.TextBox
+        Me.Label16 = New System.Windows.Forms.Label
+        Me.txtDelayIfNotSet = New System.Windows.Forms.TextBox
+        Me.Label17 = New System.Windows.Forms.Label
+        Me.txtDelayIfSet = New System.Windows.Forms.TextBox
+        Me.Label18 = New System.Windows.Forms.Label
+        Me.txtDelayUnSet = New System.Windows.Forms.TextBox
+        Me.Label19 = New System.Windows.Forms.Label
+        Me.txtDelaySet = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
         Me.Label2 = New System.Windows.Forms.Label
         Me.tbDelayTarget = New System.Windows.Forms.TextBox
@@ -115,13 +120,17 @@ Partial Class Form1
         Me.rbNormal = New System.Windows.Forms.RadioButton
         Me.tbDelaySeconds = New System.Windows.Forms.TextBox
         Me.cbDelay = New System.Windows.Forms.CheckBox
-        Me.tbMetronome = New System.Windows.Forms.TextBox
-        Me.cbMetronome = New System.Windows.Forms.CheckBox
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.lblPage = New System.Windows.Forms.Label
-        Me.tbImage = New System.Windows.Forms.TextBox
-        Me.TabPage4 = New System.Windows.Forms.TabPage
+        Me.TabButtons = New System.Windows.Forms.TabPage
+        Me.btnMoveDown = New System.Windows.Forms.Button
+        Me.btnRowUp = New System.Windows.Forms.Button
+        Me.DataGridView1 = New System.Windows.Forms.DataGridView
+        Me.btnText = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnTarget = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnSet = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnUnset = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.btnIfSet = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.bntIfUnSet = New System.Windows.Forms.DataGridViewTextBoxColumn
+        Me.TabPageWYSIWYG = New System.Windows.Forms.TabPage
         Me.SplitContainer4 = New System.Windows.Forms.SplitContainer
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
         Me.tscbBold = New System.Windows.Forms.ToolStripButton
@@ -131,25 +140,56 @@ Partial Class Form1
         Me.tscbCut = New System.Windows.Forms.ToolStripButton
         Me.tscbCopy = New System.Windows.Forms.ToolStripButton
         Me.tscbPaste = New System.Windows.Forms.ToolStripButton
-        Me.tscbUpdate = New System.Windows.Forms.ToolStripButton
-        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser
-        Me.TabPage6 = New System.Windows.Forms.TabPage
-        Me.SplitContainer7 = New System.Windows.Forms.SplitContainer
-        Me.BtnRawText = New System.Windows.Forms.Button
+        Me.tscbTextToVisual = New System.Windows.Forms.ToolStripButton
+        Me.tscbVisualToText = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton
+        Me.SplitContainer9 = New System.Windows.Forms.SplitContainer
         Me.txtRawText = New System.Windows.Forms.TextBox
-        Me.TabPage5 = New System.Windows.Forms.TabPage
+        Me.WebBrowser3 = New System.Windows.Forms.WebBrowser
+        Me.TabNyx = New System.Windows.Forms.TabPage
         Me.SplitContainer6 = New System.Windows.Forms.SplitContainer
         Me.txtRandom = New System.Windows.Forms.TextBox
         Me.Label21 = New System.Windows.Forms.Label
-        Me.btnNyx = New System.Windows.Forms.Button
         Me.txtNyxScript = New System.Windows.Forms.TextBox
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
         Me.OpenFileDialogImage = New System.Windows.Forms.OpenFileDialog
         Me.ColorDialog1 = New System.Windows.Forms.ColorDialog
         Me.FontDialog1 = New System.Windows.Forms.FontDialog
+        Me.MenuStrip1 = New System.Windows.Forms.MenuStrip
+        Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuFileLoad = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuFileSave = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuFileNew = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuFileExit = New System.Windows.Forms.ToolStripMenuItem
+        Me.PageToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageSave = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageNew = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageDelete = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageCopy = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageSplit = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageRename = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageDownLoadError = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageDeleteError = New System.Windows.Forms.ToolStripMenuItem
+        Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsSort = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsCheck = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsUpload = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsNyx = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsOptions = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsRefreshMedia = New System.Windows.Forms.ToolStripMenuItem
+        Me.Label24 = New System.Windows.Forms.Label
+        Me.TextBox2 = New System.Windows.Forms.TextBox
+        Me.CheckBox1 = New System.Windows.Forms.CheckBox
+        Me.Button1 = New System.Windows.Forms.Button
+        Me.TextBox3 = New System.Windows.Forms.TextBox
         Me.TabControl1.SuspendLayout()
-        Me.TabPage1.SuspendLayout()
-        Me.TabPage2.SuspendLayout()
+        Me.TabGeneral.SuspendLayout()
+        Me.TabPageView.SuspendLayout()
+        Me.SplitContainer8.Panel1.SuspendLayout()
+        Me.SplitContainer8.Panel2.SuspendLayout()
+        Me.SplitContainer8.SuspendLayout()
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
@@ -160,120 +200,77 @@ Partial Class Form1
         Me.SplitContainer5.Panel1.SuspendLayout()
         Me.SplitContainer5.Panel2.SuspendLayout()
         Me.SplitContainer5.SuspendLayout()
-        Me.TabPage3.SuspendLayout()
-        Me.SplitContainer1.Panel1.SuspendLayout()
-        Me.SplitContainer1.Panel2.SuspendLayout()
-        Me.SplitContainer1.SuspendLayout()
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.gbDelay.SuspendLayout()
+        Me.TabPage.SuspendLayout()
+        Me.TabImage.SuspendLayout()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
-        Me.TabPage4.SuspendLayout()
+        Me.TabAudio.SuspendLayout()
+        Me.TabVideo.SuspendLayout()
+        Me.TabMetronome.SuspendLayout()
+        Me.TabDelay.SuspendLayout()
+        Me.gbDelay.SuspendLayout()
+        Me.TabButtons.SuspendLayout()
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.TabPageWYSIWYG.SuspendLayout()
         Me.SplitContainer4.Panel1.SuspendLayout()
         Me.SplitContainer4.Panel2.SuspendLayout()
         Me.SplitContainer4.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
-        Me.TabPage6.SuspendLayout()
-        Me.SplitContainer7.Panel1.SuspendLayout()
-        Me.SplitContainer7.Panel2.SuspendLayout()
-        Me.SplitContainer7.SuspendLayout()
-        Me.TabPage5.SuspendLayout()
+        Me.SplitContainer9.Panel1.SuspendLayout()
+        Me.SplitContainer9.Panel2.SuspendLayout()
+        Me.SplitContainer9.SuspendLayout()
+        Me.TabNyx.SuspendLayout()
         Me.SplitContainer6.Panel1.SuspendLayout()
         Me.SplitContainer6.Panel2.SuspendLayout()
         Me.SplitContainer6.SuspendLayout()
+        Me.MenuStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
         '
-        Me.TabControl1.Controls.Add(Me.TabPage1)
-        Me.TabControl1.Controls.Add(Me.TabPage2)
-        Me.TabControl1.Controls.Add(Me.TabPage3)
-        Me.TabControl1.Controls.Add(Me.TabPage4)
-        Me.TabControl1.Controls.Add(Me.TabPage6)
-        Me.TabControl1.Controls.Add(Me.TabPage5)
+        Me.TabControl1.Controls.Add(Me.TabGeneral)
+        Me.TabControl1.Controls.Add(Me.TabPageView)
+        Me.TabControl1.Controls.Add(Me.TabPage)
+        Me.TabControl1.Controls.Add(Me.TabImage)
+        Me.TabControl1.Controls.Add(Me.TabAudio)
+        Me.TabControl1.Controls.Add(Me.TabVideo)
+        Me.TabControl1.Controls.Add(Me.TabMetronome)
+        Me.TabControl1.Controls.Add(Me.TabDelay)
+        Me.TabControl1.Controls.Add(Me.TabButtons)
+        Me.TabControl1.Controls.Add(Me.TabPageWYSIWYG)
+        Me.TabControl1.Controls.Add(Me.TabNyx)
         Me.TabControl1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TabControl1.Location = New System.Drawing.Point(0, 0)
+        Me.TabControl1.Location = New System.Drawing.Point(0, 24)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1074, 662)
+        Me.TabControl1.Size = New System.Drawing.Size(1074, 638)
         Me.TabControl1.TabIndex = 0
         '
-        'TabPage1
+        'TabGeneral
         '
-        Me.TabPage1.Controls.Add(Me.btnSortPages)
-        Me.TabPage1.Controls.Add(Me.btnUpLoad)
-        Me.TabPage1.Controls.Add(Me.btnSaveDir)
-        Me.TabPage1.Controls.Add(Me.Label20)
-        Me.TabPage1.Controls.Add(Me.txtDefaltDir)
-        Me.TabPage1.Controls.Add(Me.cbAutoSetPageWhenSeen)
-        Me.TabPage1.Controls.Add(Me.Label11)
-        Me.TabPage1.Controls.Add(Me.tbMWTId)
-        Me.TabPage1.Controls.Add(Me.Label8)
-        Me.TabPage1.Controls.Add(Me.tbAuthorName)
-        Me.TabPage1.Controls.Add(Me.Label9)
-        Me.TabPage1.Controls.Add(Me.tbAuthorURL)
-        Me.TabPage1.Controls.Add(Me.Label10)
-        Me.TabPage1.Controls.Add(Me.tbAuthorId)
-        Me.TabPage1.Controls.Add(Me.Label7)
-        Me.TabPage1.Controls.Add(Me.Label6)
-        Me.TabPage1.Controls.Add(Me.tbURL)
-        Me.TabPage1.Controls.Add(Me.Label5)
-        Me.TabPage1.Controls.Add(Me.tbMediaDirectory)
-        Me.TabPage1.Controls.Add(Me.Label4)
-        Me.TabPage1.Controls.Add(Me.tbTitle)
-        Me.TabPage1.Controls.Add(Me.btnSaveFile)
-        Me.TabPage1.Controls.Add(Me.btnNewFile)
-        Me.TabPage1.Controls.Add(Me.BtnFile)
-        Me.TabPage1.Controls.Add(Me.TextBox1)
-        Me.TabPage1.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage1.Name = "TabPage1"
-        Me.TabPage1.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage1.Size = New System.Drawing.Size(1066, 636)
-        Me.TabPage1.TabIndex = 0
-        Me.TabPage1.Text = "General"
-        Me.TabPage1.UseVisualStyleBackColor = True
-        '
-        'btnSortPages
-        '
-        Me.btnSortPages.Location = New System.Drawing.Point(301, 63)
-        Me.btnSortPages.Name = "btnSortPages"
-        Me.btnSortPages.Size = New System.Drawing.Size(75, 23)
-        Me.btnSortPages.TabIndex = 24
-        Me.btnSortPages.Text = "Sort Pages"
-        Me.btnSortPages.UseVisualStyleBackColor = True
-        '
-        'btnUpLoad
-        '
-        Me.btnUpLoad.Location = New System.Drawing.Point(135, 63)
-        Me.btnUpLoad.Name = "btnUpLoad"
-        Me.btnUpLoad.Size = New System.Drawing.Size(148, 23)
-        Me.btnUpLoad.TabIndex = 23
-        Me.btnUpLoad.Text = "Create upload directory"
-        Me.btnUpLoad.UseVisualStyleBackColor = True
-        '
-        'btnSaveDir
-        '
-        Me.btnSaveDir.Location = New System.Drawing.Point(446, 451)
-        Me.btnSaveDir.Name = "btnSaveDir"
-        Me.btnSaveDir.Size = New System.Drawing.Size(75, 23)
-        Me.btnSaveDir.TabIndex = 22
-        Me.btnSaveDir.Text = "Save"
-        Me.btnSaveDir.UseVisualStyleBackColor = True
-        '
-        'Label20
-        '
-        Me.Label20.AutoSize = True
-        Me.Label20.Location = New System.Drawing.Point(30, 451)
-        Me.Label20.Name = "Label20"
-        Me.Label20.Size = New System.Drawing.Size(67, 13)
-        Me.Label20.TabIndex = 21
-        Me.Label20.Text = "File Location"
-        '
-        'txtDefaltDir
-        '
-        Me.txtDefaltDir.Location = New System.Drawing.Point(135, 451)
-        Me.txtDefaltDir.Name = "txtDefaltDir"
-        Me.txtDefaltDir.Size = New System.Drawing.Size(294, 20)
-        Me.txtDefaltDir.TabIndex = 20
+        Me.TabGeneral.Controls.Add(Me.cbAutoSetPageWhenSeen)
+        Me.TabGeneral.Controls.Add(Me.Label11)
+        Me.TabGeneral.Controls.Add(Me.tbMWTId)
+        Me.TabGeneral.Controls.Add(Me.Label8)
+        Me.TabGeneral.Controls.Add(Me.tbAuthorName)
+        Me.TabGeneral.Controls.Add(Me.Label9)
+        Me.TabGeneral.Controls.Add(Me.tbAuthorURL)
+        Me.TabGeneral.Controls.Add(Me.Label10)
+        Me.TabGeneral.Controls.Add(Me.tbAuthorId)
+        Me.TabGeneral.Controls.Add(Me.Label7)
+        Me.TabGeneral.Controls.Add(Me.Label6)
+        Me.TabGeneral.Controls.Add(Me.tbURL)
+        Me.TabGeneral.Controls.Add(Me.Label5)
+        Me.TabGeneral.Controls.Add(Me.tbMediaDirectory)
+        Me.TabGeneral.Controls.Add(Me.Label4)
+        Me.TabGeneral.Controls.Add(Me.tbTitle)
+        Me.TabGeneral.Controls.Add(Me.TextBox1)
+        Me.TabGeneral.Location = New System.Drawing.Point(4, 22)
+        Me.TabGeneral.Name = "TabGeneral"
+        Me.TabGeneral.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabGeneral.Size = New System.Drawing.Size(1066, 612)
+        Me.TabGeneral.TabIndex = 0
+        Me.TabGeneral.Text = "General"
+        Me.TabGeneral.UseVisualStyleBackColor = True
         '
         'cbAutoSetPageWhenSeen
         '
@@ -407,33 +404,6 @@ Partial Class Form1
         Me.tbTitle.Size = New System.Drawing.Size(294, 20)
         Me.tbTitle.TabIndex = 4
         '
-        'btnSaveFile
-        '
-        Me.btnSaveFile.Location = New System.Drawing.Point(27, 63)
-        Me.btnSaveFile.Name = "btnSaveFile"
-        Me.btnSaveFile.Size = New System.Drawing.Size(75, 23)
-        Me.btnSaveFile.TabIndex = 3
-        Me.btnSaveFile.Text = "Save File"
-        Me.btnSaveFile.UseVisualStyleBackColor = True
-        '
-        'btnNewFile
-        '
-        Me.btnNewFile.Location = New System.Drawing.Point(27, 346)
-        Me.btnNewFile.Name = "btnNewFile"
-        Me.btnNewFile.Size = New System.Drawing.Size(75, 23)
-        Me.btnNewFile.TabIndex = 2
-        Me.btnNewFile.Text = "New File"
-        Me.btnNewFile.UseVisualStyleBackColor = True
-        '
-        'BtnFile
-        '
-        Me.BtnFile.Location = New System.Drawing.Point(674, 21)
-        Me.BtnFile.Name = "BtnFile"
-        Me.BtnFile.Size = New System.Drawing.Size(75, 23)
-        Me.BtnFile.TabIndex = 1
-        Me.BtnFile.Text = "Get File"
-        Me.BtnFile.UseVisualStyleBackColor = True
-        '
         'TextBox1
         '
         Me.TextBox1.Location = New System.Drawing.Point(27, 25)
@@ -441,20 +411,51 @@ Partial Class Form1
         Me.TextBox1.Size = New System.Drawing.Size(626, 20)
         Me.TextBox1.TabIndex = 0
         '
-        'TabPage2
+        'TabPageView
         '
-        Me.TabPage2.Controls.Add(Me.SplitContainer2)
-        Me.TabPage2.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage2.Name = "TabPage2"
-        Me.TabPage2.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage2.Size = New System.Drawing.Size(1066, 636)
-        Me.TabPage2.TabIndex = 1
-        Me.TabPage2.Text = "PageView"
-        Me.TabPage2.UseVisualStyleBackColor = True
+        Me.TabPageView.Controls.Add(Me.SplitContainer8)
+        Me.TabPageView.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageView.Name = "TabPageView"
+        Me.TabPageView.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPageView.Size = New System.Drawing.Size(1066, 612)
+        Me.TabPageView.TabIndex = 1
+        Me.TabPageView.Text = "PageView"
+        Me.TabPageView.UseVisualStyleBackColor = True
+        '
+        'SplitContainer8
+        '
+        Me.SplitContainer8.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SplitContainer8.Location = New System.Drawing.Point(3, 3)
+        Me.SplitContainer8.Name = "SplitContainer8"
+        '
+        'SplitContainer8.Panel1
+        '
+        Me.SplitContainer8.Panel1.Controls.Add(Me.TreeViewPages)
+        '
+        'SplitContainer8.Panel2
+        '
+        Me.SplitContainer8.Panel2.Controls.Add(Me.SplitContainer2)
+        Me.SplitContainer8.Size = New System.Drawing.Size(1057, 637)
+        Me.SplitContainer8.SplitterDistance = 169
+        Me.SplitContainer8.TabIndex = 1
+        '
+        'TreeViewPages
+        '
+        Me.TreeViewPages.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TreeViewPages.Location = New System.Drawing.Point(0, 0)
+        Me.TreeViewPages.Name = "TreeViewPages"
+        Me.TreeViewPages.Size = New System.Drawing.Size(169, 606)
+        Me.TreeViewPages.TabIndex = 3
         '
         'SplitContainer2
         '
-        Me.SplitContainer2.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.SplitContainer2.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.SplitContainer2.Location = New System.Drawing.Point(3, 3)
         Me.SplitContainer2.Name = "SplitContainer2"
         '
@@ -465,8 +466,8 @@ Partial Class Form1
         'SplitContainer2.Panel2
         '
         Me.SplitContainer2.Panel2.Controls.Add(Me.SplitContainer3)
-        Me.SplitContainer2.Size = New System.Drawing.Size(1060, 630)
-        Me.SplitContainer2.SplitterDistance = 495
+        Me.SplitContainer2.Size = New System.Drawing.Size(878, 627)
+        Me.SplitContainer2.SplitterDistance = 410
         Me.SplitContainer2.TabIndex = 0
         '
         'PictureBox1
@@ -474,7 +475,7 @@ Partial Class Form1
         Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(495, 630)
+        Me.PictureBox1.Size = New System.Drawing.Size(410, 627)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
@@ -493,8 +494,8 @@ Partial Class Form1
         'SplitContainer3.Panel2
         '
         Me.SplitContainer3.Panel2.Controls.Add(Me.FlowLayoutPanel1)
-        Me.SplitContainer3.Size = New System.Drawing.Size(561, 630)
-        Me.SplitContainer3.SplitterDistance = 526
+        Me.SplitContainer3.Size = New System.Drawing.Size(464, 627)
+        Me.SplitContainer3.SplitterDistance = 523
         Me.SplitContainer3.TabIndex = 0
         '
         'SplitContainer5
@@ -516,8 +517,8 @@ Partial Class Form1
         'SplitContainer5.Panel2
         '
         Me.SplitContainer5.Panel2.Controls.Add(Me.WebBrowser1)
-        Me.SplitContainer5.Size = New System.Drawing.Size(561, 526)
-        Me.SplitContainer5.SplitterDistance = 87
+        Me.SplitContainer5.Size = New System.Drawing.Size(464, 523)
+        Me.SplitContainer5.SplitterDistance = 86
         Me.SplitContainer5.TabIndex = 1
         '
         'lblPageName
@@ -584,7 +585,7 @@ Partial Class Form1
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.ScriptErrorsSuppressed = True
         Me.WebBrowser1.ScrollBarsEnabled = False
-        Me.WebBrowser1.Size = New System.Drawing.Size(561, 435)
+        Me.WebBrowser1.Size = New System.Drawing.Size(464, 433)
         Me.WebBrowser1.TabIndex = 0
         '
         'FlowLayoutPanel1
@@ -593,227 +594,49 @@ Partial Class Form1
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(561, 100)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(464, 100)
         Me.FlowLayoutPanel1.TabIndex = 0
         '
-        'TabPage3
+        'TabPage
         '
-        Me.TabPage3.Controls.Add(Me.SplitContainer1)
-        Me.TabPage3.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage3.Name = "TabPage3"
-        Me.TabPage3.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage3.Size = New System.Drawing.Size(1066, 636)
-        Me.TabPage3.TabIndex = 2
-        Me.TabPage3.Text = "Page Tree"
-        Me.TabPage3.UseVisualStyleBackColor = True
+        Me.TabPage.Controls.Add(Me.Label32)
+        Me.TabPage.Controls.Add(Me.tbPageText)
+        Me.TabPage.Controls.Add(Me.Label14)
+        Me.TabPage.Controls.Add(Me.txtPageIfNotSet)
+        Me.TabPage.Controls.Add(Me.Label15)
+        Me.TabPage.Controls.Add(Me.txtPageIfSet)
+        Me.TabPage.Controls.Add(Me.Label13)
+        Me.TabPage.Controls.Add(Me.txtPageUnSet)
+        Me.TabPage.Controls.Add(Me.Label12)
+        Me.TabPage.Controls.Add(Me.txtPageSet)
+        Me.TabPage.Controls.Add(Me.lblPage)
+        Me.TabPage.Location = New System.Drawing.Point(4, 22)
+        Me.TabPage.Name = "TabPage"
+        Me.TabPage.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabPage.Size = New System.Drawing.Size(1066, 612)
+        Me.TabPage.TabIndex = 2
+        Me.TabPage.Text = "Page"
+        Me.TabPage.UseVisualStyleBackColor = True
         '
-        'SplitContainer1
+        'Label32
         '
-        Me.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer1.Location = New System.Drawing.Point(3, 3)
-        Me.SplitContainer1.Name = "SplitContainer1"
-        '
-        'SplitContainer1.Panel1
-        '
-        Me.SplitContainer1.Panel1.Controls.Add(Me.TreeViewPages)
-        '
-        'SplitContainer1.Panel2
-        '
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnSplitPage)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnMoveDown)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnRowUp)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnDelError)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnErrors)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnCopyPage)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label16)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayIfNotSet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label17)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayIfSet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label18)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelayUnSet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label19)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtDelaySet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label14)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageIfNotSet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label15)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageIfSet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label13)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageUnSet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label12)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.txtPageSet)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.WebBrowser2)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnDeletePage)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnNewPage)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnSavePage)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.cbAudio)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.cbVideo)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnAudio)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.tbAudio)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.btnVideo)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.tbVideo)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.bntImage)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.DataGridView1)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label3)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label2)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.tbDelayTarget)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.gbDelay)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.tbDelaySeconds)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.cbDelay)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.tbMetronome)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.cbMetronome)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.PictureBox2)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.Label1)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.lblPage)
-        Me.SplitContainer1.Panel2.Controls.Add(Me.tbImage)
-        Me.SplitContainer1.Size = New System.Drawing.Size(1060, 630)
-        Me.SplitContainer1.SplitterDistance = 318
-        Me.SplitContainer1.TabIndex = 0
-        '
-        'TreeViewPages
-        '
-        Me.TreeViewPages.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.TreeViewPages.Location = New System.Drawing.Point(0, 0)
-        Me.TreeViewPages.Name = "TreeViewPages"
-        Me.TreeViewPages.Size = New System.Drawing.Size(318, 630)
-        Me.TreeViewPages.TabIndex = 1
-        '
-        'btnSplitPage
-        '
-        Me.btnSplitPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSplitPage.Location = New System.Drawing.Point(408, 591)
-        Me.btnSplitPage.Name = "btnSplitPage"
-        Me.btnSplitPage.Size = New System.Drawing.Size(75, 23)
-        Me.btnSplitPage.TabIndex = 48
-        Me.btnSplitPage.Text = "Split Page"
-        Me.btnSplitPage.UseVisualStyleBackColor = True
-        '
-        'btnMoveDown
-        '
-        Me.btnMoveDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnMoveDown.Location = New System.Drawing.Point(594, 591)
-        Me.btnMoveDown.Name = "btnMoveDown"
-        Me.btnMoveDown.Size = New System.Drawing.Size(75, 23)
-        Me.btnMoveDown.TabIndex = 47
-        Me.btnMoveDown.Text = "Move Down"
-        Me.btnMoveDown.UseVisualStyleBackColor = True
-        '
-        'btnRowUp
-        '
-        Me.btnRowUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnRowUp.Location = New System.Drawing.Point(499, 591)
-        Me.btnRowUp.Name = "btnRowUp"
-        Me.btnRowUp.Size = New System.Drawing.Size(75, 23)
-        Me.btnRowUp.TabIndex = 46
-        Me.btnRowUp.Text = "Move Up"
-        Me.btnRowUp.UseVisualStyleBackColor = True
-        '
-        'btnDelError
-        '
-        Me.btnDelError.Enabled = False
-        Me.btnDelError.Location = New System.Drawing.Point(569, 247)
-        Me.btnDelError.Name = "btnDelError"
-        Me.btnDelError.Size = New System.Drawing.Size(100, 23)
-        Me.btnDelError.TabIndex = 45
-        Me.btnDelError.Text = "Delete Error"
-        Me.btnDelError.UseVisualStyleBackColor = True
-        '
-        'btnErrors
-        '
-        Me.btnErrors.Enabled = False
-        Me.btnErrors.Location = New System.Drawing.Point(451, 247)
-        Me.btnErrors.Name = "btnErrors"
-        Me.btnErrors.Size = New System.Drawing.Size(100, 23)
-        Me.btnErrors.TabIndex = 44
-        Me.btnErrors.Text = "Download Error"
-        Me.btnErrors.UseVisualStyleBackColor = True
-        '
-        'btnCopyPage
-        '
-        Me.btnCopyPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnCopyPage.Location = New System.Drawing.Point(314, 591)
-        Me.btnCopyPage.Name = "btnCopyPage"
-        Me.btnCopyPage.Size = New System.Drawing.Size(75, 23)
-        Me.btnCopyPage.TabIndex = 43
-        Me.btnCopyPage.Text = "Copy Page"
-        Me.btnCopyPage.UseVisualStyleBackColor = True
-        '
-        'Label16
-        '
-        Me.Label16.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.Label32.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label16.AutoSize = True
-        Me.Label16.BackColor = System.Drawing.Color.Red
-        Me.Label16.Location = New System.Drawing.Point(398, 182)
-        Me.Label16.Name = "Label16"
-        Me.Label16.Size = New System.Drawing.Size(52, 13)
-        Me.Label16.TabIndex = 42
-        Me.Label16.Text = "If Not Set"
+        Me.Label32.AutoSize = True
+        Me.Label32.Location = New System.Drawing.Point(20, 92)
+        Me.Label32.Name = "Label32"
+        Me.Label32.Size = New System.Drawing.Size(28, 13)
+        Me.Label32.TabIndex = 36
+        Me.Label32.Text = "Text"
         '
-        'txtDelayIfNotSet
+        'tbPageText
         '
-        Me.txtDelayIfNotSet.Location = New System.Drawing.Point(451, 179)
-        Me.txtDelayIfNotSet.Name = "txtDelayIfNotSet"
-        Me.txtDelayIfNotSet.Size = New System.Drawing.Size(100, 20)
-        Me.txtDelayIfNotSet.TabIndex = 41
-        '
-        'Label17
-        '
-        Me.Label17.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label17.AutoSize = True
-        Me.Label17.BackColor = System.Drawing.Color.Red
-        Me.Label17.Location = New System.Drawing.Point(273, 182)
-        Me.Label17.Name = "Label17"
-        Me.Label17.Size = New System.Drawing.Size(32, 13)
-        Me.Label17.TabIndex = 40
-        Me.Label17.Text = "If Set"
-        '
-        'txtDelayIfSet
-        '
-        Me.txtDelayIfSet.Location = New System.Drawing.Point(305, 179)
-        Me.txtDelayIfSet.Name = "txtDelayIfSet"
-        Me.txtDelayIfSet.Size = New System.Drawing.Size(88, 20)
-        Me.txtDelayIfSet.TabIndex = 39
-        '
-        'Label18
-        '
-        Me.Label18.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label18.AutoSize = True
-        Me.Label18.Location = New System.Drawing.Point(398, 147)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(37, 13)
-        Me.Label18.TabIndex = 38
-        Me.Label18.Text = "UnSet"
-        '
-        'txtDelayUnSet
-        '
-        Me.txtDelayUnSet.Location = New System.Drawing.Point(451, 144)
-        Me.txtDelayUnSet.Name = "txtDelayUnSet"
-        Me.txtDelayUnSet.Size = New System.Drawing.Size(100, 20)
-        Me.txtDelayUnSet.TabIndex = 37
-        '
-        'Label19
-        '
-        Me.Label19.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(273, 147)
-        Me.Label19.Name = "Label19"
-        Me.Label19.Size = New System.Drawing.Size(23, 13)
-        Me.Label19.TabIndex = 36
-        Me.Label19.Text = "Set"
-        '
-        'txtDelaySet
-        '
-        Me.txtDelaySet.Location = New System.Drawing.Point(305, 144)
-        Me.txtDelaySet.Name = "txtDelaySet"
-        Me.txtDelaySet.Size = New System.Drawing.Size(88, 20)
-        Me.txtDelaySet.TabIndex = 35
+        Me.tbPageText.Location = New System.Drawing.Point(63, 89)
+        Me.tbPageText.Multiline = True
+        Me.tbPageText.Name = "tbPageText"
+        Me.tbPageText.Size = New System.Drawing.Size(490, 151)
+        Me.tbPageText.TabIndex = 35
         '
         'Label14
         '
@@ -822,7 +645,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label14.AutoSize = True
         Me.Label14.BackColor = System.Drawing.Color.Red
-        Me.Label14.Location = New System.Drawing.Point(405, 46)
+        Me.Label14.Location = New System.Drawing.Point(388, 15)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(52, 13)
         Me.Label14.TabIndex = 34
@@ -830,7 +653,7 @@ Partial Class Form1
         '
         'txtPageIfNotSet
         '
-        Me.txtPageIfNotSet.Location = New System.Drawing.Point(455, 43)
+        Me.txtPageIfNotSet.Location = New System.Drawing.Point(453, 15)
         Me.txtPageIfNotSet.Name = "txtPageIfNotSet"
         Me.txtPageIfNotSet.Size = New System.Drawing.Size(100, 20)
         Me.txtPageIfNotSet.TabIndex = 33
@@ -842,7 +665,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label15.AutoSize = True
         Me.Label15.BackColor = System.Drawing.Color.Red
-        Me.Label15.Location = New System.Drawing.Point(282, 46)
+        Me.Label15.Location = New System.Drawing.Point(188, 15)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(32, 13)
         Me.Label15.TabIndex = 32
@@ -850,7 +673,7 @@ Partial Class Form1
         '
         'txtPageIfSet
         '
-        Me.txtPageIfSet.Location = New System.Drawing.Point(314, 43)
+        Me.txtPageIfSet.Location = New System.Drawing.Point(256, 15)
         Me.txtPageIfSet.Name = "txtPageIfSet"
         Me.txtPageIfSet.Size = New System.Drawing.Size(88, 20)
         Me.txtPageIfSet.TabIndex = 31
@@ -861,7 +684,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(405, 18)
+        Me.Label13.Location = New System.Drawing.Point(388, 43)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(37, 13)
         Me.Label13.TabIndex = 30
@@ -869,7 +692,7 @@ Partial Class Form1
         '
         'txtPageUnSet
         '
-        Me.txtPageUnSet.Location = New System.Drawing.Point(455, 15)
+        Me.txtPageUnSet.Location = New System.Drawing.Point(453, 43)
         Me.txtPageUnSet.Name = "txtPageUnSet"
         Me.txtPageUnSet.Size = New System.Drawing.Size(100, 20)
         Me.txtPageUnSet.TabIndex = 29
@@ -880,7 +703,7 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(282, 18)
+        Me.Label12.Location = New System.Drawing.Point(188, 43)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(23, 13)
         Me.Label12.TabIndex = 28
@@ -888,165 +711,478 @@ Partial Class Form1
         '
         'txtPageSet
         '
-        Me.txtPageSet.Location = New System.Drawing.Point(314, 15)
+        Me.txtPageSet.Location = New System.Drawing.Point(256, 43)
         Me.txtPageSet.Name = "txtPageSet"
         Me.txtPageSet.Size = New System.Drawing.Size(88, 20)
         Me.txtPageSet.TabIndex = 27
         '
-        'WebBrowser2
+        'lblPage
         '
-        Me.WebBrowser2.Anchor = CType(((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.WebBrowser2.Location = New System.Drawing.Point(26, 316)
-        Me.WebBrowser2.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.WebBrowser2.Name = "WebBrowser2"
-        Me.WebBrowser2.Size = New System.Drawing.Size(696, 140)
-        Me.WebBrowser2.TabIndex = 26
-        '
-        'btnDeletePage
-        '
-        Me.btnDeletePage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnDeletePage.Location = New System.Drawing.Point(223, 591)
-        Me.btnDeletePage.Name = "btnDeletePage"
-        Me.btnDeletePage.Size = New System.Drawing.Size(75, 23)
-        Me.btnDeletePage.TabIndex = 25
-        Me.btnDeletePage.Text = "Delete Page"
-        Me.btnDeletePage.UseVisualStyleBackColor = True
-        '
-        'btnNewPage
-        '
-        Me.btnNewPage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnNewPage.Location = New System.Drawing.Point(121, 591)
-        Me.btnNewPage.Name = "btnNewPage"
-        Me.btnNewPage.Size = New System.Drawing.Size(75, 23)
-        Me.btnNewPage.TabIndex = 24
-        Me.btnNewPage.Text = "New Page"
-        Me.btnNewPage.UseVisualStyleBackColor = True
-        '
-        'btnSavePage
-        '
-        Me.btnSavePage.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
-        Me.btnSavePage.Location = New System.Drawing.Point(23, 591)
-        Me.btnSavePage.Name = "btnSavePage"
-        Me.btnSavePage.Size = New System.Drawing.Size(75, 23)
-        Me.btnSavePage.TabIndex = 23
-        Me.btnSavePage.Text = "Save Page"
-        Me.btnSavePage.UseVisualStyleBackColor = True
-        '
-        'cbAudio
-        '
-        Me.cbAudio.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.lblPage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cbAudio.AutoSize = True
-        Me.cbAudio.Location = New System.Drawing.Point(23, 247)
-        Me.cbAudio.Name = "cbAudio"
-        Me.cbAudio.Size = New System.Drawing.Size(53, 17)
-        Me.cbAudio.TabIndex = 22
-        Me.cbAudio.Text = "Audio"
-        Me.cbAudio.UseVisualStyleBackColor = True
+        Me.lblPage.AutoSize = True
+        Me.lblPage.Location = New System.Drawing.Point(20, 15)
+        Me.lblPage.Name = "lblPage"
+        Me.lblPage.Size = New System.Drawing.Size(32, 13)
+        Me.lblPage.TabIndex = 1
+        Me.lblPage.Text = "Page"
         '
-        'cbVideo
+        'TabImage
         '
-        Me.cbVideo.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.TabImage.Controls.Add(Me.ListView1)
+        Me.TabImage.Controls.Add(Me.bntImage)
+        Me.TabImage.Controls.Add(Me.PictureBox2)
+        Me.TabImage.Controls.Add(Me.Label1)
+        Me.TabImage.Controls.Add(Me.tbImage)
+        Me.TabImage.Location = New System.Drawing.Point(4, 22)
+        Me.TabImage.Name = "TabImage"
+        Me.TabImage.Size = New System.Drawing.Size(1066, 612)
+        Me.TabImage.TabIndex = 11
+        Me.TabImage.Text = "Image"
+        Me.TabImage.UseVisualStyleBackColor = True
+        '
+        'ListView1
+        '
+        Me.ListView1.Dock = System.Windows.Forms.DockStyle.Right
+        Me.ListView1.Location = New System.Drawing.Point(531, 0)
+        Me.ListView1.MultiSelect = False
+        Me.ListView1.Name = "ListView1"
+        Me.ListView1.Size = New System.Drawing.Size(535, 612)
+        Me.ListView1.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.ListView1.TabIndex = 19
+        Me.ListView1.UseCompatibleStateImageBehavior = False
+        '
+        'bntImage
+        '
+        Me.bntImage.Location = New System.Drawing.Point(241, 59)
+        Me.bntImage.Name = "bntImage"
+        Me.bntImage.Size = New System.Drawing.Size(27, 25)
+        Me.bntImage.TabIndex = 18
+        Me.bntImage.Text = "..."
+        Me.bntImage.UseVisualStyleBackColor = True
+        '
+        'PictureBox2
+        '
+        Me.PictureBox2.Location = New System.Drawing.Point(315, 21)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(174, 115)
+        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox2.TabIndex = 17
+        Me.PictureBox2.TabStop = False
+        '
+        'Label1
+        '
+        Me.Label1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cbVideo.AutoSize = True
-        Me.cbVideo.BackColor = System.Drawing.Color.Red
-        Me.cbVideo.Location = New System.Drawing.Point(23, 282)
-        Me.cbVideo.Name = "cbVideo"
-        Me.cbVideo.Size = New System.Drawing.Size(53, 17)
-        Me.cbVideo.TabIndex = 21
-        Me.cbVideo.Text = "Video"
-        Me.cbVideo.UseVisualStyleBackColor = False
+        Me.Label1.AutoSize = True
+        Me.Label1.Location = New System.Drawing.Point(23, 62)
+        Me.Label1.Name = "Label1"
+        Me.Label1.Size = New System.Drawing.Size(36, 13)
+        Me.Label1.TabIndex = 16
+        Me.Label1.Text = "Image"
+        '
+        'tbImage
+        '
+        Me.tbImage.Location = New System.Drawing.Point(75, 59)
+        Me.tbImage.Name = "tbImage"
+        Me.tbImage.Size = New System.Drawing.Size(143, 20)
+        Me.tbImage.TabIndex = 15
+        '
+        'TabAudio
+        '
+        Me.TabAudio.Controls.Add(Me.ListView2)
+        Me.TabAudio.Controls.Add(Me.Label30)
+        Me.TabAudio.Controls.Add(Me.Label26)
+        Me.TabAudio.Controls.Add(Me.tbAudioStartAt)
+        Me.TabAudio.Controls.Add(Me.Label25)
+        Me.TabAudio.Controls.Add(Me.tbAudioStopAt)
+        Me.TabAudio.Controls.Add(Me.Label23)
+        Me.TabAudio.Controls.Add(Me.tbAudioTarget)
+        Me.TabAudio.Controls.Add(Me.btnAudio)
+        Me.TabAudio.Controls.Add(Me.tbAudio)
+        Me.TabAudio.Location = New System.Drawing.Point(4, 22)
+        Me.TabAudio.Name = "TabAudio"
+        Me.TabAudio.Size = New System.Drawing.Size(1066, 612)
+        Me.TabAudio.TabIndex = 7
+        Me.TabAudio.Text = "Audio"
+        Me.TabAudio.UseVisualStyleBackColor = True
+        '
+        'ListView2
+        '
+        Me.ListView2.Dock = System.Windows.Forms.DockStyle.Right
+        Me.ListView2.Location = New System.Drawing.Point(532, 0)
+        Me.ListView2.MultiSelect = False
+        Me.ListView2.Name = "ListView2"
+        Me.ListView2.Size = New System.Drawing.Size(534, 612)
+        Me.ListView2.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.ListView2.TabIndex = 56
+        Me.ListView2.UseCompatibleStateImageBehavior = False
+        Me.ListView2.View = System.Windows.Forms.View.List
+        '
+        'Label30
+        '
+        Me.Label30.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label30.AutoSize = True
+        Me.Label30.Location = New System.Drawing.Point(20, 23)
+        Me.Label30.Name = "Label30"
+        Me.Label30.Size = New System.Drawing.Size(23, 13)
+        Me.Label30.TabIndex = 55
+        Me.Label30.Text = "File"
+        '
+        'Label26
+        '
+        Me.Label26.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label26.AutoSize = True
+        Me.Label26.BackColor = System.Drawing.Color.Red
+        Me.Label26.Location = New System.Drawing.Point(21, 99)
+        Me.Label26.Name = "Label26"
+        Me.Label26.Size = New System.Drawing.Size(39, 13)
+        Me.Label26.TabIndex = 54
+        Me.Label26.Text = "start-at"
+        '
+        'tbAudioStartAt
+        '
+        Me.tbAudioStartAt.Location = New System.Drawing.Point(82, 97)
+        Me.tbAudioStartAt.Name = "tbAudioStartAt"
+        Me.tbAudioStartAt.Size = New System.Drawing.Size(100, 20)
+        Me.tbAudioStartAt.TabIndex = 53
+        '
+        'Label25
+        '
+        Me.Label25.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label25.AutoSize = True
+        Me.Label25.BackColor = System.Drawing.Color.Red
+        Me.Label25.Location = New System.Drawing.Point(21, 139)
+        Me.Label25.Name = "Label25"
+        Me.Label25.Size = New System.Drawing.Size(39, 13)
+        Me.Label25.TabIndex = 52
+        Me.Label25.Text = "stop-at"
+        '
+        'tbAudioStopAt
+        '
+        Me.tbAudioStopAt.Location = New System.Drawing.Point(82, 137)
+        Me.tbAudioStopAt.Name = "tbAudioStopAt"
+        Me.tbAudioStopAt.Size = New System.Drawing.Size(100, 20)
+        Me.tbAudioStopAt.TabIndex = 51
+        '
+        'Label23
+        '
+        Me.Label23.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label23.AutoSize = True
+        Me.Label23.BackColor = System.Drawing.Color.Red
+        Me.Label23.Location = New System.Drawing.Point(21, 62)
+        Me.Label23.Name = "Label23"
+        Me.Label23.Size = New System.Drawing.Size(38, 13)
+        Me.Label23.TabIndex = 50
+        Me.Label23.Text = "Target"
+        '
+        'tbAudioTarget
+        '
+        Me.tbAudioTarget.Location = New System.Drawing.Point(82, 60)
+        Me.tbAudioTarget.Name = "tbAudioTarget"
+        Me.tbAudioTarget.Size = New System.Drawing.Size(100, 20)
+        Me.tbAudioTarget.TabIndex = 49
         '
         'btnAudio
         '
-        Me.btnAudio.Location = New System.Drawing.Point(364, 247)
+        Me.btnAudio.Location = New System.Drawing.Point(277, 23)
         Me.btnAudio.Name = "btnAudio"
         Me.btnAudio.Size = New System.Drawing.Size(27, 25)
-        Me.btnAudio.TabIndex = 20
+        Me.btnAudio.TabIndex = 24
         Me.btnAudio.Text = "..."
         Me.btnAudio.UseVisualStyleBackColor = True
         '
         'tbAudio
         '
-        Me.tbAudio.Enabled = False
-        Me.tbAudio.Location = New System.Drawing.Point(168, 247)
+        Me.tbAudio.Location = New System.Drawing.Point(81, 23)
         Me.tbAudio.Name = "tbAudio"
         Me.tbAudio.Size = New System.Drawing.Size(194, 20)
-        Me.tbAudio.TabIndex = 18
+        Me.tbAudio.TabIndex = 23
+        '
+        'TabVideo
+        '
+        Me.TabVideo.Controls.Add(Me.ListView3)
+        Me.TabVideo.Controls.Add(Me.Label31)
+        Me.TabVideo.Controls.Add(Me.Label27)
+        Me.TabVideo.Controls.Add(Me.tbVideoStartAt)
+        Me.TabVideo.Controls.Add(Me.Label28)
+        Me.TabVideo.Controls.Add(Me.tbVideoStopAt)
+        Me.TabVideo.Controls.Add(Me.Label29)
+        Me.TabVideo.Controls.Add(Me.tbVideoTarget)
+        Me.TabVideo.Controls.Add(Me.btnVideo)
+        Me.TabVideo.Controls.Add(Me.tbVideo)
+        Me.TabVideo.Location = New System.Drawing.Point(4, 22)
+        Me.TabVideo.Name = "TabVideo"
+        Me.TabVideo.Size = New System.Drawing.Size(1066, 612)
+        Me.TabVideo.TabIndex = 8
+        Me.TabVideo.Text = "Video"
+        Me.TabVideo.UseVisualStyleBackColor = True
+        '
+        'ListView3
+        '
+        Me.ListView3.Dock = System.Windows.Forms.DockStyle.Right
+        Me.ListView3.Location = New System.Drawing.Point(532, 0)
+        Me.ListView3.MultiSelect = False
+        Me.ListView3.Name = "ListView3"
+        Me.ListView3.Size = New System.Drawing.Size(534, 612)
+        Me.ListView3.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.ListView3.TabIndex = 62
+        Me.ListView3.UseCompatibleStateImageBehavior = False
+        Me.ListView3.View = System.Windows.Forms.View.List
+        '
+        'Label31
+        '
+        Me.Label31.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label31.AutoSize = True
+        Me.Label31.BackColor = System.Drawing.Color.Red
+        Me.Label31.Location = New System.Drawing.Point(21, 19)
+        Me.Label31.Name = "Label31"
+        Me.Label31.Size = New System.Drawing.Size(23, 13)
+        Me.Label31.TabIndex = 61
+        Me.Label31.Text = "File"
+        '
+        'Label27
+        '
+        Me.Label27.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label27.AutoSize = True
+        Me.Label27.BackColor = System.Drawing.Color.Red
+        Me.Label27.Location = New System.Drawing.Point(21, 96)
+        Me.Label27.Name = "Label27"
+        Me.Label27.Size = New System.Drawing.Size(39, 13)
+        Me.Label27.TabIndex = 60
+        Me.Label27.Text = "start-at"
+        '
+        'tbVideoStartAt
+        '
+        Me.tbVideoStartAt.Location = New System.Drawing.Point(82, 94)
+        Me.tbVideoStartAt.Name = "tbVideoStartAt"
+        Me.tbVideoStartAt.Size = New System.Drawing.Size(100, 20)
+        Me.tbVideoStartAt.TabIndex = 59
+        '
+        'Label28
+        '
+        Me.Label28.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label28.AutoSize = True
+        Me.Label28.BackColor = System.Drawing.Color.Red
+        Me.Label28.Location = New System.Drawing.Point(21, 136)
+        Me.Label28.Name = "Label28"
+        Me.Label28.Size = New System.Drawing.Size(39, 13)
+        Me.Label28.TabIndex = 58
+        Me.Label28.Text = "stop-at"
+        '
+        'tbVideoStopAt
+        '
+        Me.tbVideoStopAt.Location = New System.Drawing.Point(82, 134)
+        Me.tbVideoStopAt.Name = "tbVideoStopAt"
+        Me.tbVideoStopAt.Size = New System.Drawing.Size(100, 20)
+        Me.tbVideoStopAt.TabIndex = 57
+        '
+        'Label29
+        '
+        Me.Label29.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label29.AutoSize = True
+        Me.Label29.BackColor = System.Drawing.Color.Red
+        Me.Label29.Location = New System.Drawing.Point(21, 59)
+        Me.Label29.Name = "Label29"
+        Me.Label29.Size = New System.Drawing.Size(38, 13)
+        Me.Label29.TabIndex = 56
+        Me.Label29.Text = "Target"
+        '
+        'tbVideoTarget
+        '
+        Me.tbVideoTarget.Location = New System.Drawing.Point(82, 57)
+        Me.tbVideoTarget.Name = "tbVideoTarget"
+        Me.tbVideoTarget.Size = New System.Drawing.Size(100, 20)
+        Me.tbVideoTarget.TabIndex = 55
         '
         'btnVideo
         '
-        Me.btnVideo.Location = New System.Drawing.Point(364, 282)
+        Me.btnVideo.Location = New System.Drawing.Point(278, 19)
         Me.btnVideo.Name = "btnVideo"
         Me.btnVideo.Size = New System.Drawing.Size(27, 25)
-        Me.btnVideo.TabIndex = 17
+        Me.btnVideo.TabIndex = 23
         Me.btnVideo.Text = "..."
         Me.btnVideo.UseVisualStyleBackColor = True
         '
         'tbVideo
         '
-        Me.tbVideo.Enabled = False
-        Me.tbVideo.Location = New System.Drawing.Point(168, 282)
+        Me.tbVideo.Location = New System.Drawing.Point(82, 19)
         Me.tbVideo.Name = "tbVideo"
         Me.tbVideo.Size = New System.Drawing.Size(194, 20)
-        Me.tbVideo.TabIndex = 15
+        Me.tbVideo.TabIndex = 22
         '
-        'bntImage
+        'TabMetronome
         '
-        Me.bntImage.Location = New System.Drawing.Point(241, 43)
-        Me.bntImage.Name = "bntImage"
-        Me.bntImage.Size = New System.Drawing.Size(27, 25)
-        Me.bntImage.TabIndex = 14
-        Me.bntImage.Text = "..."
-        Me.bntImage.UseVisualStyleBackColor = True
+        Me.TabMetronome.Controls.Add(Me.tbMetronome)
+        Me.TabMetronome.Controls.Add(Me.cbMetronome)
+        Me.TabMetronome.Location = New System.Drawing.Point(4, 22)
+        Me.TabMetronome.Name = "TabMetronome"
+        Me.TabMetronome.Size = New System.Drawing.Size(1066, 612)
+        Me.TabMetronome.TabIndex = 10
+        Me.TabMetronome.Text = "Metronome"
+        Me.TabMetronome.UseVisualStyleBackColor = True
         '
-        'DataGridView1
+        'tbMetronome
         '
-        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.tbMetronome.Location = New System.Drawing.Point(159, 30)
+        Me.tbMetronome.Name = "tbMetronome"
+        Me.tbMetronome.Size = New System.Drawing.Size(100, 20)
+        Me.tbMetronome.TabIndex = 7
+        '
+        'cbMetronome
+        '
+        Me.cbMetronome.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
-        Me.DataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
-        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.btnText, Me.btnTarget, Me.btnSet, Me.btnUnset, Me.btnIfSet, Me.bntIfUnSet})
-        Me.DataGridView1.Location = New System.Drawing.Point(16, 473)
-        Me.DataGridView1.MultiSelect = False
-        Me.DataGridView1.Name = "DataGridView1"
-        Me.DataGridView1.Size = New System.Drawing.Size(706, 112)
-        Me.DataGridView1.TabIndex = 13
+        Me.cbMetronome.AutoSize = True
+        Me.cbMetronome.BackColor = System.Drawing.Color.Red
+        Me.cbMetronome.Location = New System.Drawing.Point(14, 30)
+        Me.cbMetronome.Name = "cbMetronome"
+        Me.cbMetronome.Size = New System.Drawing.Size(105, 17)
+        Me.cbMetronome.TabIndex = 6
+        Me.cbMetronome.Text = "Metronome BPM"
+        Me.cbMetronome.UseVisualStyleBackColor = False
         '
-        'btnText
+        'TabDelay
         '
-        Me.btnText.HeaderText = "Text"
-        Me.btnText.Name = "btnText"
+        Me.TabDelay.Controls.Add(Me.Label22)
+        Me.TabDelay.Controls.Add(Me.tbDelayStartWith)
+        Me.TabDelay.Controls.Add(Me.Label16)
+        Me.TabDelay.Controls.Add(Me.txtDelayIfNotSet)
+        Me.TabDelay.Controls.Add(Me.Label17)
+        Me.TabDelay.Controls.Add(Me.txtDelayIfSet)
+        Me.TabDelay.Controls.Add(Me.Label18)
+        Me.TabDelay.Controls.Add(Me.txtDelayUnSet)
+        Me.TabDelay.Controls.Add(Me.Label19)
+        Me.TabDelay.Controls.Add(Me.txtDelaySet)
+        Me.TabDelay.Controls.Add(Me.Label3)
+        Me.TabDelay.Controls.Add(Me.Label2)
+        Me.TabDelay.Controls.Add(Me.tbDelayTarget)
+        Me.TabDelay.Controls.Add(Me.gbDelay)
+        Me.TabDelay.Controls.Add(Me.tbDelaySeconds)
+        Me.TabDelay.Controls.Add(Me.cbDelay)
+        Me.TabDelay.Location = New System.Drawing.Point(4, 22)
+        Me.TabDelay.Name = "TabDelay"
+        Me.TabDelay.Size = New System.Drawing.Size(1066, 612)
+        Me.TabDelay.TabIndex = 9
+        Me.TabDelay.Text = "Delay"
+        Me.TabDelay.UseVisualStyleBackColor = True
         '
-        'btnTarget
+        'Label22
         '
-        Me.btnTarget.HeaderText = "Target"
-        Me.btnTarget.Name = "btnTarget"
+        Me.Label22.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label22.AutoSize = True
+        Me.Label22.BackColor = System.Drawing.Color.Red
+        Me.Label22.Location = New System.Drawing.Point(104, 100)
+        Me.Label22.Name = "Label22"
+        Me.Label22.Size = New System.Drawing.Size(49, 13)
+        Me.Label22.TabIndex = 58
+        Me.Label22.Text = "start-with"
         '
-        'btnSet
+        'tbDelayStartWith
         '
-        Me.btnSet.HeaderText = "Set"
-        Me.btnSet.Name = "btnSet"
+        Me.tbDelayStartWith.Location = New System.Drawing.Point(165, 98)
+        Me.tbDelayStartWith.Name = "tbDelayStartWith"
+        Me.tbDelayStartWith.Size = New System.Drawing.Size(100, 20)
+        Me.tbDelayStartWith.TabIndex = 57
         '
-        'btnUnset
+        'Label16
         '
-        Me.btnUnset.HeaderText = "Unset"
-        Me.btnUnset.Name = "btnUnset"
+        Me.Label16.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label16.AutoSize = True
+        Me.Label16.BackColor = System.Drawing.Color.Red
+        Me.Label16.Location = New System.Drawing.Point(395, 64)
+        Me.Label16.Name = "Label16"
+        Me.Label16.Size = New System.Drawing.Size(52, 13)
+        Me.Label16.TabIndex = 56
+        Me.Label16.Text = "If Not Set"
         '
-        'btnIfSet
+        'txtDelayIfNotSet
         '
-        Me.btnIfSet.HeaderText = "If Set"
-        Me.btnIfSet.Name = "btnIfSet"
+        Me.txtDelayIfNotSet.Location = New System.Drawing.Point(448, 61)
+        Me.txtDelayIfNotSet.Name = "txtDelayIfNotSet"
+        Me.txtDelayIfNotSet.Size = New System.Drawing.Size(100, 20)
+        Me.txtDelayIfNotSet.TabIndex = 55
         '
-        'bntIfUnSet
+        'Label17
         '
-        Me.bntIfUnSet.HeaderText = "If Not Set"
-        Me.bntIfUnSet.Name = "bntIfUnSet"
+        Me.Label17.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label17.AutoSize = True
+        Me.Label17.BackColor = System.Drawing.Color.Red
+        Me.Label17.Location = New System.Drawing.Point(270, 64)
+        Me.Label17.Name = "Label17"
+        Me.Label17.Size = New System.Drawing.Size(32, 13)
+        Me.Label17.TabIndex = 54
+        Me.Label17.Text = "If Set"
+        '
+        'txtDelayIfSet
+        '
+        Me.txtDelayIfSet.Location = New System.Drawing.Point(302, 61)
+        Me.txtDelayIfSet.Name = "txtDelayIfSet"
+        Me.txtDelayIfSet.Size = New System.Drawing.Size(88, 20)
+        Me.txtDelayIfSet.TabIndex = 53
+        '
+        'Label18
+        '
+        Me.Label18.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label18.AutoSize = True
+        Me.Label18.Location = New System.Drawing.Point(395, 29)
+        Me.Label18.Name = "Label18"
+        Me.Label18.Size = New System.Drawing.Size(37, 13)
+        Me.Label18.TabIndex = 52
+        Me.Label18.Text = "UnSet"
+        '
+        'txtDelayUnSet
+        '
+        Me.txtDelayUnSet.Location = New System.Drawing.Point(448, 26)
+        Me.txtDelayUnSet.Name = "txtDelayUnSet"
+        Me.txtDelayUnSet.Size = New System.Drawing.Size(100, 20)
+        Me.txtDelayUnSet.TabIndex = 51
+        '
+        'Label19
+        '
+        Me.Label19.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label19.AutoSize = True
+        Me.Label19.Location = New System.Drawing.Point(270, 29)
+        Me.Label19.Name = "Label19"
+        Me.Label19.Size = New System.Drawing.Size(23, 13)
+        Me.Label19.TabIndex = 50
+        Me.Label19.Text = "Set"
+        '
+        'txtDelaySet
+        '
+        Me.txtDelaySet.Location = New System.Drawing.Point(302, 26)
+        Me.txtDelaySet.Name = "txtDelaySet"
+        Me.txtDelaySet.Size = New System.Drawing.Size(88, 20)
+        Me.txtDelaySet.TabIndex = 49
         '
         'Label3
         '
@@ -1054,10 +1190,10 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(108, 182)
+        Me.Label3.Location = New System.Drawing.Point(105, 64)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(38, 13)
-        Me.Label3.TabIndex = 11
+        Me.Label3.TabIndex = 48
         Me.Label3.Text = "Target"
         '
         'Label2
@@ -1066,28 +1202,28 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(100, 144)
+        Me.Label2.Location = New System.Drawing.Point(97, 26)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(49, 13)
-        Me.Label2.TabIndex = 10
+        Me.Label2.TabIndex = 47
         Me.Label2.Text = "Seconds"
         '
         'tbDelayTarget
         '
-        Me.tbDelayTarget.Location = New System.Drawing.Point(169, 180)
+        Me.tbDelayTarget.Location = New System.Drawing.Point(166, 62)
         Me.tbDelayTarget.Name = "tbDelayTarget"
         Me.tbDelayTarget.Size = New System.Drawing.Size(100, 20)
-        Me.tbDelayTarget.TabIndex = 9
+        Me.tbDelayTarget.TabIndex = 46
         '
         'gbDelay
         '
         Me.gbDelay.Controls.Add(Me.rbSecret)
         Me.gbDelay.Controls.Add(Me.rbHidden)
         Me.gbDelay.Controls.Add(Me.rbNormal)
-        Me.gbDelay.Location = New System.Drawing.Point(560, 136)
+        Me.gbDelay.Location = New System.Drawing.Point(557, 18)
         Me.gbDelay.Name = "gbDelay"
         Me.gbDelay.Size = New System.Drawing.Size(131, 100)
-        Me.gbDelay.TabIndex = 8
+        Me.gbDelay.TabIndex = 45
         Me.gbDelay.TabStop = False
         Me.gbDelay.Text = "Style"
         '
@@ -1135,10 +1271,10 @@ Partial Class Form1
         '
         'tbDelaySeconds
         '
-        Me.tbDelaySeconds.Location = New System.Drawing.Point(168, 141)
+        Me.tbDelaySeconds.Location = New System.Drawing.Point(165, 23)
         Me.tbDelaySeconds.Name = "tbDelaySeconds"
         Me.tbDelaySeconds.Size = New System.Drawing.Size(100, 20)
-        Me.tbDelaySeconds.TabIndex = 7
+        Me.tbDelaySeconds.TabIndex = 44
         '
         'cbDelay
         '
@@ -1146,83 +1282,100 @@ Partial Class Form1
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.cbDelay.AutoSize = True
-        Me.cbDelay.Location = New System.Drawing.Point(23, 141)
+        Me.cbDelay.Location = New System.Drawing.Point(20, 23)
         Me.cbDelay.Name = "cbDelay"
         Me.cbDelay.Size = New System.Drawing.Size(53, 17)
-        Me.cbDelay.TabIndex = 6
+        Me.cbDelay.TabIndex = 43
         Me.cbDelay.Text = "Delay"
         Me.cbDelay.UseVisualStyleBackColor = True
         '
-        'tbMetronome
+        'TabButtons
         '
-        Me.tbMetronome.Location = New System.Drawing.Point(168, 93)
-        Me.tbMetronome.Name = "tbMetronome"
-        Me.tbMetronome.Size = New System.Drawing.Size(100, 20)
-        Me.tbMetronome.TabIndex = 5
+        Me.TabButtons.Controls.Add(Me.btnMoveDown)
+        Me.TabButtons.Controls.Add(Me.btnRowUp)
+        Me.TabButtons.Controls.Add(Me.DataGridView1)
+        Me.TabButtons.Location = New System.Drawing.Point(4, 22)
+        Me.TabButtons.Name = "TabButtons"
+        Me.TabButtons.Padding = New System.Windows.Forms.Padding(3)
+        Me.TabButtons.Size = New System.Drawing.Size(1066, 612)
+        Me.TabButtons.TabIndex = 6
+        Me.TabButtons.Text = "Buttons"
+        Me.TabButtons.UseVisualStyleBackColor = True
         '
-        'cbMetronome
+        'btnMoveDown
         '
-        Me.cbMetronome.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+        Me.btnMoveDown.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnMoveDown.Location = New System.Drawing.Point(101, 455)
+        Me.btnMoveDown.Name = "btnMoveDown"
+        Me.btnMoveDown.Size = New System.Drawing.Size(75, 23)
+        Me.btnMoveDown.TabIndex = 50
+        Me.btnMoveDown.Text = "Move Down"
+        Me.btnMoveDown.UseVisualStyleBackColor = True
+        '
+        'btnRowUp
+        '
+        Me.btnRowUp.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Left), System.Windows.Forms.AnchorStyles)
+        Me.btnRowUp.Location = New System.Drawing.Point(6, 455)
+        Me.btnRowUp.Name = "btnRowUp"
+        Me.btnRowUp.Size = New System.Drawing.Size(75, 23)
+        Me.btnRowUp.TabIndex = 49
+        Me.btnRowUp.Text = "Move Up"
+        Me.btnRowUp.UseVisualStyleBackColor = True
+        '
+        'DataGridView1
+        '
+        Me.DataGridView1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
                     Or System.Windows.Forms.AnchorStyles.Left) _
                     Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.cbMetronome.AutoSize = True
-        Me.cbMetronome.BackColor = System.Drawing.Color.Red
-        Me.cbMetronome.Location = New System.Drawing.Point(23, 93)
-        Me.cbMetronome.Name = "cbMetronome"
-        Me.cbMetronome.Size = New System.Drawing.Size(105, 17)
-        Me.cbMetronome.TabIndex = 4
-        Me.cbMetronome.Text = "Metronome BPM"
-        Me.cbMetronome.UseVisualStyleBackColor = False
+        Me.DataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill
+        Me.DataGridView1.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells
+        Me.DataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
+        Me.DataGridView1.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.btnText, Me.btnTarget, Me.btnSet, Me.btnUnset, Me.btnIfSet, Me.bntIfUnSet})
+        Me.DataGridView1.Location = New System.Drawing.Point(3, 6)
+        Me.DataGridView1.MultiSelect = False
+        Me.DataGridView1.Name = "DataGridView1"
+        Me.DataGridView1.Size = New System.Drawing.Size(1055, 443)
+        Me.DataGridView1.TabIndex = 48
         '
-        'PictureBox2
+        'btnText
         '
-        Me.PictureBox2.Location = New System.Drawing.Point(558, 15)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(174, 115)
-        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox2.TabIndex = 3
-        Me.PictureBox2.TabStop = False
+        Me.btnText.HeaderText = "Text"
+        Me.btnText.Name = "btnText"
         '
-        'Label1
+        'btnTarget
         '
-        Me.Label1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(23, 46)
-        Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(36, 13)
-        Me.Label1.TabIndex = 2
-        Me.Label1.Text = "Image"
+        Me.btnTarget.HeaderText = "Target"
+        Me.btnTarget.Name = "btnTarget"
         '
-        'lblPage
+        'btnSet
         '
-        Me.lblPage.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
-        Me.lblPage.AutoSize = True
-        Me.lblPage.Location = New System.Drawing.Point(20, 15)
-        Me.lblPage.Name = "lblPage"
-        Me.lblPage.Size = New System.Drawing.Size(32, 13)
-        Me.lblPage.TabIndex = 1
-        Me.lblPage.Text = "Page"
+        Me.btnSet.HeaderText = "Set"
+        Me.btnSet.Name = "btnSet"
         '
-        'tbImage
+        'btnUnset
         '
-        Me.tbImage.Location = New System.Drawing.Point(75, 43)
-        Me.tbImage.Name = "tbImage"
-        Me.tbImage.Size = New System.Drawing.Size(143, 20)
-        Me.tbImage.TabIndex = 0
+        Me.btnUnset.HeaderText = "Unset"
+        Me.btnUnset.Name = "btnUnset"
         '
-        'TabPage4
+        'btnIfSet
         '
-        Me.TabPage4.Controls.Add(Me.SplitContainer4)
-        Me.TabPage4.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage4.Name = "TabPage4"
-        Me.TabPage4.Size = New System.Drawing.Size(1066, 636)
-        Me.TabPage4.TabIndex = 3
-        Me.TabPage4.Text = "WYSIWYG Edit Text"
-        Me.TabPage4.UseVisualStyleBackColor = True
+        Me.btnIfSet.HeaderText = "If Set"
+        Me.btnIfSet.Name = "btnIfSet"
+        '
+        'bntIfUnSet
+        '
+        Me.bntIfUnSet.HeaderText = "If Not Set"
+        Me.bntIfUnSet.Name = "bntIfUnSet"
+        '
+        'TabPageWYSIWYG
+        '
+        Me.TabPageWYSIWYG.Controls.Add(Me.SplitContainer4)
+        Me.TabPageWYSIWYG.Location = New System.Drawing.Point(4, 22)
+        Me.TabPageWYSIWYG.Name = "TabPageWYSIWYG"
+        Me.TabPageWYSIWYG.Size = New System.Drawing.Size(1066, 612)
+        Me.TabPageWYSIWYG.TabIndex = 3
+        Me.TabPageWYSIWYG.Text = "WYSIWYG Edit Text"
+        Me.TabPageWYSIWYG.UseVisualStyleBackColor = True
         '
         'SplitContainer4
         '
@@ -1237,14 +1390,14 @@ Partial Class Form1
         '
         'SplitContainer4.Panel2
         '
-        Me.SplitContainer4.Panel2.Controls.Add(Me.WebBrowser3)
-        Me.SplitContainer4.Size = New System.Drawing.Size(1066, 636)
-        Me.SplitContainer4.SplitterDistance = 32
+        Me.SplitContainer4.Panel2.Controls.Add(Me.SplitContainer9)
+        Me.SplitContainer4.Size = New System.Drawing.Size(1066, 612)
+        Me.SplitContainer4.SplitterDistance = 30
         Me.SplitContainer4.TabIndex = 0
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tscbBold, Me.tscbItalic, Me.tscbUnderline, Me.tsbtnColour, Me.tscbCut, Me.tscbCopy, Me.tscbPaste, Me.tscbUpdate})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tscbBold, Me.tscbItalic, Me.tscbUnderline, Me.tsbtnColour, Me.tscbCut, Me.tscbCopy, Me.tscbPaste, Me.tscbTextToVisual, Me.tscbVisualToText, Me.ToolStripButton1, Me.ToolStripButton2, Me.ToolStripButton3})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(1066, 25)
@@ -1324,82 +1477,105 @@ Partial Class Form1
         Me.tscbPaste.Tag = "Paste"
         Me.tscbPaste.ToolTipText = "Paste"
         '
-        'tscbUpdate
+        'tscbTextToVisual
         '
-        Me.tscbUpdate.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tscbUpdate.Image = CType(resources.GetObject("tscbUpdate.Image"), System.Drawing.Image)
-        Me.tscbUpdate.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbUpdate.Name = "tscbUpdate"
-        Me.tscbUpdate.Size = New System.Drawing.Size(23, 22)
-        Me.tscbUpdate.ToolTipText = "Update Page Text"
+        Me.tscbTextToVisual.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.tscbTextToVisual.Image = CType(resources.GetObject("tscbTextToVisual.Image"), System.Drawing.Image)
+        Me.tscbTextToVisual.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbTextToVisual.Name = "tscbTextToVisual"
+        Me.tscbTextToVisual.Size = New System.Drawing.Size(78, 22)
+        Me.tscbTextToVisual.Text = "TextToVisual"
         '
-        'WebBrowser3
+        'tscbVisualToText
         '
-        Me.WebBrowser3.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.WebBrowser3.IsWebBrowserContextMenuEnabled = False
-        Me.WebBrowser3.Location = New System.Drawing.Point(0, 0)
-        Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
-        Me.WebBrowser3.Name = "WebBrowser3"
-        Me.WebBrowser3.ScriptErrorsSuppressed = True
-        Me.WebBrowser3.Size = New System.Drawing.Size(1066, 600)
-        Me.WebBrowser3.TabIndex = 27
-        Me.WebBrowser3.WebBrowserShortcutsEnabled = False
+        Me.tscbVisualToText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.tscbVisualToText.Image = CType(resources.GetObject("tscbVisualToText.Image"), System.Drawing.Image)
+        Me.tscbVisualToText.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbVisualToText.Name = "tscbVisualToText"
+        Me.tscbVisualToText.Size = New System.Drawing.Size(78, 22)
+        Me.tscbVisualToText.Text = "VisualToText"
         '
-        'TabPage6
+        'ToolStripButton1
         '
-        Me.TabPage6.Controls.Add(Me.SplitContainer7)
-        Me.TabPage6.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage6.Name = "TabPage6"
-        Me.TabPage6.Size = New System.Drawing.Size(1066, 636)
-        Me.TabPage6.TabIndex = 5
-        Me.TabPage6.Text = "Raw Text Edit"
-        Me.TabPage6.UseVisualStyleBackColor = True
+        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
+        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton1.Name = "ToolStripButton1"
+        Me.ToolStripButton1.Size = New System.Drawing.Size(131, 22)
+        Me.ToolStripButton1.Text = "Grammar / Spell check"
         '
-        'SplitContainer7
+        'ToolStripButton2
         '
-        Me.SplitContainer7.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.SplitContainer7.Location = New System.Drawing.Point(0, 0)
-        Me.SplitContainer7.Name = "SplitContainer7"
-        Me.SplitContainer7.Orientation = System.Windows.Forms.Orientation.Horizontal
+        Me.ToolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripButton2.Image = CType(resources.GetObject("ToolStripButton2.Image"), System.Drawing.Image)
+        Me.ToolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton2.Name = "ToolStripButton2"
+        Me.ToolStripButton2.Size = New System.Drawing.Size(99, 22)
+        Me.ToolStripButton2.Text = "Copy From Page"
         '
-        'SplitContainer7.Panel1
+        'ToolStripButton3
         '
-        Me.SplitContainer7.Panel1.Controls.Add(Me.BtnRawText)
+        Me.ToolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), System.Drawing.Image)
+        Me.ToolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton3.Name = "ToolStripButton3"
+        Me.ToolStripButton3.Size = New System.Drawing.Size(85, 22)
+        Me.ToolStripButton3.Text = "Copy To Page"
         '
-        'SplitContainer7.Panel2
+        'SplitContainer9
         '
-        Me.SplitContainer7.Panel2.Controls.Add(Me.txtRawText)
-        Me.SplitContainer7.Size = New System.Drawing.Size(1066, 636)
-        Me.SplitContainer7.SplitterDistance = 28
-        Me.SplitContainer7.TabIndex = 0
+        Me.SplitContainer9.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SplitContainer9.Location = New System.Drawing.Point(3, 3)
+        Me.SplitContainer9.Name = "SplitContainer9"
+        Me.SplitContainer9.Orientation = System.Windows.Forms.Orientation.Horizontal
         '
-        'BtnRawText
+        'SplitContainer9.Panel1
         '
-        Me.BtnRawText.Location = New System.Drawing.Point(0, 0)
-        Me.BtnRawText.Name = "BtnRawText"
-        Me.BtnRawText.Size = New System.Drawing.Size(75, 23)
-        Me.BtnRawText.TabIndex = 0
-        Me.BtnRawText.Text = "Save Text"
-        Me.BtnRawText.UseVisualStyleBackColor = True
+        Me.SplitContainer9.Panel1.Controls.Add(Me.txtRawText)
+        '
+        'SplitContainer9.Panel2
+        '
+        Me.SplitContainer9.Panel2.Controls.Add(Me.WebBrowser3)
+        Me.SplitContainer9.Size = New System.Drawing.Size(1063, 572)
+        Me.SplitContainer9.SplitterDistance = 267
+        Me.SplitContainer9.TabIndex = 28
         '
         'txtRawText
         '
-        Me.txtRawText.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.txtRawText.Location = New System.Drawing.Point(0, 0)
+        Me.txtRawText.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.txtRawText.Location = New System.Drawing.Point(0, 2)
         Me.txtRawText.Multiline = True
         Me.txtRawText.Name = "txtRawText"
-        Me.txtRawText.Size = New System.Drawing.Size(1066, 604)
-        Me.txtRawText.TabIndex = 0
+        Me.txtRawText.Size = New System.Drawing.Size(1055, 263)
+        Me.txtRawText.TabIndex = 1
         '
-        'TabPage5
+        'WebBrowser3
         '
-        Me.TabPage5.Controls.Add(Me.SplitContainer6)
-        Me.TabPage5.Location = New System.Drawing.Point(4, 22)
-        Me.TabPage5.Name = "TabPage5"
-        Me.TabPage5.Size = New System.Drawing.Size(1066, 636)
-        Me.TabPage5.TabIndex = 4
-        Me.TabPage5.Text = "Nyx"
-        Me.TabPage5.UseVisualStyleBackColor = True
+        Me.WebBrowser3.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.WebBrowser3.IsWebBrowserContextMenuEnabled = False
+        Me.WebBrowser3.Location = New System.Drawing.Point(3, 3)
+        Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.WebBrowser3.Name = "WebBrowser3"
+        Me.WebBrowser3.ScriptErrorsSuppressed = True
+        Me.WebBrowser3.Size = New System.Drawing.Size(1057, 298)
+        Me.WebBrowser3.TabIndex = 27
+        Me.WebBrowser3.WebBrowserShortcutsEnabled = False
+        '
+        'TabNyx
+        '
+        Me.TabNyx.Controls.Add(Me.SplitContainer6)
+        Me.TabNyx.Location = New System.Drawing.Point(4, 22)
+        Me.TabNyx.Name = "TabNyx"
+        Me.TabNyx.Size = New System.Drawing.Size(1066, 612)
+        Me.TabNyx.TabIndex = 4
+        Me.TabNyx.Text = "Nyx"
+        Me.TabNyx.UseVisualStyleBackColor = True
         '
         'SplitContainer6
         '
@@ -1412,18 +1588,17 @@ Partial Class Form1
         '
         Me.SplitContainer6.Panel1.Controls.Add(Me.txtRandom)
         Me.SplitContainer6.Panel1.Controls.Add(Me.Label21)
-        Me.SplitContainer6.Panel1.Controls.Add(Me.btnNyx)
         '
         'SplitContainer6.Panel2
         '
         Me.SplitContainer6.Panel2.Controls.Add(Me.txtNyxScript)
-        Me.SplitContainer6.Size = New System.Drawing.Size(1066, 636)
-        Me.SplitContainer6.SplitterDistance = 35
+        Me.SplitContainer6.Size = New System.Drawing.Size(1066, 612)
+        Me.SplitContainer6.SplitterDistance = 33
         Me.SplitContainer6.TabIndex = 0
         '
         'txtRandom
         '
-        Me.txtRandom.Location = New System.Drawing.Point(354, 7)
+        Me.txtRandom.Location = New System.Drawing.Point(188, 7)
         Me.txtRandom.Name = "txtRandom"
         Me.txtRandom.Size = New System.Drawing.Size(100, 20)
         Me.txtRandom.TabIndex = 2
@@ -1432,20 +1607,11 @@ Partial Class Form1
         'Label21
         '
         Me.Label21.AutoSize = True
-        Me.Label21.Location = New System.Drawing.Point(172, 7)
+        Me.Label21.Location = New System.Drawing.Point(6, 7)
         Me.Label21.Name = "Label21"
         Me.Label21.Size = New System.Drawing.Size(166, 13)
         Me.Label21.TabIndex = 1
         Me.Label21.Text = "Start Number For Random Pages "
-        '
-        'btnNyx
-        '
-        Me.btnNyx.Location = New System.Drawing.Point(10, 7)
-        Me.btnNyx.Name = "btnNyx"
-        Me.btnNyx.Size = New System.Drawing.Size(155, 23)
-        Me.btnNyx.TabIndex = 0
-        Me.btnNyx.Text = "Generate Nyx Script"
-        Me.btnNyx.UseVisualStyleBackColor = True
         '
         'txtNyxScript
         '
@@ -1455,7 +1621,7 @@ Partial Class Form1
         Me.txtNyxScript.Multiline = True
         Me.txtNyxScript.Name = "txtNyxScript"
         Me.txtNyxScript.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtNyxScript.Size = New System.Drawing.Size(1066, 597)
+        Me.txtNyxScript.Size = New System.Drawing.Size(1066, 575)
         Me.txtNyxScript.TabIndex = 0
         '
         'OpenFileDialog1
@@ -1470,18 +1636,217 @@ Partial Class Form1
         '
         Me.FontDialog1.ShowColor = True
         '
+        'MenuStrip1
+        '
+        Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.PageToolStripMenuItem, Me.ToolsToolStripMenuItem})
+        Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.MenuStrip1.Name = "MenuStrip1"
+        Me.MenuStrip1.Size = New System.Drawing.Size(1074, 24)
+        Me.MenuStrip1.TabIndex = 1
+        Me.MenuStrip1.Text = "MenuStrip1"
+        '
+        'FileToolStripMenuItem
+        '
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuFileLoad, Me.MenuFileSave, Me.MenuFileNew, Me.MenuFileExit})
+        Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
+        Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
+        Me.FileToolStripMenuItem.Text = "&File"
+        '
+        'MenuFileLoad
+        '
+        Me.MenuFileLoad.Name = "MenuFileLoad"
+        Me.MenuFileLoad.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
+        Me.MenuFileLoad.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileLoad.Text = "&Load"
+        '
+        'MenuFileSave
+        '
+        Me.MenuFileSave.Name = "MenuFileSave"
+        Me.MenuFileSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.F), System.Windows.Forms.Keys)
+        Me.MenuFileSave.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileSave.Text = "&Save"
+        '
+        'MenuFileNew
+        '
+        Me.MenuFileNew.Name = "MenuFileNew"
+        Me.MenuFileNew.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileNew.Text = "&New"
+        '
+        'MenuFileExit
+        '
+        Me.MenuFileExit.Name = "MenuFileExit"
+        Me.MenuFileExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
+        Me.MenuFileExit.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileExit.Text = "E&xit"
+        '
+        'PageToolStripMenuItem
+        '
+        Me.PageToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuPageSave, Me.MenuPageNew, Me.MenuPageDelete, Me.MenuPageCopy, Me.MenuPageSplit, Me.MenuPageRename, Me.MenuPageDownLoadError, Me.MenuPageDeleteError})
+        Me.PageToolStripMenuItem.Name = "PageToolStripMenuItem"
+        Me.PageToolStripMenuItem.Size = New System.Drawing.Size(45, 20)
+        Me.PageToolStripMenuItem.Text = "&Page"
+        '
+        'MenuPageSave
+        '
+        Me.MenuPageSave.Name = "MenuPageSave"
+        Me.MenuPageSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.P), System.Windows.Forms.Keys)
+        Me.MenuPageSave.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageSave.Text = "&Save"
+        '
+        'MenuPageNew
+        '
+        Me.MenuPageNew.Name = "MenuPageNew"
+        Me.MenuPageNew.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.N), System.Windows.Forms.Keys)
+        Me.MenuPageNew.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageNew.Text = "&New"
+        '
+        'MenuPageDelete
+        '
+        Me.MenuPageDelete.Name = "MenuPageDelete"
+        Me.MenuPageDelete.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageDelete.Text = "&Delete"
+        '
+        'MenuPageCopy
+        '
+        Me.MenuPageCopy.Name = "MenuPageCopy"
+        Me.MenuPageCopy.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.K), System.Windows.Forms.Keys)
+        Me.MenuPageCopy.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageCopy.Text = "&Copy"
+        '
+        'MenuPageSplit
+        '
+        Me.MenuPageSplit.Name = "MenuPageSplit"
+        Me.MenuPageSplit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
+        Me.MenuPageSplit.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageSplit.Text = "&Split"
+        '
+        'MenuPageRename
+        '
+        Me.MenuPageRename.Name = "MenuPageRename"
+        Me.MenuPageRename.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageRename.Text = "&Rename"
+        '
+        'MenuPageDownLoadError
+        '
+        Me.MenuPageDownLoadError.Name = "MenuPageDownLoadError"
+        Me.MenuPageDownLoadError.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageDownLoadError.Text = "DownLoad&Error"
+        '
+        'MenuPageDeleteError
+        '
+        Me.MenuPageDeleteError.Name = "MenuPageDeleteError"
+        Me.MenuPageDeleteError.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageDeleteError.Text = "DeleteError"
+        '
+        'ToolsToolStripMenuItem
+        '
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuToolsSort, Me.MenuToolsCheck, Me.MenuToolsUpload, Me.MenuToolsNyx, Me.MenuToolsOptions, Me.MenuToolsRefreshMedia})
+        Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
+        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
+        Me.ToolsToolStripMenuItem.Text = "&Tools"
+        '
+        'MenuToolsSort
+        '
+        Me.MenuToolsSort.Name = "MenuToolsSort"
+        Me.MenuToolsSort.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsSort.Text = "Sort Pages"
+        '
+        'MenuToolsCheck
+        '
+        Me.MenuToolsCheck.Name = "MenuToolsCheck"
+        Me.MenuToolsCheck.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsCheck.Text = "Check Pages"
+        '
+        'MenuToolsUpload
+        '
+        Me.MenuToolsUpload.Name = "MenuToolsUpload"
+        Me.MenuToolsUpload.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsUpload.Text = "Create Upload Directory"
+        '
+        'MenuToolsNyx
+        '
+        Me.MenuToolsNyx.Name = "MenuToolsNyx"
+        Me.MenuToolsNyx.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsNyx.Text = "Gen Nyx Script"
+        '
+        'MenuToolsOptions
+        '
+        Me.MenuToolsOptions.Name = "MenuToolsOptions"
+        Me.MenuToolsOptions.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsOptions.Text = "Options"
+        '
+        'MenuToolsRefreshMedia
+        '
+        Me.MenuToolsRefreshMedia.Name = "MenuToolsRefreshMedia"
+        Me.MenuToolsRefreshMedia.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsRefreshMedia.Text = "Refresh Media"
+        '
+        'Label24
+        '
+        Me.Label24.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.Label24.AutoSize = True
+        Me.Label24.Location = New System.Drawing.Point(99, 62)
+        Me.Label24.Name = "Label24"
+        Me.Label24.Size = New System.Drawing.Size(38, 13)
+        Me.Label24.TabIndex = 50
+        Me.Label24.Text = "Target"
+        '
+        'TextBox2
+        '
+        Me.TextBox2.Location = New System.Drawing.Point(160, 60)
+        Me.TextBox2.Name = "TextBox2"
+        Me.TextBox2.Size = New System.Drawing.Size(100, 20)
+        Me.TextBox2.TabIndex = 49
+        '
+        'CheckBox1
+        '
+        Me.CheckBox1.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
+                    Or System.Windows.Forms.AnchorStyles.Left) _
+                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.CheckBox1.AutoSize = True
+        Me.CheckBox1.Location = New System.Drawing.Point(15, 23)
+        Me.CheckBox1.Name = "CheckBox1"
+        Me.CheckBox1.Size = New System.Drawing.Size(53, 17)
+        Me.CheckBox1.TabIndex = 25
+        Me.CheckBox1.Text = "Audio"
+        Me.CheckBox1.UseVisualStyleBackColor = True
+        '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(356, 23)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(27, 25)
+        Me.Button1.TabIndex = 24
+        Me.Button1.Text = "..."
+        Me.Button1.UseVisualStyleBackColor = True
+        '
+        'TextBox3
+        '
+        Me.TextBox3.Enabled = False
+        Me.TextBox3.Location = New System.Drawing.Point(160, 23)
+        Me.TextBox3.Name = "TextBox3"
+        Me.TextBox3.Size = New System.Drawing.Size(194, 20)
+        Me.TextBox3.TabIndex = 23
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(1074, 662)
         Me.Controls.Add(Me.TabControl1)
+        Me.Controls.Add(Me.MenuStrip1)
+        Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
-        Me.Text = "MWT Edit"
+        Me.Text = "MWT Edit 0.8"
         Me.TabControl1.ResumeLayout(False)
-        Me.TabPage1.ResumeLayout(False)
-        Me.TabPage1.PerformLayout()
-        Me.TabPage2.ResumeLayout(False)
+        Me.TabGeneral.ResumeLayout(False)
+        Me.TabGeneral.PerformLayout()
+        Me.TabPageView.ResumeLayout(False)
+        Me.SplitContainer8.Panel1.ResumeLayout(False)
+        Me.SplitContainer8.Panel2.ResumeLayout(False)
+        Me.SplitContainer8.ResumeLayout(False)
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.ResumeLayout(False)
@@ -1493,82 +1858,62 @@ Partial Class Form1
         Me.SplitContainer5.Panel1.PerformLayout()
         Me.SplitContainer5.Panel2.ResumeLayout(False)
         Me.SplitContainer5.ResumeLayout(False)
-        Me.TabPage3.ResumeLayout(False)
-        Me.SplitContainer1.Panel1.ResumeLayout(False)
-        Me.SplitContainer1.Panel2.ResumeLayout(False)
-        Me.SplitContainer1.Panel2.PerformLayout()
-        Me.SplitContainer1.ResumeLayout(False)
-        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPage.ResumeLayout(False)
+        Me.TabPage.PerformLayout()
+        Me.TabImage.ResumeLayout(False)
+        Me.TabImage.PerformLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabAudio.ResumeLayout(False)
+        Me.TabAudio.PerformLayout()
+        Me.TabVideo.ResumeLayout(False)
+        Me.TabVideo.PerformLayout()
+        Me.TabMetronome.ResumeLayout(False)
+        Me.TabMetronome.PerformLayout()
+        Me.TabDelay.ResumeLayout(False)
+        Me.TabDelay.PerformLayout()
         Me.gbDelay.ResumeLayout(False)
         Me.gbDelay.PerformLayout()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
-        Me.TabPage4.ResumeLayout(False)
+        Me.TabButtons.ResumeLayout(False)
+        CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.TabPageWYSIWYG.ResumeLayout(False)
         Me.SplitContainer4.Panel1.ResumeLayout(False)
         Me.SplitContainer4.Panel1.PerformLayout()
         Me.SplitContainer4.Panel2.ResumeLayout(False)
         Me.SplitContainer4.ResumeLayout(False)
         Me.ToolStrip1.ResumeLayout(False)
         Me.ToolStrip1.PerformLayout()
-        Me.TabPage6.ResumeLayout(False)
-        Me.SplitContainer7.Panel1.ResumeLayout(False)
-        Me.SplitContainer7.Panel2.ResumeLayout(False)
-        Me.SplitContainer7.Panel2.PerformLayout()
-        Me.SplitContainer7.ResumeLayout(False)
-        Me.TabPage5.ResumeLayout(False)
+        Me.SplitContainer9.Panel1.ResumeLayout(False)
+        Me.SplitContainer9.Panel1.PerformLayout()
+        Me.SplitContainer9.Panel2.ResumeLayout(False)
+        Me.SplitContainer9.ResumeLayout(False)
+        Me.TabNyx.ResumeLayout(False)
         Me.SplitContainer6.Panel1.ResumeLayout(False)
         Me.SplitContainer6.Panel1.PerformLayout()
         Me.SplitContainer6.Panel2.ResumeLayout(False)
         Me.SplitContainer6.Panel2.PerformLayout()
         Me.SplitContainer6.ResumeLayout(False)
+        Me.MenuStrip1.ResumeLayout(False)
+        Me.MenuStrip1.PerformLayout()
         Me.ResumeLayout(False)
+        Me.PerformLayout()
 
     End Sub
     Friend WithEvents TabControl1 As System.Windows.Forms.TabControl
-    Friend WithEvents TabPage1 As System.Windows.Forms.TabPage
-    Friend WithEvents TabPage2 As System.Windows.Forms.TabPage
-    Friend WithEvents TabPage3 As System.Windows.Forms.TabPage
-    Friend WithEvents SplitContainer1 As System.Windows.Forms.SplitContainer
+    Friend WithEvents TabGeneral As System.Windows.Forms.TabPage
+    Friend WithEvents TabPageView As System.Windows.Forms.TabPage
+    Friend WithEvents TabPage As System.Windows.Forms.TabPage
     Friend WithEvents SplitContainer2 As System.Windows.Forms.SplitContainer
     Friend WithEvents PictureBox1 As System.Windows.Forms.PictureBox
     Friend WithEvents SplitContainer3 As System.Windows.Forms.SplitContainer
     Friend WithEvents WebBrowser1 As System.Windows.Forms.WebBrowser
-    Friend WithEvents BtnFile As System.Windows.Forms.Button
     Friend WithEvents TextBox1 As System.Windows.Forms.TextBox
     Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents Label1 As System.Windows.Forms.Label
     Friend WithEvents lblPage As System.Windows.Forms.Label
-    Friend WithEvents tbImage As System.Windows.Forms.TextBox
-    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
-    Friend WithEvents cbMetronome As System.Windows.Forms.CheckBox
-    Friend WithEvents tbDelaySeconds As System.Windows.Forms.TextBox
-    Friend WithEvents cbDelay As System.Windows.Forms.CheckBox
-    Friend WithEvents tbMetronome As System.Windows.Forms.TextBox
-    Friend WithEvents gbDelay As System.Windows.Forms.GroupBox
-    Friend WithEvents rbNormal As System.Windows.Forms.RadioButton
-    Friend WithEvents rbSecret As System.Windows.Forms.RadioButton
-    Friend WithEvents rbHidden As System.Windows.Forms.RadioButton
-    Friend WithEvents tbDelayTarget As System.Windows.Forms.TextBox
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
     Friend WithEvents FlowLayoutPanel1 As System.Windows.Forms.FlowLayoutPanel
-    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
     Friend WithEvents SplitContainer5 As System.Windows.Forms.SplitContainer
-    Friend WithEvents bntImage As System.Windows.Forms.Button
     Friend WithEvents OpenFileDialogImage As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents btnAudio As System.Windows.Forms.Button
-    Friend WithEvents tbAudio As System.Windows.Forms.TextBox
-    Friend WithEvents btnVideo As System.Windows.Forms.Button
-    Friend WithEvents tbVideo As System.Windows.Forms.TextBox
-    Friend WithEvents cbAudio As System.Windows.Forms.CheckBox
-    Friend WithEvents cbVideo As System.Windows.Forms.CheckBox
-    Friend WithEvents TreeViewPages As System.Windows.Forms.TreeView
     Friend WithEvents btnDelay As System.Windows.Forms.Button
     Friend WithEvents lblTimer As System.Windows.Forms.Label
-    Friend WithEvents btnDeletePage As System.Windows.Forms.Button
-    Friend WithEvents btnNewPage As System.Windows.Forms.Button
-    Friend WithEvents btnSavePage As System.Windows.Forms.Button
-    Friend WithEvents btnSaveFile As System.Windows.Forms.Button
-    Friend WithEvents btnNewFile As System.Windows.Forms.Button
     Friend WithEvents btnPlayAudio As System.Windows.Forms.Button
     Friend WithEvents Label5 As System.Windows.Forms.Label
     Friend WithEvents tbMediaDirectory As System.Windows.Forms.TextBox
@@ -1586,8 +1931,7 @@ Partial Class Form1
     Friend WithEvents Label11 As System.Windows.Forms.Label
     Friend WithEvents tbMWTId As System.Windows.Forms.TextBox
     Friend WithEvents cbAutoSetPageWhenSeen As System.Windows.Forms.CheckBox
-    Friend WithEvents WebBrowser2 As System.Windows.Forms.WebBrowser
-    Friend WithEvents TabPage4 As System.Windows.Forms.TabPage
+    Friend WithEvents TabPageWYSIWYG As System.Windows.Forms.TabPage
     Friend WithEvents SplitContainer4 As System.Windows.Forms.SplitContainer
     Friend WithEvents WebBrowser3 As System.Windows.Forms.WebBrowser
     Friend WithEvents ColorDialog1 As System.Windows.Forms.ColorDialog
@@ -1600,9 +1944,51 @@ Partial Class Form1
     Friend WithEvents tscbCut As System.Windows.Forms.ToolStripButton
     Friend WithEvents tscbCopy As System.Windows.Forms.ToolStripButton
     Friend WithEvents tscbPaste As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tscbUpdate As System.Windows.Forms.ToolStripButton
     Friend WithEvents Label12 As System.Windows.Forms.Label
     Friend WithEvents txtPageSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label14 As System.Windows.Forms.Label
+    Friend WithEvents txtPageIfNotSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label15 As System.Windows.Forms.Label
+    Friend WithEvents txtPageIfSet As System.Windows.Forms.TextBox
+    Friend WithEvents Label13 As System.Windows.Forms.Label
+    Friend WithEvents txtPageUnSet As System.Windows.Forms.TextBox
+    Friend WithEvents TabNyx As System.Windows.Forms.TabPage
+    Friend WithEvents SplitContainer6 As System.Windows.Forms.SplitContainer
+    Friend WithEvents txtNyxScript As System.Windows.Forms.TextBox
+    Friend WithEvents btnNextNode As System.Windows.Forms.Button
+    Friend WithEvents btnPrevNode As System.Windows.Forms.Button
+    Friend WithEvents lblPageName As System.Windows.Forms.Label
+    Friend WithEvents txtRandom As System.Windows.Forms.TextBox
+    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents TabButtons As System.Windows.Forms.TabPage
+    Friend WithEvents btnMoveDown As System.Windows.Forms.Button
+    Friend WithEvents btnRowUp As System.Windows.Forms.Button
+    Friend WithEvents DataGridView1 As System.Windows.Forms.DataGridView
+    Friend WithEvents btnText As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnTarget As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnSet As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnUnset As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents btnIfSet As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents bntIfUnSet As System.Windows.Forms.DataGridViewTextBoxColumn
+    Friend WithEvents SplitContainer8 As System.Windows.Forms.SplitContainer
+    Friend WithEvents TreeViewPages As System.Windows.Forms.TreeView
+    Friend WithEvents SplitContainer9 As System.Windows.Forms.SplitContainer
+    Friend WithEvents txtRawText As System.Windows.Forms.TextBox
+    Friend WithEvents TabImage As System.Windows.Forms.TabPage
+    Friend WithEvents TabAudio As System.Windows.Forms.TabPage
+    Friend WithEvents TabVideo As System.Windows.Forms.TabPage
+    Friend WithEvents TabMetronome As System.Windows.Forms.TabPage
+    Friend WithEvents TabDelay As System.Windows.Forms.TabPage
+    Friend WithEvents bntImage As System.Windows.Forms.Button
+    Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents tbImage As System.Windows.Forms.TextBox
+    Friend WithEvents btnAudio As System.Windows.Forms.Button
+    Friend WithEvents tbAudio As System.Windows.Forms.TextBox
+    Friend WithEvents btnVideo As System.Windows.Forms.Button
+    Friend WithEvents tbVideo As System.Windows.Forms.TextBox
+    Friend WithEvents tbMetronome As System.Windows.Forms.TextBox
+    Friend WithEvents cbMetronome As System.Windows.Forms.CheckBox
     Friend WithEvents Label16 As System.Windows.Forms.Label
     Friend WithEvents txtDelayIfNotSet As System.Windows.Forms.TextBox
     Friend WithEvents Label17 As System.Windows.Forms.Label
@@ -1611,41 +1997,67 @@ Partial Class Form1
     Friend WithEvents txtDelayUnSet As System.Windows.Forms.TextBox
     Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents txtDelaySet As System.Windows.Forms.TextBox
-    Friend WithEvents Label14 As System.Windows.Forms.Label
-    Friend WithEvents txtPageIfNotSet As System.Windows.Forms.TextBox
-    Friend WithEvents Label15 As System.Windows.Forms.Label
-    Friend WithEvents txtPageIfSet As System.Windows.Forms.TextBox
-    Friend WithEvents Label13 As System.Windows.Forms.Label
-    Friend WithEvents txtPageUnSet As System.Windows.Forms.TextBox
-    Friend WithEvents btnText As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnTarget As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnSet As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnUnset As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnIfSet As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents bntIfUnSet As System.Windows.Forms.DataGridViewTextBoxColumn
-    Friend WithEvents btnSaveDir As System.Windows.Forms.Button
-    Friend WithEvents Label20 As System.Windows.Forms.Label
-    Friend WithEvents txtDefaltDir As System.Windows.Forms.TextBox
-    Friend WithEvents TabPage5 As System.Windows.Forms.TabPage
-    Friend WithEvents SplitContainer6 As System.Windows.Forms.SplitContainer
-    Friend WithEvents btnNyx As System.Windows.Forms.Button
-    Friend WithEvents txtNyxScript As System.Windows.Forms.TextBox
-    Friend WithEvents btnNextNode As System.Windows.Forms.Button
-    Friend WithEvents btnPrevNode As System.Windows.Forms.Button
-    Friend WithEvents lblPageName As System.Windows.Forms.Label
-    Friend WithEvents btnCopyPage As System.Windows.Forms.Button
-    Friend WithEvents btnErrors As System.Windows.Forms.Button
-    Friend WithEvents btnUpLoad As System.Windows.Forms.Button
-    Friend WithEvents btnDelError As System.Windows.Forms.Button
-    Friend WithEvents TabPage6 As System.Windows.Forms.TabPage
-    Friend WithEvents SplitContainer7 As System.Windows.Forms.SplitContainer
-    Friend WithEvents BtnRawText As System.Windows.Forms.Button
-    Friend WithEvents txtRawText As System.Windows.Forms.TextBox
-    Friend WithEvents btnMoveDown As System.Windows.Forms.Button
-    Friend WithEvents btnRowUp As System.Windows.Forms.Button
-    Friend WithEvents btnSplitPage As System.Windows.Forms.Button
-    Friend WithEvents btnSortPages As System.Windows.Forms.Button
-    Friend WithEvents txtRandom As System.Windows.Forms.TextBox
-    Friend WithEvents Label21 As System.Windows.Forms.Label
+    Friend WithEvents Label3 As System.Windows.Forms.Label
+    Friend WithEvents Label2 As System.Windows.Forms.Label
+    Friend WithEvents tbDelayTarget As System.Windows.Forms.TextBox
+    Friend WithEvents gbDelay As System.Windows.Forms.GroupBox
+    Friend WithEvents rbSecret As System.Windows.Forms.RadioButton
+    Friend WithEvents rbHidden As System.Windows.Forms.RadioButton
+    Friend WithEvents rbNormal As System.Windows.Forms.RadioButton
+    Friend WithEvents tbDelaySeconds As System.Windows.Forms.TextBox
+    Friend WithEvents cbDelay As System.Windows.Forms.CheckBox
+    Friend WithEvents MenuStrip1 As System.Windows.Forms.MenuStrip
+    Friend WithEvents FileToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuFileSave As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents PageToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageSave As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuFileLoad As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuFileNew As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuFileExit As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageNew As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageDelete As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageCopy As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageSplit As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageDownLoadError As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageDeleteError As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ToolsToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuToolsSort As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuToolsCheck As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuToolsUpload As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuToolsNyx As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents tscbTextToVisual As System.Windows.Forms.ToolStripButton
+    Friend WithEvents tscbVisualToText As System.Windows.Forms.ToolStripButton
+    Friend WithEvents Label22 As System.Windows.Forms.Label
+    Friend WithEvents tbDelayStartWith As System.Windows.Forms.TextBox
+    Friend WithEvents Label26 As System.Windows.Forms.Label
+    Friend WithEvents tbAudioStartAt As System.Windows.Forms.TextBox
+    Friend WithEvents Label25 As System.Windows.Forms.Label
+    Friend WithEvents tbAudioStopAt As System.Windows.Forms.TextBox
+    Friend WithEvents Label23 As System.Windows.Forms.Label
+    Friend WithEvents tbAudioTarget As System.Windows.Forms.TextBox
+    Friend WithEvents Label27 As System.Windows.Forms.Label
+    Friend WithEvents tbVideoStartAt As System.Windows.Forms.TextBox
+    Friend WithEvents Label28 As System.Windows.Forms.Label
+    Friend WithEvents tbVideoStopAt As System.Windows.Forms.TextBox
+    Friend WithEvents Label29 As System.Windows.Forms.Label
+    Friend WithEvents tbVideoTarget As System.Windows.Forms.TextBox
+    Friend WithEvents Label24 As System.Windows.Forms.Label
+    Friend WithEvents TextBox2 As System.Windows.Forms.TextBox
+    Friend WithEvents CheckBox1 As System.Windows.Forms.CheckBox
+    Friend WithEvents Button1 As System.Windows.Forms.Button
+    Friend WithEvents TextBox3 As System.Windows.Forms.TextBox
+    Friend WithEvents Label30 As System.Windows.Forms.Label
+    Friend WithEvents Label31 As System.Windows.Forms.Label
+    Friend WithEvents Label32 As System.Windows.Forms.Label
+    Friend WithEvents tbPageText As System.Windows.Forms.TextBox
+    Friend WithEvents ToolStripButton1 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ListView1 As System.Windows.Forms.ListView
+    Friend WithEvents ToolStripButton2 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents ToolStripButton3 As System.Windows.Forms.ToolStripButton
+    Friend WithEvents MenuToolsOptions As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuPageRename As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuToolsRefreshMedia As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents ListView2 As System.Windows.Forms.ListView
+    Friend WithEvents ListView3 As System.Windows.Forms.ListView
 
 End Class

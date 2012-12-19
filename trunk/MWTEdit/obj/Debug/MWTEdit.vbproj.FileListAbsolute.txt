@@ -16,6 +16,8 @@ C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\M
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\MWTEdit.application
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.exe.manifest
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.application
-C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\Microsoft.DirectX.dll
-C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\Microsoft.DirectX.xml
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.ErrorPopUp.resources
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.CheckPopUp.resources
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\Interop.WMPLib.dll
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\Interop.WMPLib.dll
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.OptionsPopUp.resources

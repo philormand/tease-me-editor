@@ -23,7 +23,7 @@
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-    <PublishUrl>C:\MWTEdit\</PublishUrl>
+    <PublishUrl>Z:\mwtedit\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -33,9 +33,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
+    <TargetCulture>en-GB</TargetCulture>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>0.8.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
@@ -81,6 +83,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Import Include="Microsoft.Office.Interop.Word" />
     <Import Include="Microsoft.VisualBasic" />
     <Import Include="mshtml" />
     <Import Include="System" />
@@ -94,6 +97,18 @@
     <Import Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CheckPopUp.Designer.vb">
+      <DependentUpon>CheckPopUp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="CheckPopUp.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsPopUp.Designer.vb">
+      <DependentUpon>OptionsPopUp.vb</DependentUpon>
+    </Compile>
+    <Compile Include="OptionsPopUp.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="ErrorPopUp.Designer.vb">
       <DependentUpon>ErrorPopUp.vb</DependentUpon>
     </Compile>
@@ -130,6 +145,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="CheckPopUp.resx">
+      <DependentUpon>CheckPopUp.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OptionsPopUp.resx">
+      <DependentUpon>OptionsPopUp.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ErrorPopUp.resx">
       <DependentUpon>ErrorPopUp.vb</DependentUpon>
     </EmbeddedResource>
@@ -160,6 +181,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <COMReference Include="Microsoft.Office.Core">
+      <Guid>{2DF8D04C-5BFA-101B-BDE5-00AA0044DE52}</Guid>
+      <VersionMajor>2</VersionMajor>
+      <VersionMinor>4</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="Microsoft.Office.Interop.Word">
+      <Guid>{00020905-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>8</VersionMajor>
+      <VersionMinor>4</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
     <COMReference Include="MSHTML">
       <Guid>{3050F1C5-98B5-11CF-BB82-00AA00BDCE0B}</Guid>
       <VersionMajor>4</VersionMajor>
@@ -171,6 +208,22 @@
     <COMReference Include="MSXML2">
       <Guid>{F5078F18-C551-11D3-89B9-0000F81FE221}</Guid>
       <VersionMajor>3</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="VBIDE">
+      <Guid>{0002E157-0000-0000-C000-000000000046}</Guid>
+      <VersionMajor>5</VersionMajor>
+      <VersionMinor>3</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>primary</WrapperTool>
+      <Isolated>False</Isolated>
+    </COMReference>
+    <COMReference Include="WMPLib">
+      <Guid>{6BF52A50-394A-11D3-B153-00C04F79FAA6}</Guid>
+      <VersionMajor>1</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
       <WrapperTool>tlbimp</WrapperTool>
