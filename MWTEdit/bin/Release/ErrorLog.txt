@@ -1,0 +1,7 @@
+﻿2012/12/04 22:02:22, Form1_Load, Conversion from string "" to type 'Boolean' is not valid., ToBoolean
+2012/12/04 22:02:45, WebBrowser2_DocumentCompleted, Object reference not set to an instance of an object., WebBrowser2_DocumentCompleted
+2012/12/04 22:02:45, displaypage, Object reference not set to an instance of an object., displaypage
+2012/12/04 22:02:57, WebBrowser2_DocumentCompleted, Object reference not set to an instance of an object., WebBrowser2_DocumentCompleted
+2012/12/04 22:02:57, displaypage, Object reference not set to an instance of an object., displaypage
+2012/12/04 22:03:04, WebBrowser2_DocumentCompleted, Object reference not set to an instance of an object., WebBrowser2_DocumentCompleted
+2012/12/04 22:03:04, displaypage, Object reference not set to an instance of an object., displaypage
