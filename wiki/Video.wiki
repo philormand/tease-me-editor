@@ -1,0 +1,3 @@
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/VideoTab.png
+
+Videos can be selected from the list on the right
