@@ -1,0 +1,3 @@
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/PageTab.png
+
+Page level settings and text editor for the page text
