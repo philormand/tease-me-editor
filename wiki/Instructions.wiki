@@ -1,7 +1,3 @@
 Unzip to a directory and run MWTEdit.exe
 
-
-settings.xml contains the default directory for the teases
- <Settings directory="z:\tm\teases"/>
-
-With the text editor it sometimes deletes spaces at random. If you put in double spaces  where it has deleted a space it only deletes one. I have not worked out why yet.
+See the rest of the wiki pages for details on what each option does
