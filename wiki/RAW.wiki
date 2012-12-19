@@ -1,6 +1,0 @@
-http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/RAW.png
-
-=Description=
-This allows you to edit the text / HTML manually.
-
-the visual editor can be a bit over enthusiastic in the HTML it generates so you can strip out the unnecessary tags here.
