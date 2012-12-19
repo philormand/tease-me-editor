@@ -1,9 +1,9 @@
-http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/WYSIWYG.png
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/WYSIWYGTab.png
 
 =Description=
-This is a visual editor for the text.
+This is a visual editor for the text (it is now independent of the actual page text).
 <BR>It uses a lot of features built into the programming language the editor is built in, so is a bit 'clunky'.
-<BR>If you don't know HTML and want to have pretty text this will help create it for you. (you can see the HTML it generates on the Raw text edit tab once you have pressed the Update Page button)
+<BR>If you don't know HTML and want to have pretty text this will help create it for you. (you can see the HTML it generates in the plain text editor above)
 
 Type the text you want and highlight the bits you want to format.
 
@@ -11,4 +11,8 @@ Type the text you want and highlight the bits you want to format.
 The first three should be fairly obvious (bold italic underline)
 <BR>The next (A underlined in red) gives an edit dialogue that lets you change colour size font etc. (font size in HTML is more limited than the dialogue gives so you may find it changes a bit after you save the file)
 <BR>You then have cut, copy and paste buttons
-<BR>The last button copies the current text to the page, if you don't click this your changes will be lost
+<BR>TextToVisual copies the raw text to the visual window (this should happen automatically but I have not deleted the button yet just in case)
+<BR>VisualToText will generate the HTML in the plain text window after you have edited in the visual window
+<BR>Grammar / Spell Check  loads the text into Word does a grammar / spell check and copies the correct text back (you will need MS Word installed for this to work)
+<BR>Copy From Page copies the text from the current page to the editor.
+<BR> Copy To Page copies the edited text to the current page
