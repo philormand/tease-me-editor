@@ -12,5 +12,5 @@ Will allow you to create a new tease xml file
 ==Exit==
 Closes the editor
 
-http://code.google.com/p/tease-me-editor/wiki/Instructions
+Instructions
 MenusPage
