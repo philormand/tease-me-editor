@@ -16,3 +16,5 @@ The first three should be fairly obvious (bold italic underline)
 <BR>Grammar / Spell Check  loads the text into Word does a grammar / spell check and copies the correct text back (you will need MS Word installed for this to work)
 <BR>Copy From Page copies the text from the current page to the editor.
 <BR> Copy To Page copies the edited text to the current page
+
+[http://code.google.com/p/tease-me-editor/wiki/buttons Buttons] [http://code.google.com/p/tease-me-editor/wiki/Nyx Nyx]
