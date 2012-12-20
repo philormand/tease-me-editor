@@ -16,7 +16,7 @@ Populates the Nyx tab with the script for this tease
 ==Options==
 Sets the directory where the xml files will be stored.
 Check box if ticked will cause a backup file to be created every time a tease is opened.
-Image, Audio and Video are filters on what is displayed in the lists in the three tabs.  To add more file types (e.g. png files) add a comma and the filter for the file extension (,*.png)
+Image, Audio and Video are filters on what is displayed in the lists in the three tabs.  To add more file types (e.g. png files) add a comma and the filter for the file extension (",*.png")
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Options.png
 
 ==Refresh Media==
