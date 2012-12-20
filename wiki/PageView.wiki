@@ -23,3 +23,5 @@ Will display the page the delay takes you to
 
 ==Tease Buttons==
 Display the page the button takes you to in the tease
+
+GeneralTab Page
