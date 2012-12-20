@@ -3,6 +3,7 @@ http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuTools.png
 ==Sort Pages==
 
 ==Check Pages==
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/CheckPages.png
 
 ==Create Upload Directory==
 
