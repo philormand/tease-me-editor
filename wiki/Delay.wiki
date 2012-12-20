@@ -1,3 +1,5 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/DelayTab.png
 
 A delay allows you to change the page after a certain number of seconds.
+
+[http://code.google.com/p/tease-me-editor/wiki/Metronome Metronome] [http://code.google.com/p/tease-me-editor/wiki/Buttons Buttons]
