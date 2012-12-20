@@ -1,2 +1,4 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/AudioTab.png
 Audio files can be selected from the list on the right
+
+[http://code.google.com/p/tease-me-editor/wiki/Image Image] [http://code.google.com/p/tease-me-editor/wiki/Video Video]
