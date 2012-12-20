@@ -16,4 +16,4 @@ Nyx will only handle random pages if the page name is numeric (fred(1..2) will n
 
 (any suggestions on how to improve the Nyx generation or how to implement more tease me functions are welcome)
 
-[[http://code.google.com/p/tease-me-editor/wiki/WYSIWYG Editor] [http://code.google.com/p/tease-me-editor/wiki/Instructions Instructions]
+[http://code.google.com/p/tease-me-editor/wiki/WYSIWYG Editor] [http://code.google.com/p/tease-me-editor/wiki/Instructions Instructions]
