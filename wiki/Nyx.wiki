@@ -15,3 +15,5 @@ Nyx only has the ability to do set / unset commands at the page level (not the d
 Nyx will only handle random pages if the page name is numeric (fred(1..2) will not go to fred1 or fred2) make sure you set the starting page number greater than any you have used to avoid it generating two pages with the same name.
 
 (any suggestions on how to improve the Nyx generation or how to implement more tease me functions are welcome)
+
+[[http://code.google.com/p/tease-me-editor/wiki/WYSIWYG Editor] [http://code.google.com/p/tease-me-editor/wiki/Instructions Instructions]
