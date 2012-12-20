@@ -1,1 +1,1 @@
-http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Menu File.png
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuFile.png
