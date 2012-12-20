@@ -20,3 +20,5 @@ Renames the current page
 
 ==!DownLoadError / !DeleteError==
 When teaseme downloads a tease from Milovana but does not understand the Nyx script for a page it generates error information and stores the Nyx code for the page. Download Error will display a pop up with the error and Nyx script that caused it. You can use this to manually correct the teasme xml. Delete Error allows you to delete that information once you have manually corrected it.
+
+MenusFile MenusOptions
