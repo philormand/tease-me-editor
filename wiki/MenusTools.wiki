@@ -1,11 +1,14 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuTools.png
 
 ==Sort Pages==
+Sorts the pages in alphabetical order (apart from the start page which will be the first page)
 
 ==Check Pages==
+Will check for brocken links to pages and pages that are not refernced
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/CheckPages.png
 
 ==Create Upload Directory==
+Creates an upload directory in the media directory containing all the images actually used in the tease
 
 ==Gen Nyx Script==
 Populates the Nyx tab with the script for this tease
@@ -14,3 +17,4 @@ Populates the Nyx tab with the script for this tease
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Options.png
 
 ==Refresh Media==
+Will refresh the lists in the image, audio and video tabs if you have added new files to the media directory during the session
