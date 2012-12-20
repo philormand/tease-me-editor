@@ -18,6 +18,8 @@ This will create (or overwrite) an upload directory in your media directory, It 
 This will sort the pages in the Page Tree tab in alphabetical order.
 (it will put the start page first though)
 
+MenusTools PageView
+
 ==New File==
 Will allow you to create a new tease xml file
 
