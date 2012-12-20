@@ -7,7 +7,9 @@ http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuTools.png
 ==Create Upload Directory==
 
 ==Gen Nyx Script==
+Populates the Nyx tab with the script for this tease
 
 ==Options==
+http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Options.png
 
 ==Refresh Media==
