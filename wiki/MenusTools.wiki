@@ -4,7 +4,7 @@ http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuTools.png
 Sorts the pages in alphabetical order (apart from the start page which will be the first page)
 
 ==Check Pages==
-Will check for brocken links to pages and pages that are not refernced
+Will check for broken links to pages and pages that are not refernced
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/CheckPages.png
 
 ==Create Upload Directory==
