@@ -12,4 +12,5 @@ Will allow you to create a new tease xml file
 ==Exit==
 Closes the editor
 
-Instructions MenusPage
+Instructions 
+MenusPage
