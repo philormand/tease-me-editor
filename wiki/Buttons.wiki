@@ -11,3 +11,5 @@ Moves the current selected button row in the table up one row
 
 ==Move Down==
 Moves the current selected button row in the table down one row
+
+[http://code.google.com/p/tease-me-editor/wiki/Delay Delay] [http://code.google.com/p/tease-me-editor/wiki/WYSIWYG Editor]
