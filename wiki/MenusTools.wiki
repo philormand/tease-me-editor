@@ -21,3 +21,5 @@ http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Options.png
 
 ==Refresh Media==
 Will refresh the lists in the image, audio and video tabs if you have added new files to the media directory during the session
+
+MenusPage GeneralTab
