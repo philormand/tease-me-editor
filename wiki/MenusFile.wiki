@@ -1,1 +1,13 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuFile.png
+
+==load==
+Opens a dialogue box which will allow you to select a tease xml file to edit
+
+==Save==
+Kind of redundant because it saves the xml file when you save changes to a page, but if you update fields on this page it saves them.
+
+==New==
+Will allow you to create a new tease xml file
+
+==Exit==
+Closes the editor
