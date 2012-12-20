@@ -1,3 +1,5 @@
 http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/VideoTab.png
 
 Videos can be selected from the list on the right
+
+[http://code.google.com/p/tease-me-editor/wiki/Audio Audio] [http://code.google.com/p/tease-me-editor/wiki/Metronome Metronome]
