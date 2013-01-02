@@ -110,14 +110,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MWTEdit.exe" size="153600">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MWTEdit.exe" size="156160">
       <assemblyIdentity name="MWTEdit" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>p58cLnib70SqWV+latdWihVar8M=</dsig:DigestValue>
+        <dsig:DigestValue>y0Y89XY4ZWo0j1kjxfrREyRG1VM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

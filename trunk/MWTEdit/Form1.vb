@@ -21,6 +21,7 @@ Public Class Form1
     Private MstrImageFilter As String
     Private MstrAudioFilter As String
     Private MstrVideoFilter As String
+    Private MstrFormTitle As String
 
     Private Sub loadFile(ByVal strFile As String)
         Try
@@ -47,6 +48,9 @@ Public Class Form1
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", loadFile, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
+    Public Function ThumbnailCallback() As Boolean
+        Return False
+    End Function
 
     Private Sub fillListView()
         Cursor = Cursors.WaitCursor
@@ -57,6 +61,8 @@ Public Class Form1
         Dim strFiles() As String
         Dim strFile As String
         Dim intCount As Integer
+        Dim img As Image
+        Dim myCallback As New Image.GetThumbnailImageAbort(AddressOf ThumbnailCallback)
 
         myImageList.ImageSize = New Size(70, 100)
         myImageList.ColorDepth = ColorDepth.Depth24Bit
@@ -65,7 +71,9 @@ Public Class Form1
         ListView1.LargeImageList = myImageList
         For Each strFile In strFiles
             Try
-                myImageList.Images.Add(Image.FromFile(strFile))
+                img = Image.FromFile(strFile)
+                myImageList.Images.Add(img.GetThumbnailImage(70, 100, myCallback, IntPtr.Zero))
+                img.Dispose()
                 ListView1.Items.Add(strFile)
                 intCount = intCount + 1
                 ListView1.Items(intCount).ImageIndex = (intCount)
@@ -119,6 +127,7 @@ Public Class Form1
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", Form Opening")
         End If
         Try
+            MstrFormTitle = Me.Text
             OpenFileDialog1.DefaultExt = ".xml"
             OpenFileDialog1.Filter = "XML Files|*.xml"
             Dim strPath As String
@@ -703,6 +712,7 @@ Public Class Form1
             Dim objRandom As New Random
 
             MstrPage = TreeViewPages.SelectedNode.Text
+            Me.Text = MstrFormTitle & " " & MstrPage
             lblPage.Text = MstrPage
             lblPageName.Text = MstrPage
             MobjXMLPage = MobjXMLPages.selectSingleNode("./Page[@id=""" & MstrPage & """]")
@@ -1224,66 +1234,120 @@ Public Class Form1
         Dim blnFound As Boolean
         Dim strNode As String
         Dim strPage As String
+        Dim strButton As String
 
+        'loop through the nodes passed and check the target page exists
         For intloop = objXMLNodes.length - 1 To 0 Step -1
             objXMLElement = objXMLNodes.item(intloop)
             strNode = objXMLElement.nodeName
+            'if it is a button we want to display the button text in the error
+            If strNode = "Button" Then
+                strButton = objXMLElement.text
+            Else
+                strButton = ""
+            End If
+            'get the name of the page the node is in
             strPage = getAttribute(objXMLElement.parentNode, "id")
+            'get the target page
             strTarget = getAttribute(objXMLElement, "target")
             If strTarget <> "" Then
-                strPre = ""
-                strPost = ""
-                intPos1 = strTarget.IndexOf("(")
-                If intPos1 > -1 Then
-                    intPos2 = strTarget.IndexOf("..", intPos1)
-                    If (intPos2 > -1) Then
-                        intPos3 = strTarget.IndexOf(")", intPos2)
-                        If (intPos3 > -1) Then
-                            intPos1 = intPos1 + 1
-                            intPos2 = intPos2 + 2
-                            intPos3 = intPos3 + 1
-                            strMin = strTarget.Substring(intPos1, intPos2 - intPos1 - 2)
-                            intMin = Long.Parse(strMin)
-                            strMax = strTarget.Substring(intPos2, intPos3 - intPos2 - 1)
-                            IntMax = Long.Parse(strMax)
-                            If (intPos1 > 1) Then
-                                strPre = strTarget.Substring(0, intPos1 - 1)
-                            Else
-                                strPre = ""
-                            End If
-                            strPost = strTarget.Substring(intPos3)
-                            For i = intMin To IntMax
-                                strPageName = strPre & i & strPost
-                                blnFound = False
-                                For intLoop2 = 0 To intPages - 1
-                                    If strPages(0, intLoop2) = strPageName Then
-                                        strPages(1, intLoop2) = "Y"
-                                        blnFound = True
-                                        Exit For
+                'If target and page name are the same warn it self refernces (this may be intentional when it is a delay)
+                If strTarget = strPage Then
+                    strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td>Targets its own page</td></tr>"
+                Else
+                    'need to check every page if we are asking for random ones
+                    strPre = ""
+                    strPost = ""
+                    intPos1 = strTarget.IndexOf("(")
+                    'random pages so split out the static bits either side and the random numbers
+                    If intPos1 > -1 Then
+                        intPos2 = strTarget.IndexOf("..", intPos1)
+                        If (intPos2 > -1) Then
+                            intPos3 = strTarget.IndexOf(")", intPos2)
+                            If (intPos3 > -1) Then
+                                intPos1 = intPos1 + 1
+                                intPos2 = intPos2 + 2
+                                intPos3 = intPos3 + 1
+                                strMin = strTarget.Substring(intPos1, intPos2 - intPos1 - 2)
+                                intMin = Long.Parse(strMin)
+                                strMax = strTarget.Substring(intPos2, intPos3 - intPos2 - 1)
+                                IntMax = Long.Parse(strMax)
+                                If (intPos1 > 1) Then
+                                    strPre = strTarget.Substring(0, intPos1 - 1)
+                                Else
+                                    strPre = ""
+                                End If
+                                strPost = strTarget.Substring(intPos3)
+                                'loop through each random page
+                                For i = intMin To IntMax
+                                    strPageName = strPre & i & strPost
+                                    blnFound = False
+                                    'loop through the page array and set the found flag to Y if found
+                                    For intLoop2 = 0 To intPages - 1
+                                        If strPages(0, intLoop2) = strPageName Then
+                                            strPages(1, intLoop2) = "Y"
+                                            blnFound = True
+                                            Exit For
+                                        End If
+                                    Next
+                                    'if not found generate an error
+                                    If Not blnFound Then
+                                        strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td>Page not found " & strPageName & "</td></tr>"
                                     End If
                                 Next
-                                If Not blnFound Then
-                                    strOutput = strOutput & strPage & " " & strNode & " Page not found " & strPageName & vbCrLf
-                                End If
-                            Next
+                            End If
                         End If
-                    End If
-                Else
-                    blnFound = False
-                    For intLoop2 = 0 To intPages - 1
-                        If strPages(0, intLoop2) = strTarget Then
-                            strPages(1, intLoop2) = "Y"
-                            blnFound = True
-                            Exit For
+                    Else
+                        'single page
+                        blnFound = False
+                        'loop through the page array and set the found flag to Y if found
+                        For intLoop2 = 0 To intPages - 1
+                            If strPages(0, intLoop2) = strTarget Then
+                                strPages(1, intLoop2) = "Y"
+                                blnFound = True
+                                Exit For
+                            End If
+                        Next
+                        'if not found generate an error
+                        If Not blnFound Then
+                            strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td>Page not found " & strTarget & "</td></tr>"
                         End If
-                    Next
-                    If Not blnFound Then
-                        strOutput = strOutput & strPage & " " & strNode & " Page not found " & strTarget & vbCrLf
                     End If
                 End If
+            Else
+                'if no target specified and it is a button or a delay, generate an error
+                Select Case strNode
+                    Case "Button", "Delay"
+                        strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td>No target page specified</td></tr>"
+                End Select
             End If
         Next
 
+    End Sub
+
+    Private Sub MediaExists(ByVal objXMLNodes As MSXML2.IXMLDOMNodeList, ByRef strOutput As String)
+        Dim intloop As Integer
+        Dim objXMLElement As MSXML2.IXMLDOMElement
+        Dim strMedia As String
+        Dim strNode As String
+        Dim strPage As String
+
+        'loop through the nodes passed and check the media exists
+        For intloop = objXMLNodes.length - 1 To 0 Step -1
+            objXMLElement = objXMLNodes.item(intloop)
+            strNode = objXMLElement.nodeName
+            'get the name of the page the node is in
+            strPage = getAttribute(objXMLElement.parentNode, "id")
+            Select Case strNode
+                Case "Image"
+                    strMedia = getAttribute(objXMLElement, "id")
+                    If System.IO.File.Exists(OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & strMedia) Then
+                    Else
+                        strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strMedia & "</td></tr>"
+                    End If
+
+            End Select
+        Next
     End Sub
 
     Private Sub MenuFileSave_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuFileSave.Click
@@ -1749,15 +1813,20 @@ Public Class Form1
         Dim blnFound As Boolean
         Dim strPages(2, 1) As String
 
-        strOutput = ""
+        'Out put is displayed in a webbrowser control so we need to create the html
+        strOutput = "<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN""><html><head><title></title><style type=""text/css"">body { background-color:white; color:#000000; font-family: Tahoma; font-size:12pt; }</style></head><body><table border=""1"">"
+        strOutput = strOutput & "<tr><th>Page</th><th>Element</th><th>Error / Waring</th></tr>"
+        'create an array of pages so we don't have to search the xml every time
         strPages(0, 0) = ""
         strPages(1, 0) = "N"
         intPages = 0
         objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page")
+        'step through each page
         For intLoop = objXMLNodes.length - 1 To 0 Step -1
             objXMLElement = objXMLNodes.item(intLoop)
             strTarget = getAttribute(objXMLElement, "id")
             blnFound = False
+            'loop through the rest of the pages to see if we have a duplicate
             For intLoop2 = 0 To intPages - 1
                 If strPages(0, intLoop2) = strTarget Then
                     blnFound = True
@@ -1765,6 +1834,7 @@ Public Class Form1
                     Exit For
                 End If
             Next
+            'if no duplcate found add it to the page array
             If Not blnFound Then
                 If strPages(0, 0) = "" Then
                     strPages(0, 0) = strTarget
@@ -1777,24 +1847,39 @@ Public Class Form1
                 End If
             End If
         Next
+        'check all the button page targets
         objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Button")
         PageExists(objXMLNodes, strPages, intPages, strOutput)
+        'check all the button page targets
         objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Delay")
         PageExists(objXMLNodes, strPages, intPages, strOutput)
+        'check all the button page targets
         objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Audio")
         PageExists(objXMLNodes, strPages, intPages, strOutput)
+        'check all the button page targets
         objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Video")
         PageExists(objXMLNodes, strPages, intPages, strOutput)
+        'Loop through the page array for any pages still set to N
         For intLoop2 = 0 To intPages - 1
+            'if it is N this page has not been referenced (don't bother with start as it is the first page)
             If strPages(1, intLoop2) = "N" And strPages(0, intLoop2) <> "start" Then
-                strOutput = strOutput & "Page not referenced " & strPages(0, intLoop2) & vbCrLf
+                strOutput = strOutput & "<tr><td>" & strPages(0, intLoop2) & "</td><td/><td>Page not referenced</td></tr>"
             End If
         Next
+        strOutput = strOutput & "</table><table border=""1""><tr><th>Page</th><th>Media Missing</th></tr>"
+        'check all the button page targets
+        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Image")
+        MediaExists(objXMLNodes, strOutput)
+        strOutput = strOutput & "</table></body></html>"
 
         Dim frmDialogue As New CheckPopUp
-        frmDialogue.txtCheck.Text = strOutput
+        frmDialogue.WBCheck.DocumentText = strOutput
+        Do While Not frmDialogue.WBCheck.ReadyState = WebBrowserReadyState.Complete
+            System.Windows.Forms.Application.DoEvents()
+        Loop
         frmDialogue.ShowDialog()
     End Sub
+
 
     Private Sub MenuToolsNyx_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsNyx.Click
         Try
