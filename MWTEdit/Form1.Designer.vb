@@ -1656,27 +1656,27 @@ Partial Class Form1
         '
         Me.MenuFileLoad.Name = "MenuFileLoad"
         Me.MenuFileLoad.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.MenuFileLoad.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileLoad.Size = New System.Drawing.Size(152, 22)
         Me.MenuFileLoad.Text = "&Load"
         '
         'MenuFileSave
         '
         Me.MenuFileSave.Name = "MenuFileSave"
         Me.MenuFileSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.F), System.Windows.Forms.Keys)
-        Me.MenuFileSave.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileSave.Size = New System.Drawing.Size(152, 22)
         Me.MenuFileSave.Text = "&Save"
         '
         'MenuFileNew
         '
         Me.MenuFileNew.Name = "MenuFileNew"
-        Me.MenuFileNew.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileNew.Size = New System.Drawing.Size(152, 22)
         Me.MenuFileNew.Text = "&New"
         '
         'MenuFileExit
         '
         Me.MenuFileExit.Name = "MenuFileExit"
-        Me.MenuFileExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.MenuFileExit.Size = New System.Drawing.Size(140, 22)
+        Me.MenuFileExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
+        Me.MenuFileExit.Size = New System.Drawing.Size(152, 22)
         Me.MenuFileExit.Text = "E&xit"
         '
         'PageToolStripMenuItem

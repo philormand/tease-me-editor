@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<Settings directory="z:\TM\teases" backup="-1" imagefilter="*.jpg,*.bmp,*.gif,*.png" audiofilter="*.mp3,*.wav" videofilter="*.wmv,*.mp4" />
+<Settings directory="z:\data" backup="-1" imagefilter="*.jpg,*.bmp,*.gif,*.png" audiofilter="*.mp3,*.wav" videofilter="*.wmv,*.mp4" />

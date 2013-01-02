@@ -22,18 +22,9 @@ Partial Class CheckPopUp
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.txtCheck = New System.Windows.Forms.TextBox
         Me.btnClose = New System.Windows.Forms.Button
+        Me.WBCheck = New System.Windows.Forms.WebBrowser
         Me.SuspendLayout()
-        '
-        'txtCheck
-        '
-        Me.txtCheck.Location = New System.Drawing.Point(20, 17)
-        Me.txtCheck.Multiline = True
-        Me.txtCheck.Name = "txtCheck"
-        Me.txtCheck.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtCheck.Size = New System.Drawing.Size(720, 376)
-        Me.txtCheck.TabIndex = 0
         '
         'btnClose
         '
@@ -44,21 +35,29 @@ Partial Class CheckPopUp
         Me.btnClose.Text = "Close"
         Me.btnClose.UseVisualStyleBackColor = True
         '
+        'WBCheck
+        '
+        Me.WBCheck.Dock = System.Windows.Forms.DockStyle.Top
+        Me.WBCheck.Location = New System.Drawing.Point(0, 0)
+        Me.WBCheck.MinimumSize = New System.Drawing.Size(20, 20)
+        Me.WBCheck.Name = "WBCheck"
+        Me.WBCheck.Size = New System.Drawing.Size(752, 397)
+        Me.WBCheck.TabIndex = 2
+        '
         'CheckPopUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(752, 438)
         Me.ControlBox = False
+        Me.Controls.Add(Me.WBCheck)
         Me.Controls.Add(Me.btnClose)
-        Me.Controls.Add(Me.txtCheck)
         Me.Name = "CheckPopUp"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "CheckPopUp"
         Me.ResumeLayout(False)
-        Me.PerformLayout()
 
     End Sub
-    Friend WithEvents txtCheck As System.Windows.Forms.TextBox
     Friend WithEvents btnClose As System.Windows.Forms.Button
+    Friend WithEvents WBCheck As System.Windows.Forms.WebBrowser
 End Class
