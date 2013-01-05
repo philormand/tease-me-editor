@@ -28,7 +28,8 @@ Partial Class CheckPopUp
         '
         'btnClose
         '
-        Me.btnClose.Location = New System.Drawing.Point(663, 403)
+        Me.btnClose.Anchor = CType((System.Windows.Forms.AnchorStyles.Bottom Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.btnClose.Location = New System.Drawing.Point(665, 415)
         Me.btnClose.Name = "btnClose"
         Me.btnClose.Size = New System.Drawing.Size(75, 23)
         Me.btnClose.TabIndex = 1
@@ -37,11 +38,11 @@ Partial Class CheckPopUp
         '
         'WBCheck
         '
-        Me.WBCheck.Dock = System.Windows.Forms.DockStyle.Top
+        Me.WBCheck.Dock = System.Windows.Forms.DockStyle.Fill
         Me.WBCheck.Location = New System.Drawing.Point(0, 0)
         Me.WBCheck.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WBCheck.Name = "WBCheck"
-        Me.WBCheck.Size = New System.Drawing.Size(752, 397)
+        Me.WBCheck.Size = New System.Drawing.Size(752, 438)
         Me.WBCheck.TabIndex = 2
         '
         'CheckPopUp
@@ -50,8 +51,8 @@ Partial Class CheckPopUp
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(752, 438)
         Me.ControlBox = False
-        Me.Controls.Add(Me.WBCheck)
         Me.Controls.Add(Me.btnClose)
+        Me.Controls.Add(Me.WBCheck)
         Me.Name = "CheckPopUp"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent
         Me.Text = "CheckPopUp"

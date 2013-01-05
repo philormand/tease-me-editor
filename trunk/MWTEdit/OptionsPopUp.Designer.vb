@@ -33,6 +33,10 @@ Partial Class OptionsPopUp
         Me.tbAudioFiles = New System.Windows.Forms.TextBox
         Me.Label3 = New System.Windows.Forms.Label
         Me.tbVideoFiles = New System.Windows.Forms.TextBox
+        Me.Label4 = New System.Windows.Forms.Label
+        Me.tbLoopCheck = New System.Windows.Forms.TextBox
+        Me.Label5 = New System.Windows.Forms.Label
+        Me.tbThumbnailSize = New System.Windows.Forms.TextBox
         Me.SuspendLayout()
         '
         'btnOk
@@ -47,7 +51,7 @@ Partial Class OptionsPopUp
         'cbBackup
         '
         Me.cbBackup.AutoSize = True
-        Me.cbBackup.Location = New System.Drawing.Point(19, 58)
+        Me.cbBackup.Location = New System.Drawing.Point(19, 54)
         Me.cbBackup.Name = "cbBackup"
         Me.cbBackup.RightToLeft = System.Windows.Forms.RightToLeft.Yes
         Me.cbBackup.Size = New System.Drawing.Size(97, 17)
@@ -83,7 +87,7 @@ Partial Class OptionsPopUp
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(16, 98)
+        Me.Label1.Location = New System.Drawing.Point(16, 145)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(60, 13)
         Me.Label1.TabIndex = 32
@@ -91,7 +95,7 @@ Partial Class OptionsPopUp
         '
         'tbImageFiles
         '
-        Me.tbImageFiles.Location = New System.Drawing.Point(121, 98)
+        Me.tbImageFiles.Location = New System.Drawing.Point(121, 145)
         Me.tbImageFiles.Name = "tbImageFiles"
         Me.tbImageFiles.Size = New System.Drawing.Size(294, 20)
         Me.tbImageFiles.TabIndex = 31
@@ -99,7 +103,7 @@ Partial Class OptionsPopUp
         'Label2
         '
         Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(16, 141)
+        Me.Label2.Location = New System.Drawing.Point(16, 188)
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(58, 13)
         Me.Label2.TabIndex = 34
@@ -107,7 +111,7 @@ Partial Class OptionsPopUp
         '
         'tbAudioFiles
         '
-        Me.tbAudioFiles.Location = New System.Drawing.Point(121, 141)
+        Me.tbAudioFiles.Location = New System.Drawing.Point(121, 188)
         Me.tbAudioFiles.Name = "tbAudioFiles"
         Me.tbAudioFiles.Size = New System.Drawing.Size(294, 20)
         Me.tbAudioFiles.TabIndex = 33
@@ -115,7 +119,7 @@ Partial Class OptionsPopUp
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(16, 180)
+        Me.Label3.Location = New System.Drawing.Point(16, 227)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(58, 13)
         Me.Label3.TabIndex = 36
@@ -123,10 +127,42 @@ Partial Class OptionsPopUp
         '
         'tbVideoFiles
         '
-        Me.tbVideoFiles.Location = New System.Drawing.Point(121, 180)
+        Me.tbVideoFiles.Location = New System.Drawing.Point(121, 227)
         Me.tbVideoFiles.Name = "tbVideoFiles"
         Me.tbVideoFiles.Size = New System.Drawing.Size(294, 20)
         Me.tbVideoFiles.TabIndex = 35
+        '
+        'Label4
+        '
+        Me.Label4.AutoSize = True
+        Me.Label4.Location = New System.Drawing.Point(15, 112)
+        Me.Label4.Name = "Label4"
+        Me.Label4.Size = New System.Drawing.Size(97, 13)
+        Me.Label4.TabIndex = 38
+        Me.Label4.Text = "Loop Check Depth"
+        '
+        'tbLoopCheck
+        '
+        Me.tbLoopCheck.Location = New System.Drawing.Point(121, 112)
+        Me.tbLoopCheck.Name = "tbLoopCheck"
+        Me.tbLoopCheck.Size = New System.Drawing.Size(67, 20)
+        Me.tbLoopCheck.TabIndex = 37
+        '
+        'Label5
+        '
+        Me.Label5.AutoSize = True
+        Me.Label5.Location = New System.Drawing.Point(16, 78)
+        Me.Label5.Name = "Label5"
+        Me.Label5.Size = New System.Drawing.Size(77, 13)
+        Me.Label5.TabIndex = 40
+        Me.Label5.Text = "Thumbnail size"
+        '
+        'tbThumbnailSize
+        '
+        Me.tbThumbnailSize.Location = New System.Drawing.Point(121, 78)
+        Me.tbThumbnailSize.Name = "tbThumbnailSize"
+        Me.tbThumbnailSize.Size = New System.Drawing.Size(67, 20)
+        Me.tbThumbnailSize.TabIndex = 39
         '
         'OptionsPopUp
         '
@@ -134,6 +170,10 @@ Partial Class OptionsPopUp
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(752, 264)
         Me.ControlBox = False
+        Me.Controls.Add(Me.Label5)
+        Me.Controls.Add(Me.tbThumbnailSize)
+        Me.Controls.Add(Me.Label4)
+        Me.Controls.Add(Me.tbLoopCheck)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.tbVideoFiles)
         Me.Controls.Add(Me.Label2)
@@ -163,4 +203,8 @@ Partial Class OptionsPopUp
     Friend WithEvents tbAudioFiles As System.Windows.Forms.TextBox
     Friend WithEvents Label3 As System.Windows.Forms.Label
     Friend WithEvents tbVideoFiles As System.Windows.Forms.TextBox
+    Friend WithEvents Label4 As System.Windows.Forms.Label
+    Friend WithEvents tbLoopCheck As System.Windows.Forms.TextBox
+    Friend WithEvents Label5 As System.Windows.Forms.Label
+    Friend WithEvents tbThumbnailSize As System.Windows.Forms.TextBox
 End Class

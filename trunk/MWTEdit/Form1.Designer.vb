@@ -175,6 +175,7 @@ Partial Class Form1
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsSort = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsCheck = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsLoops = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsUpload = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsNyx = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsOptions = New System.Windows.Forms.ToolStripMenuItem
@@ -184,6 +185,9 @@ Partial Class Form1
         Me.CheckBox1 = New System.Windows.Forms.CheckBox
         Me.Button1 = New System.Windows.Forms.Button
         Me.TextBox3 = New System.Windows.Forms.TextBox
+        Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
+        Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
+        Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar
         Me.TabControl1.SuspendLayout()
         Me.TabGeneral.SuspendLayout()
         Me.TabPageView.SuspendLayout()
@@ -223,6 +227,7 @@ Partial Class Form1
         Me.SplitContainer6.Panel2.SuspendLayout()
         Me.SplitContainer6.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
+        Me.StatusStrip1.SuspendLayout()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -242,7 +247,7 @@ Partial Class Form1
         Me.TabControl1.Location = New System.Drawing.Point(0, 24)
         Me.TabControl1.Name = "TabControl1"
         Me.TabControl1.SelectedIndex = 0
-        Me.TabControl1.Size = New System.Drawing.Size(1074, 638)
+        Me.TabControl1.Size = New System.Drawing.Size(1074, 616)
         Me.TabControl1.TabIndex = 0
         '
         'TabGeneral
@@ -267,7 +272,7 @@ Partial Class Form1
         Me.TabGeneral.Location = New System.Drawing.Point(4, 22)
         Me.TabGeneral.Name = "TabGeneral"
         Me.TabGeneral.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabGeneral.Size = New System.Drawing.Size(1066, 612)
+        Me.TabGeneral.Size = New System.Drawing.Size(1066, 590)
         Me.TabGeneral.TabIndex = 0
         Me.TabGeneral.Text = "General"
         Me.TabGeneral.UseVisualStyleBackColor = True
@@ -417,7 +422,7 @@ Partial Class Form1
         Me.TabPageView.Location = New System.Drawing.Point(4, 22)
         Me.TabPageView.Name = "TabPageView"
         Me.TabPageView.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPageView.Size = New System.Drawing.Size(1066, 612)
+        Me.TabPageView.Size = New System.Drawing.Size(1066, 590)
         Me.TabPageView.TabIndex = 1
         Me.TabPageView.Text = "PageView"
         Me.TabPageView.UseVisualStyleBackColor = True
@@ -613,7 +618,7 @@ Partial Class Form1
         Me.TabPage.Location = New System.Drawing.Point(4, 22)
         Me.TabPage.Name = "TabPage"
         Me.TabPage.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabPage.Size = New System.Drawing.Size(1066, 612)
+        Me.TabPage.Size = New System.Drawing.Size(1066, 590)
         Me.TabPage.TabIndex = 2
         Me.TabPage.Text = "Page"
         Me.TabPage.UseVisualStyleBackColor = True
@@ -737,7 +742,7 @@ Partial Class Form1
         Me.TabImage.Controls.Add(Me.tbImage)
         Me.TabImage.Location = New System.Drawing.Point(4, 22)
         Me.TabImage.Name = "TabImage"
-        Me.TabImage.Size = New System.Drawing.Size(1066, 612)
+        Me.TabImage.Size = New System.Drawing.Size(1066, 590)
         Me.TabImage.TabIndex = 11
         Me.TabImage.Text = "Image"
         Me.TabImage.UseVisualStyleBackColor = True
@@ -748,8 +753,7 @@ Partial Class Form1
         Me.ListView1.Location = New System.Drawing.Point(531, 0)
         Me.ListView1.MultiSelect = False
         Me.ListView1.Name = "ListView1"
-        Me.ListView1.Size = New System.Drawing.Size(535, 612)
-        Me.ListView1.Sorting = System.Windows.Forms.SortOrder.Ascending
+        Me.ListView1.Size = New System.Drawing.Size(535, 590)
         Me.ListView1.TabIndex = 19
         Me.ListView1.UseCompatibleStateImageBehavior = False
         '
@@ -804,7 +808,7 @@ Partial Class Form1
         Me.TabAudio.Controls.Add(Me.tbAudio)
         Me.TabAudio.Location = New System.Drawing.Point(4, 22)
         Me.TabAudio.Name = "TabAudio"
-        Me.TabAudio.Size = New System.Drawing.Size(1066, 612)
+        Me.TabAudio.Size = New System.Drawing.Size(1066, 590)
         Me.TabAudio.TabIndex = 7
         Me.TabAudio.Text = "Audio"
         Me.TabAudio.UseVisualStyleBackColor = True
@@ -815,7 +819,7 @@ Partial Class Form1
         Me.ListView2.Location = New System.Drawing.Point(532, 0)
         Me.ListView2.MultiSelect = False
         Me.ListView2.Name = "ListView2"
-        Me.ListView2.Size = New System.Drawing.Size(534, 612)
+        Me.ListView2.Size = New System.Drawing.Size(534, 590)
         Me.ListView2.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.ListView2.TabIndex = 56
         Me.ListView2.UseCompatibleStateImageBehavior = False
@@ -923,7 +927,7 @@ Partial Class Form1
         Me.TabVideo.Controls.Add(Me.tbVideo)
         Me.TabVideo.Location = New System.Drawing.Point(4, 22)
         Me.TabVideo.Name = "TabVideo"
-        Me.TabVideo.Size = New System.Drawing.Size(1066, 612)
+        Me.TabVideo.Size = New System.Drawing.Size(1066, 590)
         Me.TabVideo.TabIndex = 8
         Me.TabVideo.Text = "Video"
         Me.TabVideo.UseVisualStyleBackColor = True
@@ -934,7 +938,7 @@ Partial Class Form1
         Me.ListView3.Location = New System.Drawing.Point(532, 0)
         Me.ListView3.MultiSelect = False
         Me.ListView3.Name = "ListView3"
-        Me.ListView3.Size = New System.Drawing.Size(534, 612)
+        Me.ListView3.Size = New System.Drawing.Size(534, 590)
         Me.ListView3.Sorting = System.Windows.Forms.SortOrder.Ascending
         Me.ListView3.TabIndex = 62
         Me.ListView3.UseCompatibleStateImageBehavior = False
@@ -1035,7 +1039,7 @@ Partial Class Form1
         Me.TabMetronome.Controls.Add(Me.cbMetronome)
         Me.TabMetronome.Location = New System.Drawing.Point(4, 22)
         Me.TabMetronome.Name = "TabMetronome"
-        Me.TabMetronome.Size = New System.Drawing.Size(1066, 612)
+        Me.TabMetronome.Size = New System.Drawing.Size(1066, 590)
         Me.TabMetronome.TabIndex = 10
         Me.TabMetronome.Text = "Metronome"
         Me.TabMetronome.UseVisualStyleBackColor = True
@@ -1081,7 +1085,7 @@ Partial Class Form1
         Me.TabDelay.Controls.Add(Me.cbDelay)
         Me.TabDelay.Location = New System.Drawing.Point(4, 22)
         Me.TabDelay.Name = "TabDelay"
-        Me.TabDelay.Size = New System.Drawing.Size(1066, 612)
+        Me.TabDelay.Size = New System.Drawing.Size(1066, 590)
         Me.TabDelay.TabIndex = 9
         Me.TabDelay.Text = "Delay"
         Me.TabDelay.UseVisualStyleBackColor = True
@@ -1297,7 +1301,7 @@ Partial Class Form1
         Me.TabButtons.Location = New System.Drawing.Point(4, 22)
         Me.TabButtons.Name = "TabButtons"
         Me.TabButtons.Padding = New System.Windows.Forms.Padding(3)
-        Me.TabButtons.Size = New System.Drawing.Size(1066, 612)
+        Me.TabButtons.Size = New System.Drawing.Size(1066, 590)
         Me.TabButtons.TabIndex = 6
         Me.TabButtons.Text = "Buttons"
         Me.TabButtons.UseVisualStyleBackColor = True
@@ -1372,7 +1376,7 @@ Partial Class Form1
         Me.TabPageWYSIWYG.Controls.Add(Me.SplitContainer4)
         Me.TabPageWYSIWYG.Location = New System.Drawing.Point(4, 22)
         Me.TabPageWYSIWYG.Name = "TabPageWYSIWYG"
-        Me.TabPageWYSIWYG.Size = New System.Drawing.Size(1066, 612)
+        Me.TabPageWYSIWYG.Size = New System.Drawing.Size(1066, 590)
         Me.TabPageWYSIWYG.TabIndex = 3
         Me.TabPageWYSIWYG.Text = "WYSIWYG Edit Text"
         Me.TabPageWYSIWYG.UseVisualStyleBackColor = True
@@ -1391,8 +1395,8 @@ Partial Class Form1
         'SplitContainer4.Panel2
         '
         Me.SplitContainer4.Panel2.Controls.Add(Me.SplitContainer9)
-        Me.SplitContainer4.Size = New System.Drawing.Size(1066, 612)
-        Me.SplitContainer4.SplitterDistance = 30
+        Me.SplitContainer4.Size = New System.Drawing.Size(1066, 590)
+        Me.SplitContainer4.SplitterDistance = 27
         Me.SplitContainer4.TabIndex = 0
         '
         'ToolStrip1
@@ -1538,8 +1542,8 @@ Partial Class Form1
         'SplitContainer9.Panel2
         '
         Me.SplitContainer9.Panel2.Controls.Add(Me.WebBrowser3)
-        Me.SplitContainer9.Size = New System.Drawing.Size(1063, 572)
-        Me.SplitContainer9.SplitterDistance = 267
+        Me.SplitContainer9.Size = New System.Drawing.Size(1063, 553)
+        Me.SplitContainer9.SplitterDistance = 257
         Me.SplitContainer9.TabIndex = 28
         '
         'txtRawText
@@ -1550,7 +1554,7 @@ Partial Class Form1
         Me.txtRawText.Location = New System.Drawing.Point(0, 2)
         Me.txtRawText.Multiline = True
         Me.txtRawText.Name = "txtRawText"
-        Me.txtRawText.Size = New System.Drawing.Size(1055, 263)
+        Me.txtRawText.Size = New System.Drawing.Size(1055, 253)
         Me.txtRawText.TabIndex = 1
         '
         'WebBrowser3
@@ -1563,7 +1567,7 @@ Partial Class Form1
         Me.WebBrowser3.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser3.Name = "WebBrowser3"
         Me.WebBrowser3.ScriptErrorsSuppressed = True
-        Me.WebBrowser3.Size = New System.Drawing.Size(1057, 298)
+        Me.WebBrowser3.Size = New System.Drawing.Size(1057, 289)
         Me.WebBrowser3.TabIndex = 27
         Me.WebBrowser3.WebBrowserShortcutsEnabled = False
         '
@@ -1572,7 +1576,7 @@ Partial Class Form1
         Me.TabNyx.Controls.Add(Me.SplitContainer6)
         Me.TabNyx.Location = New System.Drawing.Point(4, 22)
         Me.TabNyx.Name = "TabNyx"
-        Me.TabNyx.Size = New System.Drawing.Size(1066, 612)
+        Me.TabNyx.Size = New System.Drawing.Size(1066, 590)
         Me.TabNyx.TabIndex = 4
         Me.TabNyx.Text = "Nyx"
         Me.TabNyx.UseVisualStyleBackColor = True
@@ -1592,8 +1596,8 @@ Partial Class Form1
         'SplitContainer6.Panel2
         '
         Me.SplitContainer6.Panel2.Controls.Add(Me.txtNyxScript)
-        Me.SplitContainer6.Size = New System.Drawing.Size(1066, 612)
-        Me.SplitContainer6.SplitterDistance = 33
+        Me.SplitContainer6.Size = New System.Drawing.Size(1066, 590)
+        Me.SplitContainer6.SplitterDistance = 31
         Me.SplitContainer6.TabIndex = 0
         '
         'txtRandom
@@ -1621,7 +1625,7 @@ Partial Class Form1
         Me.txtNyxScript.Multiline = True
         Me.txtNyxScript.Name = "txtNyxScript"
         Me.txtNyxScript.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtNyxScript.Size = New System.Drawing.Size(1066, 575)
+        Me.txtNyxScript.Size = New System.Drawing.Size(1066, 555)
         Me.txtNyxScript.TabIndex = 0
         '
         'OpenFileDialog1
@@ -1656,27 +1660,27 @@ Partial Class Form1
         '
         Me.MenuFileLoad.Name = "MenuFileLoad"
         Me.MenuFileLoad.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.L), System.Windows.Forms.Keys)
-        Me.MenuFileLoad.Size = New System.Drawing.Size(152, 22)
+        Me.MenuFileLoad.Size = New System.Drawing.Size(140, 22)
         Me.MenuFileLoad.Text = "&Load"
         '
         'MenuFileSave
         '
         Me.MenuFileSave.Name = "MenuFileSave"
         Me.MenuFileSave.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.F), System.Windows.Forms.Keys)
-        Me.MenuFileSave.Size = New System.Drawing.Size(152, 22)
+        Me.MenuFileSave.Size = New System.Drawing.Size(140, 22)
         Me.MenuFileSave.Text = "&Save"
         '
         'MenuFileNew
         '
         Me.MenuFileNew.Name = "MenuFileNew"
-        Me.MenuFileNew.Size = New System.Drawing.Size(152, 22)
+        Me.MenuFileNew.Size = New System.Drawing.Size(140, 22)
         Me.MenuFileNew.Text = "&New"
         '
         'MenuFileExit
         '
         Me.MenuFileExit.Name = "MenuFileExit"
         Me.MenuFileExit.ShortcutKeys = CType((System.Windows.Forms.Keys.Alt Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.MenuFileExit.Size = New System.Drawing.Size(152, 22)
+        Me.MenuFileExit.Size = New System.Drawing.Size(140, 22)
         Me.MenuFileExit.Text = "E&xit"
         '
         'PageToolStripMenuItem
@@ -1740,7 +1744,7 @@ Partial Class Form1
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuToolsSort, Me.MenuToolsCheck, Me.MenuToolsUpload, Me.MenuToolsNyx, Me.MenuToolsOptions, Me.MenuToolsRefreshMedia})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuToolsSort, Me.MenuToolsCheck, Me.MenuToolsLoops, Me.MenuToolsUpload, Me.MenuToolsNyx, Me.MenuToolsOptions, Me.MenuToolsRefreshMedia})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "&Tools"
@@ -1756,6 +1760,12 @@ Partial Class Form1
         Me.MenuToolsCheck.Name = "MenuToolsCheck"
         Me.MenuToolsCheck.Size = New System.Drawing.Size(200, 22)
         Me.MenuToolsCheck.Text = "Check Pages"
+        '
+        'MenuToolsLoops
+        '
+        Me.MenuToolsLoops.Name = "MenuToolsLoops"
+        Me.MenuToolsLoops.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsLoops.Text = "Check Loops"
         '
         'MenuToolsUpload
         '
@@ -1830,6 +1840,30 @@ Partial Class Form1
         Me.TextBox3.Size = New System.Drawing.Size(194, 20)
         Me.TextBox3.TabIndex = 23
         '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.ToolStripProgressBar1})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 640)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(1074, 22)
+        Me.StatusStrip1.TabIndex = 2
+        Me.StatusStrip1.Text = "StatusStrip1"
+        '
+        'ToolStripStatusLabel1
+        '
+        Me.ToolStripStatusLabel1.AutoSize = False
+        Me.ToolStripStatusLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(600, 17)
+        Me.ToolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
+        '
+        'ToolStripProgressBar1
+        '
+        Me.ToolStripProgressBar1.Name = "ToolStripProgressBar1"
+        Me.ToolStripProgressBar1.RightToLeft = System.Windows.Forms.RightToLeft.No
+        Me.ToolStripProgressBar1.Size = New System.Drawing.Size(300, 16)
+        Me.ToolStripProgressBar1.Step = 1
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1837,9 +1871,10 @@ Partial Class Form1
         Me.ClientSize = New System.Drawing.Size(1074, 662)
         Me.Controls.Add(Me.TabControl1)
         Me.Controls.Add(Me.MenuStrip1)
+        Me.Controls.Add(Me.StatusStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
-        Me.Text = "MWT Edit 0.8"
+        Me.Text = "MWT Edit 1.0"
         Me.TabControl1.ResumeLayout(False)
         Me.TabGeneral.ResumeLayout(False)
         Me.TabGeneral.PerformLayout()
@@ -1894,6 +1929,8 @@ Partial Class Form1
         Me.SplitContainer6.ResumeLayout(False)
         Me.MenuStrip1.ResumeLayout(False)
         Me.MenuStrip1.PerformLayout()
+        Me.StatusStrip1.ResumeLayout(False)
+        Me.StatusStrip1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2059,5 +2096,9 @@ Partial Class Form1
     Friend WithEvents MenuToolsRefreshMedia As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ListView2 As System.Windows.Forms.ListView
     Friend WithEvents ListView3 As System.Windows.Forms.ListView
+    Friend WithEvents StatusStrip1 As System.Windows.Forms.StatusStrip
+    Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
+    Friend WithEvents ToolStripProgressBar1 As System.Windows.Forms.ToolStripProgressBar
+    Friend WithEvents MenuToolsLoops As System.Windows.Forms.ToolStripMenuItem
 
 End Class
