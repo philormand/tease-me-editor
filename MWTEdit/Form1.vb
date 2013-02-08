@@ -2,6 +2,7 @@
 Imports System.Drawing.Drawing2D
 
 Public Class Form1
+    Private MstrVer = " 1.1"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -179,7 +180,8 @@ Public Class Form1
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", Form Opening")
         End If
         Try
-            MstrFormTitle = Me.Text
+            MstrFormTitle = Me.Text & MstrVer
+            Me.Text = MstrFormTitle
             OpenFileDialog1.DefaultExt = ".xml"
             OpenFileDialog1.Filter = "XML Files|*.xml"
             Dim strPath As String
@@ -876,29 +878,27 @@ Public Class Form1
                 tbDelayStartWith.Text = getAttribute(objXMLDelay, "start-with")
                 btnDelay.Tag = strTarget
                 btnDelay.Enabled = True
+                If strSeconds.IndexOf("..") > -1 Then
+                    lblTimer.Text = strSeconds & " " & strStyle
+                Else
+                    intSeconds = strSeconds
+                    intMinutes = Math.Floor(intSeconds / 60)
+                    intSeconds = intSeconds - (intMinutes * 60)
+                    lblTimer.Text = Microsoft.VisualBasic.Right("0" & intMinutes, 2) & ":" & Microsoft.VisualBasic.Right("0" & intSeconds, 2) & " " & strStyle
+                End If
                 Select Case strStyle
                     Case "normal"
                         rbHidden.Checked = False
                         rbNormal.Checked = True
                         rbSecret.Checked = False
-                        If strSeconds.IndexOf("..") > -1 Then
-                            lblTimer.Text = strSeconds
-                        Else
-                            intSeconds = strSeconds
-                            intMinutes = intSeconds / 60
-                            intSeconds = intSeconds - (intMinutes * 60)
-                            lblTimer.Text = Microsoft.VisualBasic.Right("0" & intMinutes, 2) & ":" & Microsoft.VisualBasic.Right("0" & intSeconds, 2)
-                        End If
                     Case "hidden"
                         rbHidden.Checked = True
                         rbNormal.Checked = False
                         rbSecret.Checked = False
-                        lblTimer.Text = ""
                     Case "secret"
                         rbHidden.Checked = False
                         rbNormal.Checked = False
                         rbSecret.Checked = True
-                        lblTimer.Text = "00:00"
                 End Select
                 'delay set options
                 txtDelaySet.Text = getAttribute(objXMLDelay, "set")
@@ -1314,7 +1314,7 @@ Public Class Form1
                 If strTarget <> "" Then
                     'If target and page name are the same warn it self refernces (this may be intentional when it is a delay)
                     If strTarget = strPage Then
-                        strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td>Targets its own page</td></tr>"
+                        strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td><font color=""olive"">Targets its own page</font></td></tr>"
                     Else
                         'get random pages will return an array of page names 
                         'if strTarget does not contain random pages it returns a 1 element array containing strTarget
@@ -1332,7 +1332,7 @@ Public Class Form1
                             Next
                             'if not found generate an error
                             If Not blnFound Then
-                                strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td>Page not found " & strPageName & "</td></tr>"
+                                strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td><font color=""red"">Page not found " & strPageName & "</font></td></tr>"
                             End If
                         Next
                     End If
@@ -1340,7 +1340,7 @@ Public Class Form1
                     'if no target specified and it is a button or a delay, generate an error
                     Select Case strNode
                         Case "Button", "Delay"
-                            strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td>No target page specified</td></tr>"
+                            strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strButton & "</td><td><font color=""red"">No target page specified</font></td></tr>"
                     End Select
                 End If
             Next
@@ -1511,7 +1511,7 @@ Public Class Form1
                         If strMedia.IndexOf("*") < 0 Then
                             If System.IO.File.Exists(OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & strMedia) Then
                             Else
-                                strOutput = strOutput & "<tr><td>" & strPage & "</td><td>" & strNode & " " & strMedia & "</td></tr>"
+                                strOutput = strOutput & "<tr><td>" & strPage & "</td><td><font color=""red"">" & strNode & " " & strMedia & "</font></td></tr>"
                             End If
                         End If
                 End Select
@@ -1729,7 +1729,7 @@ Public Class Form1
                     MstrPage = DialogBox.TextBox1.Text
                     MobjXMLPage = MobjXMLDoc.createElement("Page")
                     MobjXMLPage.setAttribute("id", MstrPage)
-                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1)
+                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1.nextSibling)
                     lblPage.Text = MstrPage
                     PopPageTree()
                     SavePage(False)
@@ -1793,7 +1793,7 @@ Public Class Form1
                     MstrPage = DialogBox.TextBox1.Text
                     MobjXMLPage = MobjXMLDoc.createElement("Page")
                     MobjXMLPage.setAttribute("id", MstrPage)
-                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1)
+                    MobjXMLPages.insertBefore(MobjXMLPage, objXMLPage1.nextSibling)
                     lblPage.Text = MstrPage
                     PopPageTree()
                     SavePage(False)
@@ -1980,6 +1980,7 @@ Public Class Form1
     Private Sub MenuToolsCheck_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsCheck.Click
         Dim objXMLNodes As MSXML2.IXMLDOMNodeList
         Dim objXMLElement As MSXML2.IXMLDOMElement
+        Dim objXMLElement2 As MSXML2.IXMLDOMElement
         Dim strTarget As String
         Dim strOutput As String
         Dim intLoop As Integer
@@ -1988,6 +1989,7 @@ Public Class Form1
         Dim blnFound As Boolean
         Dim strPages(1, 0) As String
         Dim strTemp(0) As String
+        Dim blnTargetNotFound As Boolean
         Dim objProgress As System.Windows.Forms.ToolStripProgressBar
         objProgress = StatusStrip1.Items("ToolStripProgressBar1")
 
@@ -1996,7 +1998,7 @@ Public Class Form1
         Try
             'Out put is displayed in a webbrowser control so we need to create the html
             strOutput = "<!DOCTYPE HTML PUBLIC ""-//W3C//DTD HTML 4.0 Transitional//EN""><html><head><title></title><style type=""text/css"">body { background-color:white; color:#000000; font-family: Tahoma; font-size:12pt; }</style></head><body><table border=""1"">"
-            strOutput = strOutput & "<tr><th>Page</th><th>Element</th><th>Error / Waring</th></tr>"
+            strOutput = strOutput & "<tr><th>Page</th><th>Element</th><th><font color=""red"">Error</font> / <font color=""olive"">Warning</font></th></tr>"
             'create an array of pages so we don't have to search the xml every time
             strPages(0, 0) = ""
             strPages(1, 0) = "N"
@@ -2011,7 +2013,7 @@ Public Class Form1
                 For intLoop2 = 0 To intPages
                     If strPages(0, intLoop2) = strTarget Then
                         blnFound = True
-                        strOutput = strOutput & "Duplicate Page found " & strTarget & vbCrLf
+                        strOutput = strOutput & "<tr><td>" & strTarget & "</td><td/><td><font color=""red"">Duplicate Page found</font></td></tr>"
                         Exit For
                     End If
                 Next
@@ -2044,7 +2046,57 @@ Public Class Form1
             For intLoop2 = 0 To intPages - 1
                 'if it is N this page has not been referenced (don't bother with start as it is the first page)
                 If strPages(1, intLoop2) = "N" And strPages(0, intLoop2) <> "start" Then
-                    strOutput = strOutput & "<tr><td>" & strPages(0, intLoop2) & "</td><td/><td>Page not referenced</td></tr>"
+                    strOutput = strOutput & "<tr><td>" & strPages(0, intLoop2) & "</td><td/><td><font color=""olive"">Page not referenced</font></td></tr>"
+                End If
+                objXMLElement = MobjXMLPages.selectSingleNode("./Page[@id=""" & strPages(0, intLoop2) & """]")
+                blnTargetNotFound = True
+                'if page is missing ignore as we test for missing pages earlier
+                If Not objXMLElement Is Nothing Then
+                    objXMLNodes = objXMLElement.selectNodes(".//Button")
+                    For intLoop = objXMLNodes.length - 1 To 0 Step -1
+                        objXMLElement2 = objXMLNodes.item(intLoop)
+                        strTarget = getAttribute(objXMLElement2, "target")
+                        If strTarget <> "" Then
+                            blnTargetNotFound = False
+                            Exit For
+                        End If
+                    Next
+                    If blnTargetNotFound Then
+                        objXMLNodes = objXMLElement.selectNodes(".//Delay")
+                        For intLoop = objXMLNodes.length - 1 To 0 Step -1
+                            objXMLElement2 = objXMLNodes.item(intLoop)
+                            strTarget = getAttribute(objXMLElement2, "target")
+                            If strTarget <> "" Then
+                                blnTargetNotFound = False
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If blnTargetNotFound Then
+                        objXMLNodes = objXMLElement.selectNodes(".//Audio")
+                        For intLoop = objXMLNodes.length - 1 To 0 Step -1
+                            objXMLElement2 = objXMLNodes.item(intLoop)
+                            strTarget = getAttribute(objXMLElement2, "target")
+                            If strTarget <> "" Then
+                                blnTargetNotFound = False
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If blnTargetNotFound Then
+                        objXMLNodes = objXMLElement.selectNodes(".//Video")
+                        For intLoop = objXMLNodes.length - 1 To 0 Step -1
+                            objXMLElement2 = objXMLNodes.item(intLoop)
+                            strTarget = getAttribute(objXMLElement2, "target")
+                            If strTarget <> "" Then
+                                blnTargetNotFound = False
+                                Exit For
+                            End If
+                        Next
+                    End If
+                    If blnTargetNotFound Then
+                        strOutput = strOutput & "<tr><td>" & strPages(0, intLoop2) & "</td><td/><td><font color=""olive"">Page has no target</font></td></tr>"
+                    End If
                 End If
             Next
             strOutput = strOutput & "</table><table border=""1""><tr><th>Page</th><th>Media Missing</th></tr>"
@@ -2685,5 +2737,11 @@ Public Class Form1
         Loop
         Cursor = Cursors.Default
         frmDialogue.ShowDialog()
+    End Sub
+
+    Private Sub TabControl1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl1.SelectedIndexChanged
+        If TabControl1.SelectedTab.Name = "TabPageView" Then
+            TreeViewPages.Focus()
+        End If
     End Sub
 End Class
