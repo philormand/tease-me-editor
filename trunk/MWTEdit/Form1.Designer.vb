@@ -429,9 +429,7 @@ Partial Class Form1
         '
         'SplitContainer8
         '
-        Me.SplitContainer8.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.SplitContainer8.Dock = System.Windows.Forms.DockStyle.Fill
         Me.SplitContainer8.Location = New System.Drawing.Point(3, 3)
         Me.SplitContainer8.Name = "SplitContainer8"
         '
@@ -442,18 +440,16 @@ Partial Class Form1
         'SplitContainer8.Panel2
         '
         Me.SplitContainer8.Panel2.Controls.Add(Me.SplitContainer2)
-        Me.SplitContainer8.Size = New System.Drawing.Size(1057, 637)
+        Me.SplitContainer8.Size = New System.Drawing.Size(1060, 584)
         Me.SplitContainer8.SplitterDistance = 169
         Me.SplitContainer8.TabIndex = 1
         '
         'TreeViewPages
         '
-        Me.TreeViewPages.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
-                    Or System.Windows.Forms.AnchorStyles.Left) _
-                    Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
+        Me.TreeViewPages.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TreeViewPages.Location = New System.Drawing.Point(0, 0)
         Me.TreeViewPages.Name = "TreeViewPages"
-        Me.TreeViewPages.Size = New System.Drawing.Size(169, 606)
+        Me.TreeViewPages.Size = New System.Drawing.Size(169, 584)
         Me.TreeViewPages.TabIndex = 3
         '
         'SplitContainer2
@@ -471,7 +467,7 @@ Partial Class Form1
         'SplitContainer2.Panel2
         '
         Me.SplitContainer2.Panel2.Controls.Add(Me.SplitContainer3)
-        Me.SplitContainer2.Size = New System.Drawing.Size(878, 627)
+        Me.SplitContainer2.Size = New System.Drawing.Size(881, 574)
         Me.SplitContainer2.SplitterDistance = 410
         Me.SplitContainer2.TabIndex = 0
         '
@@ -480,7 +476,7 @@ Partial Class Form1
         Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
         Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(410, 627)
+        Me.PictureBox1.Size = New System.Drawing.Size(410, 574)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.PictureBox1.TabIndex = 0
         Me.PictureBox1.TabStop = False
@@ -499,8 +495,8 @@ Partial Class Form1
         'SplitContainer3.Panel2
         '
         Me.SplitContainer3.Panel2.Controls.Add(Me.FlowLayoutPanel1)
-        Me.SplitContainer3.Size = New System.Drawing.Size(464, 627)
-        Me.SplitContainer3.SplitterDistance = 523
+        Me.SplitContainer3.Size = New System.Drawing.Size(467, 574)
+        Me.SplitContainer3.SplitterDistance = 477
         Me.SplitContainer3.TabIndex = 0
         '
         'SplitContainer5
@@ -522,8 +518,8 @@ Partial Class Form1
         'SplitContainer5.Panel2
         '
         Me.SplitContainer5.Panel2.Controls.Add(Me.WebBrowser1)
-        Me.SplitContainer5.Size = New System.Drawing.Size(464, 523)
-        Me.SplitContainer5.SplitterDistance = 86
+        Me.SplitContainer5.Size = New System.Drawing.Size(467, 477)
+        Me.SplitContainer5.SplitterDistance = 77
         Me.SplitContainer5.TabIndex = 1
         '
         'lblPageName
@@ -590,7 +586,7 @@ Partial Class Form1
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.ScriptErrorsSuppressed = True
         Me.WebBrowser1.ScrollBarsEnabled = False
-        Me.WebBrowser1.Size = New System.Drawing.Size(464, 433)
+        Me.WebBrowser1.Size = New System.Drawing.Size(467, 396)
         Me.WebBrowser1.TabIndex = 0
         '
         'FlowLayoutPanel1
@@ -599,7 +595,7 @@ Partial Class Form1
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(464, 100)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(467, 93)
         Me.FlowLayoutPanel1.TabIndex = 0
         '
         'TabPage
@@ -1874,7 +1870,7 @@ Partial Class Form1
         Me.Controls.Add(Me.StatusStrip1)
         Me.MainMenuStrip = Me.MenuStrip1
         Me.Name = "Form1"
-        Me.Text = "MWT Edit 1.0"
+        Me.Text = "MWT Edit"
         Me.TabControl1.ResumeLayout(False)
         Me.TabGeneral.ResumeLayout(False)
         Me.TabGeneral.PerformLayout()
