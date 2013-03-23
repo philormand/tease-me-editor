@@ -22,4 +22,7 @@ http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Options.png
 ==Refresh Media==
 Will refresh the lists in the image, audio and video tabs if you have added new files to the media directory during the session
 
+==Add Nyx Text Formatting==
+New in V1.3 (not shown on screen shot) when tease me downloads a Nyx flash tease it does not convert the formatting of text.  The formatting is still in the xml file as a comment.  This option will replace the current text with correctly formatted HTML so colours font changes etc should not show in tease me.
+
 MenusPage GeneralTab
