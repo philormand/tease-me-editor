@@ -140,8 +140,6 @@ Partial Class Form1
         Me.tscbCut = New System.Windows.Forms.ToolStripButton
         Me.tscbCopy = New System.Windows.Forms.ToolStripButton
         Me.tscbPaste = New System.Windows.Forms.ToolStripButton
-        Me.tscbTextToVisual = New System.Windows.Forms.ToolStripButton
-        Me.tscbVisualToText = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton
         Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton
@@ -180,6 +178,7 @@ Partial Class Form1
         Me.MenuToolsNyx = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsOptions = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsRefreshMedia = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuToolsNyxText = New System.Windows.Forms.ToolStripMenuItem
         Me.Label24 = New System.Windows.Forms.Label
         Me.TextBox2 = New System.Windows.Forms.TextBox
         Me.CheckBox1 = New System.Windows.Forms.CheckBox
@@ -496,7 +495,7 @@ Partial Class Form1
         '
         Me.SplitContainer3.Panel2.Controls.Add(Me.FlowLayoutPanel1)
         Me.SplitContainer3.Size = New System.Drawing.Size(467, 574)
-        Me.SplitContainer3.SplitterDistance = 477
+        Me.SplitContainer3.SplitterDistance = 476
         Me.SplitContainer3.TabIndex = 0
         '
         'SplitContainer5
@@ -518,8 +517,8 @@ Partial Class Form1
         'SplitContainer5.Panel2
         '
         Me.SplitContainer5.Panel2.Controls.Add(Me.WebBrowser1)
-        Me.SplitContainer5.Size = New System.Drawing.Size(467, 477)
-        Me.SplitContainer5.SplitterDistance = 77
+        Me.SplitContainer5.Size = New System.Drawing.Size(467, 476)
+        Me.SplitContainer5.SplitterDistance = 76
         Me.SplitContainer5.TabIndex = 1
         '
         'lblPageName
@@ -585,7 +584,6 @@ Partial Class Form1
         Me.WebBrowser1.MinimumSize = New System.Drawing.Size(20, 20)
         Me.WebBrowser1.Name = "WebBrowser1"
         Me.WebBrowser1.ScriptErrorsSuppressed = True
-        Me.WebBrowser1.ScrollBarsEnabled = False
         Me.WebBrowser1.Size = New System.Drawing.Size(467, 396)
         Me.WebBrowser1.TabIndex = 0
         '
@@ -595,7 +593,7 @@ Partial Class Form1
         Me.FlowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft
         Me.FlowLayoutPanel1.Location = New System.Drawing.Point(0, 0)
         Me.FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(467, 93)
+        Me.FlowLayoutPanel1.Size = New System.Drawing.Size(467, 94)
         Me.FlowLayoutPanel1.TabIndex = 0
         '
         'TabPage
@@ -636,6 +634,7 @@ Partial Class Form1
         Me.tbPageText.Location = New System.Drawing.Point(63, 89)
         Me.tbPageText.Multiline = True
         Me.tbPageText.Name = "tbPageText"
+        Me.tbPageText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.tbPageText.Size = New System.Drawing.Size(490, 151)
         Me.tbPageText.TabIndex = 35
         '
@@ -1397,7 +1396,7 @@ Partial Class Form1
         '
         'ToolStrip1
         '
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tscbBold, Me.tscbItalic, Me.tscbUnderline, Me.tsbtnColour, Me.tscbCut, Me.tscbCopy, Me.tscbPaste, Me.tscbTextToVisual, Me.tscbVisualToText, Me.ToolStripButton1, Me.ToolStripButton2, Me.ToolStripButton3})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tscbBold, Me.tscbItalic, Me.tscbUnderline, Me.tsbtnColour, Me.tscbCut, Me.tscbCopy, Me.tscbPaste, Me.ToolStripButton1, Me.ToolStripButton2, Me.ToolStripButton3})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Size = New System.Drawing.Size(1066, 25)
@@ -1476,24 +1475,6 @@ Partial Class Form1
         Me.tscbPaste.Size = New System.Drawing.Size(23, 22)
         Me.tscbPaste.Tag = "Paste"
         Me.tscbPaste.ToolTipText = "Paste"
-        '
-        'tscbTextToVisual
-        '
-        Me.tscbTextToVisual.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.tscbTextToVisual.Image = CType(resources.GetObject("tscbTextToVisual.Image"), System.Drawing.Image)
-        Me.tscbTextToVisual.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbTextToVisual.Name = "tscbTextToVisual"
-        Me.tscbTextToVisual.Size = New System.Drawing.Size(78, 22)
-        Me.tscbTextToVisual.Text = "TextToVisual"
-        '
-        'tscbVisualToText
-        '
-        Me.tscbVisualToText.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.tscbVisualToText.Image = CType(resources.GetObject("tscbVisualToText.Image"), System.Drawing.Image)
-        Me.tscbVisualToText.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbVisualToText.Name = "tscbVisualToText"
-        Me.tscbVisualToText.Size = New System.Drawing.Size(78, 22)
-        Me.tscbVisualToText.Text = "VisualToText"
         '
         'ToolStripButton1
         '
@@ -1740,7 +1721,7 @@ Partial Class Form1
         '
         'ToolsToolStripMenuItem
         '
-        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuToolsSort, Me.MenuToolsCheck, Me.MenuToolsLoops, Me.MenuToolsUpload, Me.MenuToolsNyx, Me.MenuToolsOptions, Me.MenuToolsRefreshMedia})
+        Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuToolsSort, Me.MenuToolsCheck, Me.MenuToolsLoops, Me.MenuToolsUpload, Me.MenuToolsNyx, Me.MenuToolsOptions, Me.MenuToolsRefreshMedia, Me.MenuToolsNyxText})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
         Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(48, 20)
         Me.ToolsToolStripMenuItem.Text = "&Tools"
@@ -1748,44 +1729,50 @@ Partial Class Form1
         'MenuToolsSort
         '
         Me.MenuToolsSort.Name = "MenuToolsSort"
-        Me.MenuToolsSort.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsSort.Size = New System.Drawing.Size(202, 22)
         Me.MenuToolsSort.Text = "Sort Pages"
         '
         'MenuToolsCheck
         '
         Me.MenuToolsCheck.Name = "MenuToolsCheck"
-        Me.MenuToolsCheck.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsCheck.Size = New System.Drawing.Size(202, 22)
         Me.MenuToolsCheck.Text = "Check Pages"
         '
         'MenuToolsLoops
         '
         Me.MenuToolsLoops.Name = "MenuToolsLoops"
-        Me.MenuToolsLoops.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsLoops.Size = New System.Drawing.Size(202, 22)
         Me.MenuToolsLoops.Text = "Check Loops"
         '
         'MenuToolsUpload
         '
         Me.MenuToolsUpload.Name = "MenuToolsUpload"
-        Me.MenuToolsUpload.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsUpload.Size = New System.Drawing.Size(202, 22)
         Me.MenuToolsUpload.Text = "Create Upload Directory"
         '
         'MenuToolsNyx
         '
         Me.MenuToolsNyx.Name = "MenuToolsNyx"
-        Me.MenuToolsNyx.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsNyx.Size = New System.Drawing.Size(202, 22)
         Me.MenuToolsNyx.Text = "Gen Nyx Script"
         '
         'MenuToolsOptions
         '
         Me.MenuToolsOptions.Name = "MenuToolsOptions"
-        Me.MenuToolsOptions.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsOptions.Size = New System.Drawing.Size(202, 22)
         Me.MenuToolsOptions.Text = "Options"
         '
         'MenuToolsRefreshMedia
         '
         Me.MenuToolsRefreshMedia.Name = "MenuToolsRefreshMedia"
-        Me.MenuToolsRefreshMedia.Size = New System.Drawing.Size(200, 22)
+        Me.MenuToolsRefreshMedia.Size = New System.Drawing.Size(202, 22)
         Me.MenuToolsRefreshMedia.Text = "Refresh Media"
+        '
+        'MenuToolsNyxText
+        '
+        Me.MenuToolsNyxText.Name = "MenuToolsNyxText"
+        Me.MenuToolsNyxText.Size = New System.Drawing.Size(202, 22)
+        Me.MenuToolsNyxText.Text = "Add Nyx Text Formating"
         '
         'Label24
         '
@@ -2058,8 +2045,6 @@ Partial Class Form1
     Friend WithEvents MenuToolsCheck As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MenuToolsUpload As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MenuToolsNyx As System.Windows.Forms.ToolStripMenuItem
-    Friend WithEvents tscbTextToVisual As System.Windows.Forms.ToolStripButton
-    Friend WithEvents tscbVisualToText As System.Windows.Forms.ToolStripButton
     Friend WithEvents Label22 As System.Windows.Forms.Label
     Friend WithEvents tbDelayStartWith As System.Windows.Forms.TextBox
     Friend WithEvents Label26 As System.Windows.Forms.Label
@@ -2096,5 +2081,6 @@ Partial Class Form1
     Friend WithEvents ToolStripStatusLabel1 As System.Windows.Forms.ToolStripStatusLabel
     Friend WithEvents ToolStripProgressBar1 As System.Windows.Forms.ToolStripProgressBar
     Friend WithEvents MenuToolsLoops As System.Windows.Forms.ToolStripMenuItem
+    Friend WithEvents MenuToolsNyxText As System.Windows.Forms.ToolStripMenuItem
 
 End Class
