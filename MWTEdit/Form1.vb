@@ -2,7 +2,7 @@
 Imports System.Drawing.Drawing2D
 
 Public Class Form1
-    Private MstrVer = " 1.1"
+    Private MstrVer = " 1.3"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -26,6 +26,9 @@ Public Class Form1
     Private MstrFormTitle As String
     Private MintThumbnailSize As Integer
     Private MintLoopCheckDepth As Integer
+    Private MintMaxDelay As Integer
+    Private MstrEditStatus As String = "Neither"
+    Dim WithEvents doc As System.Windows.Forms.HtmlDocument
 
     Private Sub loadFile(ByVal strFile As String)
         Try
@@ -43,7 +46,11 @@ Public Class Form1
             tbAuthorName.Text = objXMLEl.selectSingleNode("Name").text
             tbAuthorURL.Text = objXMLEl.selectSingleNode("Url").text
             objXMLEl = MobjXMLDoc.selectSingleNode("//Settings")
-            cbAutoSetPageWhenSeen.Checked = objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text
+            If Not objXMLEl Is Nothing Then
+                cbAutoSetPageWhenSeen.Checked = objXMLEl.selectSingleNode("AutoSetPageWhenSeen").text
+            Else
+                cbAutoSetPageWhenSeen.Checked = False
+            End If
             TreeViewPages.SelectedNode = TreeViewPages.Nodes(0)
             System.Windows.Forms.Application.DoEvents()
             fillListView()
@@ -152,7 +159,7 @@ Public Class Form1
         Dim strPattern As String
         Try
             For Each strPattern In strPatterns
-                Dim strTemp() As String = System.IO.Directory.GetFiles(OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text, strPattern)
+                Dim strTemp() As String = System.IO.Directory.GetFiles(OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text, strPattern, IO.SearchOption.AllDirectories)
                 If strTemp.Length > 0 Then
                     lrFiles.AddRange(strTemp)
                 End If
@@ -194,6 +201,7 @@ Public Class Form1
                 objXMLEl.setAttribute("backup", "True")
                 objXMLEl.setAttribute("thumbnailsize", "120")
                 objXMLEl.setAttribute("loopcheckdepth", "20")
+                objXMLEl.setAttribute("maxdelay", "120")
                 objXMLEl.setAttribute("imagefilter", "*.jpg,*.bmp,*.gif")
                 objXMLEl.setAttribute("audiofilter", "*.mp3,*.wav")
                 objXMLEl.setAttribute("videofilter", "*.wmv,*.mp4")
@@ -215,11 +223,19 @@ Public Class Form1
             Else
                 MintThumbnailSize = Convert.ToInt32(strTemp)
             End If
+
             strTemp = getAttribute(objDomSettings.documentElement, "loopcheckdepth")
             If strTemp = "" Then
                 MintLoopCheckDepth = 20
             Else
                 MintLoopCheckDepth = Convert.ToInt32(strTemp)
+            End If
+
+            strTemp = getAttribute(objDomSettings.documentElement, "maxdelay")
+            If strTemp = "" Then
+                MintMaxDelay = 120
+            Else
+                MintMaxDelay = Convert.ToInt32(strTemp)
             End If
 
             MstrImageFilter = getAttribute(objDomSettings.documentElement, "imagefilter")
@@ -1982,6 +1998,9 @@ Public Class Form1
         Dim objXMLElement As MSXML2.IXMLDOMElement
         Dim objXMLElement2 As MSXML2.IXMLDOMElement
         Dim strTarget As String
+        Dim strPage As String
+        Dim strDelay As String
+        Dim intDelay As Integer
         Dim strOutput As String
         Dim intLoop As Integer
         Dim intLoop2 As Integer
@@ -1990,6 +2009,13 @@ Public Class Form1
         Dim strPages(1, 0) As String
         Dim strTemp(0) As String
         Dim blnTargetNotFound As Boolean
+        Dim intPos1 As Integer
+        Dim intPos2 As Integer
+        Dim intPos3 As Integer
+        Dim intMin As Integer
+        Dim intMax As Integer
+        Dim strMin As String
+        Dim strMax As String
         Dim objProgress As System.Windows.Forms.ToolStripProgressBar
         objProgress = StatusStrip1.Items("ToolStripProgressBar1")
 
@@ -2033,13 +2059,52 @@ Public Class Form1
             'check all the button page targets
             objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Button")
             PageExists(objXMLNodes, strPages, intPages, strOutput)
-            'check all the button page targets
+            'check all the delay page targets
             objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Delay")
             PageExists(objXMLNodes, strPages, intPages, strOutput)
-            'check all the button page targets
+            'check delay is less than the maximum
+            For intLoop = objXMLNodes.length - 1 To 0 Step -1
+                objXMLElement2 = objXMLNodes.item(intLoop)
+                strDelay = getAttribute(objXMLElement2, "seconds")
+
+                intPos1 = strDelay.IndexOf("(")
+                'random pages so split out the static bits either side and the random numbers
+                If intPos1 > -1 Then
+                    intPos2 = strDelay.IndexOf("..", intPos1)
+                    If (intPos2 > -1) Then
+                        intPos3 = strDelay.IndexOf(")", intPos2)
+                        If (intPos3 > -1) Then
+                            intPos1 = intPos1 + 1
+                            intPos2 = intPos2 + 2
+                            intPos3 = intPos3 + 1
+                            strMin = strDelay.Substring(intPos1, intPos2 - intPos1 - 2)
+                            intMin = Convert.ToInt32(strMin)
+                            strMax = strDelay.Substring(intPos2, intPos3 - intPos2 - 1)
+                            intMax = Convert.ToInt32(strMax)
+                            If intMax > intMin Then
+                                intDelay = intMax
+                            Else
+                                intDelay = intMin
+                            End If
+                        Else
+                            intDelay = 0
+                        End If
+                    Else
+                        intDelay = 0
+                    End If
+                Else
+                    intDelay = Convert.ToInt32(strDelay)
+                End If
+
+                If intDelay > MintMaxDelay Then
+                    strPage = getAttribute(objXMLElement2.parentNode, "id")
+                    strOutput = strOutput & "<tr><td>" & strPage & "</td><td>Delay</td><td><font color=""olive"">Delay " & strDelay & " greater than " & MintMaxDelay.ToString & "</font></td></tr>"
+                End If
+            Next
+            'check all the Audio page targets
             objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Audio")
             PageExists(objXMLNodes, strPages, intPages, strOutput)
-            'check all the button page targets
+            'check all the Video page targets
             objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Video")
             PageExists(objXMLNodes, strPages, intPages, strOutput)
             'Loop through the page array for any pages still set to N
@@ -2127,6 +2192,9 @@ Public Class Form1
     Private Sub MenuToolsNyx_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsNyx.Click
         Try
             Dim objXMLDomText As New MSXML2.DOMDocument
+            Dim objXMLNodes As MSXML2.IXMLDOMNodeList
+            Dim objXMLElement As MSXML2.IXMLDOMElement
+            Dim objXMLPages As MSXML2.IXMLDOMNode
             Dim objXMLPageNode As MSXML2.IXMLDOMNode
             Dim objXMLPage As MSXML2.IXMLDOMNode
             Dim objXMLImage As MSXML2.IXMLDOMElement
@@ -2164,11 +2232,110 @@ Public Class Form1
             Dim strDelaySet As String
             Dim strDelayUnSet As String
             Dim strTmpArr() As String
+            Dim strTmpArr2() As String
+            Dim strTmpArr3() As String
+            Dim strPageName As String
+            Dim strPages(1, 0) As String
+            Dim intPages As Integer
+            Dim blnFound As Boolean
+            Dim strNewTarget As String = ""
 
+            objXMLPages = MobjXMLPages.cloneNode(True)
+            strPages(0, 0) = ""
+            strPages(1, 0) = "N"
+            intPages = -1
+            'check all the button page targets
+            objXMLNodes = objXMLPages.selectNodes("//Page//Button")
+            For intloop = objXMLNodes.length - 1 To 0 Step -1
+                objXMLElement = objXMLNodes.item(intloop)
+                'get the target page
+                strTarget = getAttribute(objXMLElement, "target")
+                If strTarget <> "" Then
+                    'get random pages will return an array of page names 
+                    'if strTarget does not contain random pages it returns a 1 element array containing strTarget
+                    strTmpArr2 = GetRandomPages(strTarget)
+                    strTmpArr3 = EncodeRandomPages(strTarget, strNewTarget)
+                    If strTarget <> strNewTarget Then
+                        objXMLElement.setAttribute("target", strNewTarget)
+                        For i = 0 To strTmpArr2.Length - 1
+                            strPageName = strTmpArr2(i)
+                            blnFound = False
+                            'loop through the rest of the pages to see if we have a duplicate
+                            For intloop2 = 0 To intPages
+                                If strPages(0, intloop2) = strPageName Then
+                                    blnFound = True
+                                    Exit For
+                                End If
+                            Next
+                            'if no duplcate found add it to the page array
+                            If Not blnFound Then
+                                If strPages(0, 0) = "" Then
+                                    strPages(0, 0) = strPageName
+                                    strPages(1, 0) = strTmpArr3(i)
+                                    intPages = intPages + 1
+                                Else
+                                    intPages = intPages + 1
+                                    ReDim Preserve strPages(1, intPages)
+                                    strPages(0, intPages) = strPageName
+                                    strPages(1, intPages) = strTmpArr3(i)
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+            Next
+
+            'check all the delay page targets
+            objXMLNodes = objXMLPages.selectNodes("//Page//Delay")
+            For intloop = objXMLNodes.length - 1 To 0 Step -1
+                objXMLElement = objXMLNodes.item(intloop)
+                'get the target page
+                strTarget = getAttribute(objXMLElement, "target")
+                If strTarget <> "" Then
+                    'get random pages will return an array of page names 
+                    'if strTarget does not contain random pages it returns a 1 element array containing strTarget
+                    strTmpArr2 = GetRandomPages(strTarget)
+                    strTmpArr3 = EncodeRandomPages(strTarget, strNewTarget)
+                    If strTarget <> strNewTarget Then
+                        objXMLElement.setAttribute("target", strNewTarget)
+                        For i = 0 To strTmpArr2.Length - 1
+                            strPageName = strTmpArr2(i)
+                            blnFound = False
+                            'loop through the rest of the pages to see if we have a duplicate
+                            For intloop2 = 0 To intPages
+                                If strPages(0, intloop2) = strPageName Then
+                                    blnFound = True
+                                    Exit For
+                                End If
+                            Next
+                            'if no duplcate found add it to the page array
+                            If Not blnFound Then
+                                If strPages(0, 0) = "" Then
+                                    strPages(0, 0) = strPageName
+                                    strPages(1, 0) = strTmpArr3(i)
+                                    intPages = intPages + 1
+                                Else
+                                    intPages = intPages + 1
+                                    ReDim Preserve strPages(1, intPages)
+                                    strPages(0, intPages) = strPageName
+                                    strPages(1, intPages) = strTmpArr3(i)
+                                End If
+                            End If
+                        Next
+                    End If
+                End If
+            Next
+
+
+            For intloop2 = 0 To intPages
+                objXMLElement = objXMLPages.selectSingleNode("//Page[@id='" & strPages(0, intloop2) & "']")
+                objXMLElement.setAttribute("id", strPages(1, intloop2))
+            Next
+            'Still need to change the page names
 
             intRandomPage = Integer.Parse(txtRandom.Text)
             strRandomPages = ""
-            For Each objXMLPageNode In MobjXMLPages.childNodes
+            For Each objXMLPageNode In objXMLPages.childNodes
                 If objXMLPageNode.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
                     objXMLPage = objXMLPageNode
                     strScript = strScript & getAttribute(objXMLPage, "id") & "#page("
@@ -2430,7 +2597,7 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Sub tscbTextToVisual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbTextToVisual.Click
+    Private Sub tscbTextToVisual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             WebBrowser3.Document.Body.InnerHtml = txtRawText.Text
             Do While Not WebBrowser3.ReadyState = WebBrowserReadyState.Complete
@@ -2441,7 +2608,7 @@ Public Class Form1
         End Try
     End Sub
 
-    Private Sub tscbVisualToText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tscbVisualToText.Click
+    Private Sub tscbVisualToText_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
             txtRawText.Text = WebBrowser3.Document.Body.InnerHtml
         Catch ex As Exception
@@ -2504,10 +2671,14 @@ Public Class Form1
         Try
             If ListView1.SelectedItems.Count > 0 Then
                 strImage = ListView1.SelectedItems(0).Text
-                OpenFileDialogImage.FileName = strImage
-                tbImage.Text = OpenFileDialogImage.SafeFileName
-                PictureBox1.Load(strImage)
-                PictureBox2.Load(strImage)
+                strImage = strImage.Substring(txtDirectory.Length + 1)
+                strImage = strImage.Replace(tbMediaDirectory.Text, "")
+                If strImage.Substring(0, 1) = "\" Then
+                    strImage = strImage.Substring(1)
+                End If
+                tbImage.Text = strImage
+                PictureBox1.Load(txtDirectory & "\" & tbMediaDirectory.Text & "\" & strImage)
+                PictureBox2.Load(txtDirectory & "\" & tbMediaDirectory.Text & "\" & strImage)
                 MblnDirty = True
             End If
         Catch ex As Exception
@@ -2544,20 +2715,16 @@ Public Class Form1
 
     Private Sub txtRawText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtRawText.TextChanged
         Try
-            WebBrowser3.Document.Body.InnerHtml = txtRawText.Text
-            Do While Not WebBrowser3.ReadyState = WebBrowserReadyState.Complete
-                System.Windows.Forms.Application.DoEvents()
-            Loop
+            If MstrEditStatus = "Neither" Then
+                MstrEditStatus = "Raw"
+                WebBrowser3.Document.Body.InnerHtml = txtRawText.Text
+                Do While Not WebBrowser3.ReadyState = WebBrowserReadyState.Complete
+                    System.Windows.Forms.Application.DoEvents()
+                Loop
+                MstrEditStatus = "Neither"
+            End If
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", BtnRawText_Click, " & ex.Message & ", " & ex.TargetSite.Name)
-        End Try
-    End Sub
-
-    Private Sub WebBrowser3_DockChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles WebBrowser3.DockChanged
-        Try
-            txtRawText.Text = WebBrowser3.Document.Body.InnerHtml
-        Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", tscbUpdate_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
 
@@ -2571,6 +2738,7 @@ Public Class Form1
             frmDialogue.cbBackup.Checked = blnBackup
             frmDialogue.tbThumbnailSize.Text = MintThumbnailSize
             frmDialogue.tbLoopCheck.Text = MintLoopCheckDepth
+            frmDialogue.tbMaxDelay.Text = MintMaxDelay
             frmDialogue.tbImageFiles.Text = MstrImageFilter
             frmDialogue.tbAudioFiles.Text = MstrAudioFilter
             frmDialogue.tbVideoFiles.Text = MstrVideoFilter
@@ -2585,6 +2753,10 @@ Public Class Form1
                 If intTemp > 1 Then
                     MintLoopCheckDepth = intTemp
                 End If
+                intTemp = Convert.ToInt32(frmDialogue.tbMaxDelay.Text)
+                If intTemp > 1 Then
+                    MintMaxDelay = intTemp
+                End If
                 MstrImageFilter = frmDialogue.tbImageFiles.Text
                 MstrAudioFilter = frmDialogue.tbAudioFiles.Text
                 MstrVideoFilter = frmDialogue.tbVideoFiles.Text
@@ -2594,6 +2766,7 @@ Public Class Form1
                 objXMLEl.setAttribute("backup", blnBackup)
                 objXMLEl.setAttribute("thumbnailsize", MintThumbnailSize)
                 objXMLEl.setAttribute("loopcheckdepth", MintLoopCheckDepth)
+                objXMLEl.setAttribute("maxdelay", MintMaxDelay)
                 objXMLEl.setAttribute("imagefilter", MstrImageFilter)
                 objXMLEl.setAttribute("audiofilter", MstrAudioFilter)
                 objXMLEl.setAttribute("videofilter", MstrVideoFilter)
@@ -2743,5 +2916,215 @@ Public Class Form1
         If TabControl1.SelectedTab.Name = "TabPageView" Then
             TreeViewPages.Focus()
         End If
+    End Sub
+
+    Private Function EncodeRandomPages(ByVal strTarget As String, ByRef strEncodedTarget As String) As String()
+        Dim strPre As String
+        Dim strPost As String
+        Dim strMin As String
+        Dim strMax As String
+        Dim intPos1 As Integer
+        Dim intPos2 As Integer
+        Dim intPos3 As Integer
+        Dim intMin As Integer
+        Dim intMax As Integer
+        Dim intPrefix As Integer
+        Dim strPages(0) As String
+
+        strPages(0) = ""
+        Try
+            strPre = ""
+            strPost = ""
+            intPos1 = strTarget.IndexOf("(")
+            'random pages so split out the static bits either side and the random numbers
+            If intPos1 > -1 Then
+                intPos2 = strTarget.IndexOf("..", intPos1)
+                If (intPos2 > -1) Then
+                    intPos3 = strTarget.IndexOf(")", intPos2)
+                    If (intPos3 > -1) Then
+                        intPos1 = intPos1 + 1
+                        intPos2 = intPos2 + 2
+                        intPos3 = intPos3 + 1
+                        strMin = strTarget.Substring(intPos1, intPos2 - intPos1 - 2)
+                        intMin = Long.Parse(strMin)
+                        strMax = strTarget.Substring(intPos2, intPos3 - intPos2 - 1)
+                        intMax = Long.Parse(strMax)
+                        If (intPos1 > 1) Then
+                            strPre = strTarget.Substring(0, intPos1 - 1)
+                            intPrefix = Convert.ToInt32(GetEncodedPageName(strPre))
+                        Else
+                            strPre = ""
+                            intPrefix = 0
+                        End If
+                        strPost = strTarget.Substring(intPos3)
+                        If strPost <> "" Then
+                            strPre = strPre & strPost
+                            intPrefix = Convert.ToInt32(GetEncodedPageName(strPre))
+                        End If
+                        'loop through each random page
+                        ReDim strPages(intMax - intMin)
+                        For i = intMin To intMax
+                            strPages(i - intMin) = Convert.ToString(intPrefix + i)
+                        Next
+                        strEncodedTarget = "(" & Convert.ToString(intPrefix + intMin) & ".." & Convert.ToString(intPrefix + intMax) & ")"
+                    End If
+                End If
+            Else
+                strPages(0) = strTarget
+                strEncodedTarget = strTarget
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", GetRandomPages, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+        Return strPages
+    End Function
+
+    Private Function GetEncodedPageName(ByVal strPage As String) As String
+        Dim intLoop As Integer
+        Dim intLetter As Integer
+        Dim intWord As Integer
+        Dim strTemp As String
+        Dim strNewPage As String = ""
+        intWord = 0
+        For intLoop = 0 To strPage.Length - 1
+            strTemp = strPage.Substring(intLoop, 1)
+            intLetter = AscW(strTemp)
+            intLetter = intLetter * ((intLoop + 1) * 100)
+            intWord = intWord + intLetter
+        Next
+        intWord = intWord * 100
+        strNewPage = intWord
+        Return strNewPage
+    End Function
+
+    Private Sub MenuToolsNyxText_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsNyxText.Click
+        Dim intFont As Integer
+        Dim intPos As Integer
+        Dim intPos2 As Integer
+        Dim strComment As String
+        Dim strText As String
+        Dim strFontSize As String
+        Dim strSize As String
+        Dim objXMLPage As MSXML2.IXMLDOMNode
+        Dim objXMLPageChildNode As MSXML2.IXMLDOMNode
+        Dim objXMLPageText As MSXML2.IXMLDOMElement
+        Dim objXMLTextChild As MSXML2.IXMLDOMElement
+        Dim objXMLComment As MSXML2.IXMLDOMComment
+        For Each objXMLPage In MobjXMLPages.childNodes
+            If objXMLPage.nodeType <> MSXML2.DOMNodeType.NODE_COMMENT Then
+                strComment = ""
+                strText = ""
+                For Each objXMLPageChildNode In objXMLPage.childNodes
+                    Select Case objXMLPageChildNode.nodeType
+                        Case MSXML2.DOMNodeType.NODE_COMMENT
+                            objXMLComment = objXMLPageChildNode
+                            strComment = objXMLComment.text
+                        Case MSXML2.DOMNodeType.NODE_ELEMENT
+                            If objXMLPageChildNode.nodeName = "Text" Then
+                                objXMLPageText = objXMLPageChildNode
+                            End If
+                    End Select
+                Next
+                If strComment <> "" Then
+                    intPos = strComment.IndexOf("text:'")
+                    intPos = intPos + 6
+                    intPos2 = strComment.IndexOf("'", intPos)
+                    strText = strComment.Substring(intPos, (intPos2 - intPos))
+                    If intPos > -1 Then
+                        intPos = strText.IndexOf("SIZE=""")
+                        If intPos = -1 Then
+                            intPos = strText.IndexOf("size=""")
+                        End If
+                        intPos = intPos + 6
+                    End If
+                    While intPos <> 5
+                        intPos2 = strText.IndexOf("""", intPos)
+                        strFontSize = strText.Substring(intPos, intPos2 - intPos)
+                        intFont = Convert.ToInt32(strFontSize)
+                        strSize = GetFontSize(intFont)
+                        strText = strText.Substring(0, intPos) & strSize & strText.Substring(intPos + strFontSize.Length)
+                        intPos = strText.IndexOf("SIZE=""", intPos2)
+                        If intPos = -1 Then
+                            intPos = strText.IndexOf("size=""", intPos2)
+                        End If
+                        If intPos = -1 Then
+                            Exit While
+                        End If
+                        intPos = intPos + 6
+                    End While
+                    CleanHtml(strText)
+                    For intloop = objXMLPageText.childNodes.length - 1 To 0 Step -1
+                        If objXMLPageText.childNodes(intloop).nodeType = MSXML2.DOMNodeType.NODE_TEXT Then
+                            objXMLPageText.text = ""
+                        Else
+                            objXMLTextChild = objXMLPageText.childNodes(intloop)
+                            objXMLPageText.removeChild(objXMLTextChild)
+                        End If
+                    Next
+                    objXMLPageText.appendChild(MobjXMLDocFrag.documentElement)
+                End If
+            End If
+        Next
+    End Sub
+
+    Private Function GetFontSize(ByVal intFont As Integer) As String
+        Dim strSize As String
+        Select Case intFont
+            Case Is < 11
+                strSize = "1"
+            Case Is < 13
+                strSize = "2"
+            Case Is < 17
+                strSize = "3"
+            Case Is < 21
+                strSize = "4"
+            Case Else
+                strSize = "5"
+        End Select
+        Return strSize
+    End Function
+
+    Private Sub CleanHtml(ByVal strText As String)
+        strText = strText.Replace("FACE=""FontSans""", "")
+        strText = strText.Replace("COLOR=""#FFFFFF""", "")
+        strText = strText.Replace("KERNING=""0""", "")
+        strText = strText.Replace("LETTERSPACING=""0""", "")
+        If strText.IndexOf("<TEXTFORMAT LEADING=""2"">") > -1 Then
+            strText = strText.Replace("<TEXTFORMAT LEADING=""2"">", "")
+            strText = strText.Replace("</TEXTFORMAT>", "")
+        End If
+
+        MobjXMLDocFrag.loadXML(strText)
+        If MobjXMLDocFrag.documentElement Is Nothing Then
+            strText = "<DIV>" & strText & "</DIV>"
+            MobjXMLDocFrag.loadXML(strText)
+            If MobjXMLDocFrag.documentElement Is Nothing Then
+                strText = strText.Replace(" ", " ")
+            End If
+        End If
+
+    End Sub
+
+    Private Sub visToraw()
+        Try
+            If MstrEditStatus = "Neither" Then
+                MstrEditStatus = "Vis"
+                txtRawText.Text = WebBrowser3.Document.Body.InnerHtml
+                MstrEditStatus = "Neither"
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", tscbUpdate_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub WebBrowser3_DocumentCompleted(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
+        doc = CType(sender, WebBrowser).Document
+    End Sub
+    Private Sub Doc_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.HtmlElementEventArgs) Handles doc.Click
+        visToraw()
+    End Sub
+
+    Private Sub doc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.HtmlElementEventArgs) Handles doc.MouseMove
+        visToraw()
     End Sub
 End Class
