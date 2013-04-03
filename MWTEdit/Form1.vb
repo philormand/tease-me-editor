@@ -2,7 +2,7 @@
 Imports System.Drawing.Drawing2D
 
 Public Class Form1
-    Private MstrVer = " 1.3"
+    Private MstrVer = " 1.4"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -513,6 +513,7 @@ Public Class Form1
             Dim strAudio As String
             strAudio = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & tbAudio.Text
             strAudio = Chr(34) & (strAudio) & Chr(34)
+            mciSendString("close all", Nothing, 0, 0)
             mciSendString("open " & strAudio & " alias myDevice", Nothing, 0, 0)
             mciSendString("play myDevice", Nothing, 0, 0)
         Catch ex As Exception
@@ -1262,7 +1263,7 @@ Public Class Form1
         MoveRow(1)
     End Sub
 
-    Private Function GrammarCheck(ByVal TextToCheck As String) As String
+    Private Function GrammarCheck(ByVal TextToCheck As String, ByVal blnDoc As Boolean) As String
 
         Dim strReturn As String = TextToCheck
         Try
@@ -1281,12 +1282,14 @@ Public Class Form1
             Dim para As Paragraph = objTempDoc.Paragraphs.Add()
             para.Range.Text = TextToCheck
 
-            objTempDoc.CheckGrammar()
-            strReturn = objTempDoc.Range.Text
-            objTempDoc.Saved = True
-            objTempDoc.Close()
+            If Not blnDoc Then
+                objTempDoc.CheckGrammar()
+                strReturn = objTempDoc.Range.Text
+                objTempDoc.Saved = True
+                objTempDoc.Close()
 
-            objWord.Quit()
+                objWord.Quit()
+            End If
 
             ' Microsoft Word must be installed. 
         Catch COMExcep As COMException
@@ -2239,6 +2242,11 @@ Public Class Form1
             Dim intPages As Integer
             Dim blnFound As Boolean
             Dim strNewTarget As String = ""
+            Dim intPos As Integer
+            Dim intPos2 As Integer
+            Dim strFontSize As String
+            Dim intFont As Integer
+            Dim strSize As String
 
             objXMLPages = MobjXMLPages.cloneNode(True)
             strPages(0, 0) = ""
@@ -2349,6 +2357,28 @@ Public Class Form1
                     strText = strText.Replace("</p>", "")
                     strText = strText.Replace("<P>", "")
                     strText = strText.Replace("</P>", "")
+
+                    intPos = strText.IndexOf("SIZE=""")
+                    If intPos = -1 Then
+                        intPos = strText.IndexOf("size=""")
+                    End If
+                    intPos = intPos + 6
+                    While intPos <> 5
+                        intPos2 = strText.IndexOf("""", intPos)
+                        strFontSize = strText.Substring(intPos, intPos2 - intPos)
+                        intFont = Convert.ToInt32(strFontSize)
+                        strSize = GetNyxFontSize(intFont)
+                        strText = strText.Substring(0, intPos) & strSize & strText.Substring(intPos + strFontSize.Length)
+                        intPos = strText.IndexOf("SIZE=""", intPos2)
+                        If intPos = -1 Then
+                            intPos = strText.IndexOf("size=""", intPos2)
+                        End If
+                        If intPos = -1 Then
+                            Exit While
+                        End If
+                        intPos = intPos + 6
+                    End While
+
                     strScript = strScript & "'"
                     strScript = strScript & strText
                     strScript = strScript & "'"
@@ -2654,7 +2684,7 @@ Public Class Form1
 
     Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click
         Dim strChecked As String
-        strChecked = GrammarCheck(txtRawText.Text)
+        strChecked = GrammarCheck(txtRawText.Text, False)
         txtRawText.Text = strChecked
     End Sub
 
@@ -3084,6 +3114,23 @@ Public Class Form1
         Return strSize
     End Function
 
+    Private Function GetNyxFontSize(ByVal intFont As Integer) As String
+        Dim strSize As String
+        Select Case intFont
+            Case 1
+                strSize = "11"
+            Case 2
+                strSize = "13"
+            Case 3
+                strSize = "15"
+            Case 4
+                strSize = "18"
+            Case Else
+                strSize = "21"
+        End Select
+        Return strSize
+    End Function
+
     Private Sub CleanHtml(ByVal strText As String)
         strText = strText.Replace("FACE=""FontSans""", "")
         strText = strText.Replace("COLOR=""#FFFFFF""", "")
@@ -3127,4 +3174,111 @@ Public Class Form1
     Private Sub doc_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.HtmlElementEventArgs) Handles doc.MouseMove
         visToraw()
     End Sub
+
+    Private Sub MenuToolsGrammar_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsGrammar.Click
+        Dim strDocText As String = ""
+        Dim strText As String
+        Dim strPage As String
+        Dim objXMLNodes As MSXML2.IXMLDOMNodeList
+        Dim objXMLElement As MSXML2.IXMLDOMElement
+
+        'get all the page nodes
+        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Text")
+        For intLoop = 0 To objXMLNodes.length - 1
+            objXMLElement = objXMLNodes.item(intLoop)
+            strText = StripHTML(objXMLElement.xml)
+            'get the name of the page the node is in
+            strPage = getAttribute(objXMLElement.parentNode, "id")
+            strDocText = strDocText & "Page " & strPage & vbCrLf & strText & vbCrLf
+        Next
+        GrammarCheck(strDocText, True)
+
+    End Sub
+
+    Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
+        mciSendString("close all", Nothing, 0, 0)
+    End Sub
+
+    Private Function StripHTML(ByVal source As String) As String
+        Try
+            Dim result As String
+
+            ' Remove HTML Development formatting
+            ' Replace line breaks with space
+            ' because browsers inserts space
+            result = source.Replace(vbCrLf, " ")
+            ' Replace line breaks with space
+            ' because browsers inserts space
+            result = source.Replace(vbCr, " ")
+            ' Replace line breaks with space
+            ' because browsers inserts space
+            result = result.Replace(vbLf, " ")
+            ' Remove step-formatting
+            result = result.Replace(vbTab, String.Empty)
+            ' Remove repeating spaces because browsers ignore them
+            result = System.Text.RegularExpressions.Regex.Replace(result, "( )+", " ")
+
+            ' insert tabs in spaces of <td> tags
+            result = System.Text.RegularExpressions.Regex.Replace(result, "<( )*td([^>])*>", vbTab, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+
+            ' insert line breaks in places of <BR> and <LI> tags
+            result = System.Text.RegularExpressions.Regex.Replace(result, "<( )*br( )*>", vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "<( )*li( )*>", vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+
+            ' insert line paragraphs (double line breaks) in place
+            ' if <P>, <DIV> and <TR> tags
+            result = System.Text.RegularExpressions.Regex.Replace(result, "<( )*div([^>])*>", vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "<( )*tr([^>])*>", vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "<( )*p([^>])*>", vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+
+            ' Remove remaining tags like <a>, links, images,
+            ' comments etc - anything that's enclosed inside < >
+            result = System.Text.RegularExpressions.Regex.Replace(result, "<[^>]*>", String.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+
+            ' replace special characters:
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&bull", " * ", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&lsaquo", "<", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&rsaquo", ">", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&trade", "(tm)", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&frasl", "/", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&lt", "<", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&gt", ">", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&copy", "(c)", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&reg", "(r)", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            ' Remove all others. More can be added, see
+            ' http:'hotwired.lycos.com/webmonkey/reference/special_characters/
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&(.2,6)", String.Empty, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+
+            ' Remove extra line breaks and tabs:
+            ' replace over 2 breaks with 2 and over 4 tabs with 4.
+            ' Prepare first to remove any whitespaces in between
+            ' the escaped characters and remove redundant tabs in between line breaks
+            result = System.Text.RegularExpressions.Regex.Replace(result, "(\r)( )+(\r)", vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "(\t)( )+(\t)", vbTab, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "(\t)( )+(\r)", vbTab & vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "(\r)( )+(\t)", vbCrLf & vbTab, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            ' Remove redundant tabs
+            result = System.Text.RegularExpressions.Regex.Replace(result, "(\r)(\t)+(\r)", vbCrLf & vbCrLf, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            ' Remove multiple tabs following a line break with just one tab
+            result = System.Text.RegularExpressions.Regex.Replace(result, "(\r)(\t)+", vbCrLf & vbTab, System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            ' Initial replacement target string for line breaks
+            Dim breaks As String = vbCrLf & vbCrLf
+            ' Initial replacement target string for tabs
+            Dim tabs As String = vbTab & vbTab & vbTab & vbTab & vbTab
+            Dim index As Integer
+            For index = 0 To result.Length
+                result = result.Replace(" " & vbCrLf, vbCrLf)
+                result = result.Replace(vbCrLf & " ", vbCrLf)
+                result = result.Replace("   ", "  ")
+                result = result.Replace(breaks, vbCrLf)
+                result = result.Replace(tabs, vbTab & vbTab & vbTab & vbTab)
+            Next
+
+            ' That's it.
+            Return result
+
+        Catch
+            Return source
+        End Try
+    End Function
 End Class
