@@ -21,3 +21,5 @@ C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\M
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\Interop.WMPLib.dll
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\Interop.WMPLib.dll
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.OptionsPopUp.resources
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\AxInterop.WMPLib.dll
+C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\AxInterop.WMPLib.dll

@@ -46,8 +46,10 @@ Partial Class Form1
         Me.SplitContainer8 = New System.Windows.Forms.SplitContainer
         Me.TreeViewPages = New System.Windows.Forms.TreeView
         Me.SplitContainer2 = New System.Windows.Forms.SplitContainer
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox
         Me.SplitContainer3 = New System.Windows.Forms.SplitContainer
         Me.SplitContainer5 = New System.Windows.Forms.SplitContainer
+        Me.Button2 = New System.Windows.Forms.Button
         Me.lblPageName = New System.Windows.Forms.Label
         Me.btnNextNode = New System.Windows.Forms.Button
         Me.btnPrevNode = New System.Windows.Forms.Button
@@ -73,6 +75,7 @@ Partial Class Form1
         Me.bntImage = New System.Windows.Forms.Button
         Me.Label1 = New System.Windows.Forms.Label
         Me.tbImage = New System.Windows.Forms.TextBox
+        Me.PictureBox2 = New System.Windows.Forms.PictureBox
         Me.TabAudio = New System.Windows.Forms.TabPage
         Me.ListView2 = New System.Windows.Forms.ListView
         Me.Label30 = New System.Windows.Forms.Label
@@ -131,6 +134,16 @@ Partial Class Form1
         Me.TabPageWYSIWYG = New System.Windows.Forms.TabPage
         Me.SplitContainer4 = New System.Windows.Forms.SplitContainer
         Me.ToolStrip1 = New System.Windows.Forms.ToolStrip
+        Me.tscbBold = New System.Windows.Forms.ToolStripButton
+        Me.tscbItalic = New System.Windows.Forms.ToolStripButton
+        Me.tscbUnderline = New System.Windows.Forms.ToolStripButton
+        Me.tsbtnColour = New System.Windows.Forms.ToolStripButton
+        Me.tscbCut = New System.Windows.Forms.ToolStripButton
+        Me.tscbCopy = New System.Windows.Forms.ToolStripButton
+        Me.tscbPaste = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton
+        Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton
         Me.SplitContainer9 = New System.Windows.Forms.SplitContainer
         Me.txtRawText = New System.Windows.Forms.TextBox
         Me.WebBrowser3 = New System.Windows.Forms.WebBrowser
@@ -176,19 +189,9 @@ Partial Class Form1
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
         Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.Button2 = New System.Windows.Forms.Button
-        Me.PictureBox2 = New System.Windows.Forms.PictureBox
-        Me.tscbBold = New System.Windows.Forms.ToolStripButton
-        Me.tscbItalic = New System.Windows.Forms.ToolStripButton
-        Me.tscbUnderline = New System.Windows.Forms.ToolStripButton
-        Me.tsbtnColour = New System.Windows.Forms.ToolStripButton
-        Me.tscbCut = New System.Windows.Forms.ToolStripButton
-        Me.tscbCopy = New System.Windows.Forms.ToolStripButton
-        Me.tscbPaste = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripButton1 = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripButton2 = New System.Windows.Forms.ToolStripButton
-        Me.ToolStripButton3 = New System.Windows.Forms.ToolStripButton
+        Me.AxWindowsMediaPlayer1 = New AxWMPLib.AxWindowsMediaPlayer
+        Me.btnVidPlay = New System.Windows.Forms.Button
+        Me.btnVidStop = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabGeneral.SuspendLayout()
         Me.TabPageView.SuspendLayout()
@@ -198,6 +201,7 @@ Partial Class Form1
         Me.SplitContainer2.Panel1.SuspendLayout()
         Me.SplitContainer2.Panel2.SuspendLayout()
         Me.SplitContainer2.SuspendLayout()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SplitContainer3.Panel1.SuspendLayout()
         Me.SplitContainer3.Panel2.SuspendLayout()
         Me.SplitContainer3.SuspendLayout()
@@ -206,6 +210,7 @@ Partial Class Form1
         Me.SplitContainer5.SuspendLayout()
         Me.TabPage.SuspendLayout()
         Me.TabImage.SuspendLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabAudio.SuspendLayout()
         Me.TabVideo.SuspendLayout()
         Me.TabMetronome.SuspendLayout()
@@ -227,8 +232,7 @@ Partial Class Form1
         Me.SplitContainer6.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -472,6 +476,16 @@ Partial Class Form1
         Me.SplitContainer2.SplitterDistance = 410
         Me.SplitContainer2.TabIndex = 0
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(410, 574)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox1.TabIndex = 0
+        Me.PictureBox1.TabStop = False
+        '
         'SplitContainer3
         '
         Me.SplitContainer3.Dock = System.Windows.Forms.DockStyle.Fill
@@ -513,6 +527,15 @@ Partial Class Form1
         Me.SplitContainer5.Size = New System.Drawing.Size(467, 476)
         Me.SplitContainer5.SplitterDistance = 76
         Me.SplitContainer5.TabIndex = 1
+        '
+        'Button2
+        '
+        Me.Button2.Image = Global.MWTEdit.My.Resources.Resources.stop_button_black_md1
+        Me.Button2.Location = New System.Drawing.Point(3, 14)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(48, 23)
+        Me.Button2.TabIndex = 7
+        Me.Button2.UseVisualStyleBackColor = True
         '
         'lblPageName
         '
@@ -773,6 +796,15 @@ Partial Class Form1
         Me.tbImage.Size = New System.Drawing.Size(143, 20)
         Me.tbImage.TabIndex = 15
         '
+        'PictureBox2
+        '
+        Me.PictureBox2.Location = New System.Drawing.Point(315, 21)
+        Me.PictureBox2.Name = "PictureBox2"
+        Me.PictureBox2.Size = New System.Drawing.Size(174, 115)
+        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.PictureBox2.TabIndex = 17
+        Me.PictureBox2.TabStop = False
+        '
         'TabAudio
         '
         Me.TabAudio.Controls.Add(Me.ListView2)
@@ -894,6 +926,9 @@ Partial Class Form1
         '
         'TabVideo
         '
+        Me.TabVideo.Controls.Add(Me.btnVidStop)
+        Me.TabVideo.Controls.Add(Me.btnVidPlay)
+        Me.TabVideo.Controls.Add(Me.AxWindowsMediaPlayer1)
         Me.TabVideo.Controls.Add(Me.ListView3)
         Me.TabVideo.Controls.Add(Me.Label31)
         Me.TabVideo.Controls.Add(Me.Label27)
@@ -1387,6 +1422,106 @@ Partial Class Form1
         Me.ToolStrip1.TabIndex = 8
         Me.ToolStrip1.Text = "ToolStrip1"
         '
+        'tscbBold
+        '
+        Me.tscbBold.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tscbBold.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Bold)
+        Me.tscbBold.Image = CType(resources.GetObject("tscbBold.Image"), System.Drawing.Image)
+        Me.tscbBold.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbBold.Name = "tscbBold"
+        Me.tscbBold.Size = New System.Drawing.Size(23, 22)
+        Me.tscbBold.Tag = "Bold"
+        '
+        'tscbItalic
+        '
+        Me.tscbItalic.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tscbItalic.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Italic)
+        Me.tscbItalic.Image = CType(resources.GetObject("tscbItalic.Image"), System.Drawing.Image)
+        Me.tscbItalic.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbItalic.Name = "tscbItalic"
+        Me.tscbItalic.Size = New System.Drawing.Size(23, 22)
+        Me.tscbItalic.Tag = "Italic"
+        Me.tscbItalic.ToolTipText = "Italic"
+        '
+        'tscbUnderline
+        '
+        Me.tscbUnderline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tscbUnderline.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Underline)
+        Me.tscbUnderline.Image = CType(resources.GetObject("tscbUnderline.Image"), System.Drawing.Image)
+        Me.tscbUnderline.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbUnderline.Name = "tscbUnderline"
+        Me.tscbUnderline.Size = New System.Drawing.Size(23, 22)
+        Me.tscbUnderline.Tag = "Underline"
+        Me.tscbUnderline.ToolTipText = "Underline"
+        '
+        'tsbtnColour
+        '
+        Me.tsbtnColour.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tsbtnColour.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Underline)
+        Me.tsbtnColour.ForeColor = System.Drawing.Color.Red
+        Me.tsbtnColour.Image = CType(resources.GetObject("tsbtnColour.Image"), System.Drawing.Image)
+        Me.tsbtnColour.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsbtnColour.Name = "tsbtnColour"
+        Me.tsbtnColour.Size = New System.Drawing.Size(23, 22)
+        Me.tsbtnColour.ToolTipText = "Font"
+        '
+        'tscbCut
+        '
+        Me.tscbCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tscbCut.Image = CType(resources.GetObject("tscbCut.Image"), System.Drawing.Image)
+        Me.tscbCut.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbCut.Name = "tscbCut"
+        Me.tscbCut.Size = New System.Drawing.Size(23, 22)
+        Me.tscbCut.Tag = "Cut"
+        Me.tscbCut.ToolTipText = "Cut"
+        '
+        'tscbCopy
+        '
+        Me.tscbCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tscbCopy.Image = CType(resources.GetObject("tscbCopy.Image"), System.Drawing.Image)
+        Me.tscbCopy.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbCopy.Name = "tscbCopy"
+        Me.tscbCopy.Size = New System.Drawing.Size(23, 22)
+        Me.tscbCopy.Tag = "Copy"
+        Me.tscbCopy.ToolTipText = "Copy"
+        '
+        'tscbPaste
+        '
+        Me.tscbPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tscbPaste.Image = CType(resources.GetObject("tscbPaste.Image"), System.Drawing.Image)
+        Me.tscbPaste.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tscbPaste.Name = "tscbPaste"
+        Me.tscbPaste.Size = New System.Drawing.Size(23, 22)
+        Me.tscbPaste.Tag = "Paste"
+        Me.tscbPaste.ToolTipText = "Paste"
+        '
+        'ToolStripButton1
+        '
+        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
+        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton1.Name = "ToolStripButton1"
+        Me.ToolStripButton1.Size = New System.Drawing.Size(131, 22)
+        Me.ToolStripButton1.Text = "Grammar / Spell check"
+        '
+        'ToolStripButton2
+        '
+        Me.ToolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripButton2.Image = CType(resources.GetObject("ToolStripButton2.Image"), System.Drawing.Image)
+        Me.ToolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton2.Name = "ToolStripButton2"
+        Me.ToolStripButton2.Size = New System.Drawing.Size(99, 22)
+        Me.ToolStripButton2.Text = "Copy From Page"
+        '
+        'ToolStripButton3
+        '
+        Me.ToolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+        Me.ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), System.Drawing.Image)
+        Me.ToolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.ToolStripButton3.Name = "ToolStripButton3"
+        Me.ToolStripButton3.Size = New System.Drawing.Size(85, 22)
+        Me.ToolStripButton3.Text = "Copy To Page"
+        '
         'SplitContainer9
         '
         Me.SplitContainer9.Anchor = CType((((System.Windows.Forms.AnchorStyles.Top Or System.Windows.Forms.AnchorStyles.Bottom) _
@@ -1737,133 +1872,32 @@ Partial Class Form1
         Me.ToolStripProgressBar1.Size = New System.Drawing.Size(300, 16)
         Me.ToolStripProgressBar1.Step = 1
         '
-        'PictureBox1
+        'AxWindowsMediaPlayer1
         '
-        Me.PictureBox1.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.PictureBox1.Location = New System.Drawing.Point(0, 0)
-        Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(410, 574)
-        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox1.TabIndex = 0
-        Me.PictureBox1.TabStop = False
+        Me.AxWindowsMediaPlayer1.Enabled = True
+        Me.AxWindowsMediaPlayer1.Location = New System.Drawing.Point(28, 172)
+        Me.AxWindowsMediaPlayer1.Name = "AxWindowsMediaPlayer1"
+        Me.AxWindowsMediaPlayer1.OcxState = CType(resources.GetObject("AxWindowsMediaPlayer1.OcxState"), System.Windows.Forms.AxHost.State)
+        Me.AxWindowsMediaPlayer1.Size = New System.Drawing.Size(482, 343)
+        Me.AxWindowsMediaPlayer1.TabIndex = 63
         '
-        'Button2
+        'btnVidPlay
         '
-        Me.Button2.Image = Global.MWTEdit.My.Resources.Resources.stop_button_black_md1
-        Me.Button2.Location = New System.Drawing.Point(3, 14)
-        Me.Button2.Name = "Button2"
-        Me.Button2.Size = New System.Drawing.Size(48, 23)
-        Me.Button2.TabIndex = 7
-        Me.Button2.UseVisualStyleBackColor = True
+        Me.btnVidPlay.Location = New System.Drawing.Point(209, 125)
+        Me.btnVidPlay.Name = "btnVidPlay"
+        Me.btnVidPlay.Size = New System.Drawing.Size(75, 23)
+        Me.btnVidPlay.TabIndex = 64
+        Me.btnVidPlay.Text = "Play"
+        Me.btnVidPlay.UseVisualStyleBackColor = True
         '
-        'PictureBox2
+        'btnVidStop
         '
-        Me.PictureBox2.Location = New System.Drawing.Point(315, 21)
-        Me.PictureBox2.Name = "PictureBox2"
-        Me.PictureBox2.Size = New System.Drawing.Size(174, 115)
-        Me.PictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
-        Me.PictureBox2.TabIndex = 17
-        Me.PictureBox2.TabStop = False
-        '
-        'tscbBold
-        '
-        Me.tscbBold.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tscbBold.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Bold)
-        Me.tscbBold.Image = CType(resources.GetObject("tscbBold.Image"), System.Drawing.Image)
-        Me.tscbBold.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbBold.Name = "tscbBold"
-        Me.tscbBold.Size = New System.Drawing.Size(23, 22)
-        Me.tscbBold.Tag = "Bold"
-        '
-        'tscbItalic
-        '
-        Me.tscbItalic.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tscbItalic.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Italic)
-        Me.tscbItalic.Image = CType(resources.GetObject("tscbItalic.Image"), System.Drawing.Image)
-        Me.tscbItalic.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbItalic.Name = "tscbItalic"
-        Me.tscbItalic.Size = New System.Drawing.Size(23, 22)
-        Me.tscbItalic.Tag = "Italic"
-        Me.tscbItalic.ToolTipText = "Italic"
-        '
-        'tscbUnderline
-        '
-        Me.tscbUnderline.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tscbUnderline.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Underline)
-        Me.tscbUnderline.Image = CType(resources.GetObject("tscbUnderline.Image"), System.Drawing.Image)
-        Me.tscbUnderline.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbUnderline.Name = "tscbUnderline"
-        Me.tscbUnderline.Size = New System.Drawing.Size(23, 22)
-        Me.tscbUnderline.Tag = "Underline"
-        Me.tscbUnderline.ToolTipText = "Underline"
-        '
-        'tsbtnColour
-        '
-        Me.tsbtnColour.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tsbtnColour.Font = New System.Drawing.Font("Tahoma", 9.0!, System.Drawing.FontStyle.Underline)
-        Me.tsbtnColour.ForeColor = System.Drawing.Color.Red
-        Me.tsbtnColour.Image = CType(resources.GetObject("tsbtnColour.Image"), System.Drawing.Image)
-        Me.tsbtnColour.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tsbtnColour.Name = "tsbtnColour"
-        Me.tsbtnColour.Size = New System.Drawing.Size(23, 22)
-        Me.tsbtnColour.ToolTipText = "Font"
-        '
-        'tscbCut
-        '
-        Me.tscbCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tscbCut.Image = CType(resources.GetObject("tscbCut.Image"), System.Drawing.Image)
-        Me.tscbCut.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbCut.Name = "tscbCut"
-        Me.tscbCut.Size = New System.Drawing.Size(23, 22)
-        Me.tscbCut.Tag = "Cut"
-        Me.tscbCut.ToolTipText = "Cut"
-        '
-        'tscbCopy
-        '
-        Me.tscbCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tscbCopy.Image = CType(resources.GetObject("tscbCopy.Image"), System.Drawing.Image)
-        Me.tscbCopy.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbCopy.Name = "tscbCopy"
-        Me.tscbCopy.Size = New System.Drawing.Size(23, 22)
-        Me.tscbCopy.Tag = "Copy"
-        Me.tscbCopy.ToolTipText = "Copy"
-        '
-        'tscbPaste
-        '
-        Me.tscbPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
-        Me.tscbPaste.Image = CType(resources.GetObject("tscbPaste.Image"), System.Drawing.Image)
-        Me.tscbPaste.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.tscbPaste.Name = "tscbPaste"
-        Me.tscbPaste.Size = New System.Drawing.Size(23, 22)
-        Me.tscbPaste.Tag = "Paste"
-        Me.tscbPaste.ToolTipText = "Paste"
-        '
-        'ToolStripButton1
-        '
-        Me.ToolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripButton1.Image = CType(resources.GetObject("ToolStripButton1.Image"), System.Drawing.Image)
-        Me.ToolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton1.Name = "ToolStripButton1"
-        Me.ToolStripButton1.Size = New System.Drawing.Size(131, 22)
-        Me.ToolStripButton1.Text = "Grammar / Spell check"
-        '
-        'ToolStripButton2
-        '
-        Me.ToolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripButton2.Image = CType(resources.GetObject("ToolStripButton2.Image"), System.Drawing.Image)
-        Me.ToolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton2.Name = "ToolStripButton2"
-        Me.ToolStripButton2.Size = New System.Drawing.Size(99, 22)
-        Me.ToolStripButton2.Text = "Copy From Page"
-        '
-        'ToolStripButton3
-        '
-        Me.ToolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
-        Me.ToolStripButton3.Image = CType(resources.GetObject("ToolStripButton3.Image"), System.Drawing.Image)
-        Me.ToolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta
-        Me.ToolStripButton3.Name = "ToolStripButton3"
-        Me.ToolStripButton3.Size = New System.Drawing.Size(85, 22)
-        Me.ToolStripButton3.Text = "Copy To Page"
+        Me.btnVidStop.Location = New System.Drawing.Point(317, 126)
+        Me.btnVidStop.Name = "btnVidStop"
+        Me.btnVidStop.Size = New System.Drawing.Size(75, 23)
+        Me.btnVidStop.TabIndex = 65
+        Me.btnVidStop.Text = "Stop"
+        Me.btnVidStop.UseVisualStyleBackColor = True
         '
         'Form1
         '
@@ -1886,6 +1920,7 @@ Partial Class Form1
         Me.SplitContainer2.Panel1.ResumeLayout(False)
         Me.SplitContainer2.Panel2.ResumeLayout(False)
         Me.SplitContainer2.ResumeLayout(False)
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer3.Panel1.ResumeLayout(False)
         Me.SplitContainer3.Panel2.ResumeLayout(False)
         Me.SplitContainer3.ResumeLayout(False)
@@ -1897,6 +1932,7 @@ Partial Class Form1
         Me.TabPage.PerformLayout()
         Me.TabImage.ResumeLayout(False)
         Me.TabImage.PerformLayout()
+        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabAudio.ResumeLayout(False)
         Me.TabAudio.PerformLayout()
         Me.TabVideo.ResumeLayout(False)
@@ -1930,8 +1966,7 @@ Partial Class Form1
         Me.MenuStrip1.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
-        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -2102,5 +2137,8 @@ Partial Class Form1
     Friend WithEvents MenuToolsNyxText As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents MenuToolsGrammar As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents Button2 As System.Windows.Forms.Button
+    Friend WithEvents AxWindowsMediaPlayer1 As AxWMPLib.AxWindowsMediaPlayer
+    Friend WithEvents btnVidStop As System.Windows.Forms.Button
+    Friend WithEvents btnVidPlay As System.Windows.Forms.Button
 
 End Class
