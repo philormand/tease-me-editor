@@ -2,7 +2,8 @@
 Imports System.Drawing.Drawing2D
 
 Public Class Form1
-    Private MstrVer = " 1.4"
+    Private ShutoffTimer As Timer
+    Private MstrVer = " 1.5"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -135,21 +136,25 @@ Public Class Form1
         Dim thumb As New Bitmap(newSize.Width, newSize.Height)
         Dim ratio As Double
 
-        If img.Width > img.Height Then
-            ratio = newSize.Width / img.Width
-        Else
-            ratio = newSize.Height / img.Height
-        End If
+        Try
+            If img.Width > img.Height Then
+                ratio = newSize.Width / img.Width
+            Else
+                ratio = newSize.Height / img.Height
+            End If
 
-        Using g As Graphics = Graphics.FromImage(thumb)
-            'if you want to tweak the quality of the drawing...
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic
-            g.SmoothingMode = SmoothingMode.HighQuality
-            g.PixelOffsetMode = PixelOffsetMode.HighQuality
-            g.CompositingQuality = CompositingQuality.HighQuality
+            Using g As Graphics = Graphics.FromImage(thumb)
+                'if you want to tweak the quality of the drawing...
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic
+                g.SmoothingMode = SmoothingMode.HighQuality
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality
+                g.CompositingQuality = CompositingQuality.HighQuality
 
-            g.DrawImage(img, 0, 0, CInt(img.Width * ratio), CInt(img.Height * ratio))
-        End Using
+                g.DrawImage(img, 0, 0, CInt(img.Width * ratio), CInt(img.Height * ratio))
+            End Using
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", GetPaddedAspectRatioThumbnail, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
 
         Return thumb
     End Function
@@ -189,6 +194,8 @@ Public Class Form1
         Try
             MstrFormTitle = Me.Text & MstrVer
             Me.Text = MstrFormTitle
+            'AxWindowsMediaPlayer1.Ctlenabled = False
+            'AxWindowsMediaPlayer1.uiMode = "none"
             OpenFileDialog1.DefaultExt = ".xml"
             OpenFileDialog1.Filter = "XML Files|*.xml"
             Dim strPath As String
@@ -511,15 +518,56 @@ Public Class Form1
     Private Sub btnPlayAudio_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnPlayAudio.Click
         Try
             Dim strAudio As String
+            Dim intStart As Integer
+            Dim intStop As Integer
             strAudio = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & tbAudio.Text
             strAudio = Chr(34) & (strAudio) & Chr(34)
             mciSendString("close all", Nothing, 0, 0)
             mciSendString("open " & strAudio & " alias myDevice", Nothing, 0, 0)
-            mciSendString("play myDevice", Nothing, 0, 0)
+            mciSendString("set myDevice time format milliseconds", Nothing, 0, 0)
+            intStart = HMStoMillisec(tbAudioStartAt.Text)
+            intStop = HMStoMillisec(tbAudioStopAt.Text)
+            If intStart > 0 Then
+                If intStop > 0 Then
+                    mciSendString("play myDevice from " & intStart.ToString & " to " & intStop.ToString, Nothing, 0, 0)
+                Else
+                    mciSendString("play myDevice from " & intStart.ToString, Nothing, 0, 0)
+                End If
+            Else
+                If intStop > 0 Then
+                    mciSendString("play myDevice to " & intStop.ToString, Nothing, 0, 0)
+                Else
+                    mciSendString("play myDevice", Nothing, 0, 0)
+                End If
+            End If
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnPlayAudio_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
+
+    Private Function HMStoMillisec(ByVal strTime As String) As Integer
+        Dim intReturn As Integer = 0
+        Dim strSplit() As String
+        Dim intHour As Integer
+        Dim intMinute As Integer
+        Dim intSecond As Integer
+        Try
+            If strTime <> "" Then
+                strSplit = strTime.Split(":")
+                intHour = strSplit(0)
+                intMinute = strSplit(1)
+                intSecond = strSplit(2)
+                intSecond = intSecond * 1000
+                intMinute = intMinute * 60 * 1000
+                intHour = intHour * 60 * 60 * 1000
+                intReturn = intHour + intMinute + intSecond
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", HMStoMillisec, " & ex.Message & ", " & ex.TargetSite.Name)
+            intReturn = 0
+        End Try
+        Return intReturn
+    End Function
 
     Private Sub savepage(ByVal blnRefresh As Boolean)
         Try
@@ -1119,15 +1167,6 @@ Public Class Form1
         Try
             Dim objDomDoc As IHTMLDocument2
             objDomDoc = WebBrowser1.Document.DomDocument
-            'MobjDomDoc = WebBrowser3.Document.DomDocument
-            'MobjDomDoc.designMode = "On"
-            'objDomDoc.execCommand("SelectAll", False, Nothing)
-            'MobjDomDoc.execCommand("SelectAll", False, Nothing)
-            'MobjDomDoc.execCommand("Cut", False, Nothing)
-            'objDomDoc.execCommand("Copy", False, Nothing)
-            'MobjDomDoc.execCommand("Paste", False, Nothing)
-            'objDomDoc.execCommand("Unselect", False, Nothing)
-            'MobjDomDoc.execCommand("Unselect", False, Nothing)
             MobjDomDoc.bgColor = objDomDoc.bgColor
             MobjDomDoc.fgColor = objDomDoc.fgColor
         Catch ex As Exception
@@ -1176,7 +1215,7 @@ Public Class Form1
 
             saveXml(MobjXMLDoc, TextBox1.Text)
         Catch ex As Exception
-            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnSaveFile_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", SaveFile, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
 
@@ -2684,8 +2723,12 @@ Public Class Form1
 
     Private Sub ToolStripButton1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton1.Click
         Dim strChecked As String
-        strChecked = GrammarCheck(txtRawText.Text, False)
-        txtRawText.Text = strChecked
+        Try
+            strChecked = GrammarCheck(txtRawText.Text, False)
+            txtRawText.Text = strChecked
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", ToolStripButton1_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
     End Sub
 
     Private Sub ListView1_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles ListView1.MouseEnter
@@ -2729,7 +2772,11 @@ Public Class Form1
     End Sub
 
     Private Sub ToolStripButton3_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripButton3.Click
-        tbPageText.Text = txtRawText.Text
+        Try
+            tbPageText.Text = txtRawText.Text
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", ToolStripButton3_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
     End Sub
 
     Private Sub tbPageText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tbPageText.TextChanged
@@ -2943,9 +2990,13 @@ Public Class Form1
     End Sub
 
     Private Sub TabControl1_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles TabControl1.SelectedIndexChanged
-        If TabControl1.SelectedTab.Name = "TabPageView" Then
-            TreeViewPages.Focus()
-        End If
+        Try
+            If TabControl1.SelectedTab.Name = "TabPageView" Then
+                TreeViewPages.Focus()
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", TabControl1_SelectedIndexChanged, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
     End Sub
 
     Private Function EncodeRandomPages(ByVal strTarget As String, ByRef strEncodedTarget As String) As String()
@@ -3015,15 +3066,19 @@ Public Class Form1
         Dim intWord As Integer
         Dim strTemp As String
         Dim strNewPage As String = ""
-        intWord = 0
-        For intLoop = 0 To strPage.Length - 1
-            strTemp = strPage.Substring(intLoop, 1)
-            intLetter = AscW(strTemp)
-            intLetter = intLetter * ((intLoop + 1) * 100)
-            intWord = intWord + intLetter
-        Next
-        intWord = intWord * 100
-        strNewPage = intWord
+        Try
+            intWord = 0
+            For intLoop = 0 To strPage.Length - 1
+                strTemp = strPage.Substring(intLoop, 1)
+                intLetter = AscW(strTemp)
+                intLetter = intLetter * ((intLoop + 1) * 100)
+                intWord = intWord + intLetter
+            Next
+            intWord = intWord * 100
+            strNewPage = intWord
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", GetEncodedPageName, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
         Return strNewPage
     End Function
 
@@ -3040,115 +3095,135 @@ Public Class Form1
         Dim objXMLPageText As MSXML2.IXMLDOMElement
         Dim objXMLTextChild As MSXML2.IXMLDOMElement
         Dim objXMLComment As MSXML2.IXMLDOMComment
-        For Each objXMLPage In MobjXMLPages.childNodes
-            If objXMLPage.nodeType <> MSXML2.DOMNodeType.NODE_COMMENT Then
-                strComment = ""
-                strText = ""
-                For Each objXMLPageChildNode In objXMLPage.childNodes
-                    Select Case objXMLPageChildNode.nodeType
-                        Case MSXML2.DOMNodeType.NODE_COMMENT
-                            objXMLComment = objXMLPageChildNode
-                            strComment = objXMLComment.text
-                        Case MSXML2.DOMNodeType.NODE_ELEMENT
-                            If objXMLPageChildNode.nodeName = "Text" Then
-                                objXMLPageText = objXMLPageChildNode
+        Try
+            For Each objXMLPage In MobjXMLPages.childNodes
+                If objXMLPage.nodeType <> MSXML2.DOMNodeType.NODE_COMMENT Then
+                    Try
+                        strComment = ""
+                        strText = ""
+                        For Each objXMLPageChildNode In objXMLPage.childNodes
+                            Select Case objXMLPageChildNode.nodeType
+                                Case MSXML2.DOMNodeType.NODE_COMMENT
+                                    objXMLComment = objXMLPageChildNode
+                                    strComment = objXMLComment.text
+                                Case MSXML2.DOMNodeType.NODE_ELEMENT
+                                    If objXMLPageChildNode.nodeName = "Text" Then
+                                        objXMLPageText = objXMLPageChildNode
+                                    End If
+                            End Select
+                        Next
+                        If strComment <> "" Then
+                            intPos = strComment.IndexOf("text:'")
+                            intPos = intPos + 6
+                            intPos2 = strComment.IndexOf("'", intPos)
+                            strText = strComment.Substring(intPos, (intPos2 - intPos))
+                            If intPos > -1 Then
+                                intPos = strText.IndexOf("SIZE=""")
+                                If intPos = -1 Then
+                                    intPos = strText.IndexOf("size=""")
+                                End If
+                                intPos = intPos + 6
                             End If
-                    End Select
-                Next
-                If strComment <> "" Then
-                    intPos = strComment.IndexOf("text:'")
-                    intPos = intPos + 6
-                    intPos2 = strComment.IndexOf("'", intPos)
-                    strText = strComment.Substring(intPos, (intPos2 - intPos))
-                    If intPos > -1 Then
-                        intPos = strText.IndexOf("SIZE=""")
-                        If intPos = -1 Then
-                            intPos = strText.IndexOf("size=""")
+                            While intPos <> 5
+                                intPos2 = strText.IndexOf("""", intPos)
+                                strFontSize = strText.Substring(intPos, intPos2 - intPos)
+                                intFont = Convert.ToInt32(strFontSize)
+                                strSize = GetFontSize(intFont)
+                                strText = strText.Substring(0, intPos) & strSize & strText.Substring(intPos + strFontSize.Length)
+                                intPos = strText.IndexOf("SIZE=""", intPos2)
+                                If intPos = -1 Then
+                                    intPos = strText.IndexOf("size=""", intPos2)
+                                End If
+                                If intPos = -1 Then
+                                    Exit While
+                                End If
+                                intPos = intPos + 6
+                            End While
+                            CleanHtml(strText)
+                            For intloop = objXMLPageText.childNodes.length - 1 To 0 Step -1
+                                If objXMLPageText.childNodes(intloop).nodeType = MSXML2.DOMNodeType.NODE_TEXT Then
+                                    objXMLPageText.text = ""
+                                Else
+                                    objXMLTextChild = objXMLPageText.childNodes(intloop)
+                                    objXMLPageText.removeChild(objXMLTextChild)
+                                End If
+                            Next
+                            objXMLPageText.appendChild(MobjXMLDocFrag.documentElement)
                         End If
-                        intPos = intPos + 6
-                    End If
-                    While intPos <> 5
-                        intPos2 = strText.IndexOf("""", intPos)
-                        strFontSize = strText.Substring(intPos, intPos2 - intPos)
-                        intFont = Convert.ToInt32(strFontSize)
-                        strSize = GetFontSize(intFont)
-                        strText = strText.Substring(0, intPos) & strSize & strText.Substring(intPos + strFontSize.Length)
-                        intPos = strText.IndexOf("SIZE=""", intPos2)
-                        If intPos = -1 Then
-                            intPos = strText.IndexOf("size=""", intPos2)
-                        End If
-                        If intPos = -1 Then
-                            Exit While
-                        End If
-                        intPos = intPos + 6
-                    End While
-                    CleanHtml(strText)
-                    For intloop = objXMLPageText.childNodes.length - 1 To 0 Step -1
-                        If objXMLPageText.childNodes(intloop).nodeType = MSXML2.DOMNodeType.NODE_TEXT Then
-                            objXMLPageText.text = ""
-                        Else
-                            objXMLTextChild = objXMLPageText.childNodes(intloop)
-                            objXMLPageText.removeChild(objXMLTextChild)
-                        End If
-                    Next
-                    objXMLPageText.appendChild(MobjXMLDocFrag.documentElement)
+                    Catch ex As Exception
+                        MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MenuToolsNyxText_Click, " & ex.Message & ", " & ex.TargetSite.Name & " Comment Node " & strComment)
+                    End Try
                 End If
-            End If
-        Next
+            Next
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MenuToolsNyxText_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
     End Sub
 
     Private Function GetFontSize(ByVal intFont As Integer) As String
-        Dim strSize As String
-        Select Case intFont
-            Case Is < 11
-                strSize = "1"
-            Case Is < 13
-                strSize = "2"
-            Case Is < 17
-                strSize = "3"
-            Case Is < 21
-                strSize = "4"
-            Case Else
-                strSize = "5"
-        End Select
+        Dim strSize As String = "4"
+        Try
+            Select Case intFont
+                Case Is < 11
+                    strSize = "1"
+                Case Is < 13
+                    strSize = "2"
+                Case Is < 17
+                    strSize = "3"
+                Case Is < 21
+                    strSize = "4"
+                Case Else
+                    strSize = "5"
+            End Select
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", GetFontSize, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
         Return strSize
     End Function
 
     Private Function GetNyxFontSize(ByVal intFont As Integer) As String
-        Dim strSize As String
-        Select Case intFont
-            Case 1
-                strSize = "11"
-            Case 2
-                strSize = "13"
-            Case 3
-                strSize = "15"
-            Case 4
-                strSize = "18"
-            Case Else
-                strSize = "21"
-        End Select
+        Dim strSize As String = "18"
+        Try
+            Select Case intFont
+                Case 1
+                    strSize = "11"
+                Case 2
+                    strSize = "13"
+                Case 3
+                    strSize = "15"
+                Case 4
+                    strSize = "18"
+                Case Else
+                    strSize = "21"
+            End Select
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", GetNyxFontSize, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
         Return strSize
     End Function
 
     Private Sub CleanHtml(ByVal strText As String)
-        strText = strText.Replace("FACE=""FontSans""", "")
-        strText = strText.Replace("COLOR=""#FFFFFF""", "")
-        strText = strText.Replace("KERNING=""0""", "")
-        strText = strText.Replace("LETTERSPACING=""0""", "")
-        If strText.IndexOf("<TEXTFORMAT LEADING=""2"">") > -1 Then
-            strText = strText.Replace("<TEXTFORMAT LEADING=""2"">", "")
-            strText = strText.Replace("</TEXTFORMAT>", "")
-        End If
+        Try
+            strText = strText.Replace("FACE=""FontSans""", "")
+            strText = strText.Replace("COLOR=""#FFFFFF""", "")
+            strText = strText.Replace("KERNING=""0""", "")
+            strText = strText.Replace("LETTERSPACING=""0""", "")
+            If strText.IndexOf("<TEXTFORMAT LEADING=""2"">") > -1 Then
+                strText = strText.Replace("<TEXTFORMAT LEADING=""2"">", "")
+                strText = strText.Replace("</TEXTFORMAT>", "")
+            End If
 
-        MobjXMLDocFrag.loadXML(strText)
-        If MobjXMLDocFrag.documentElement Is Nothing Then
-            strText = "<DIV>" & strText & "</DIV>"
             MobjXMLDocFrag.loadXML(strText)
             If MobjXMLDocFrag.documentElement Is Nothing Then
-                strText = strText.Replace(" ", " ")
+                strText = "<DIV>" & strText & "</DIV>"
+                MobjXMLDocFrag.loadXML(strText)
+                If MobjXMLDocFrag.documentElement Is Nothing Then
+                    strText = strText.Replace(" ", " ")
+                End If
             End If
-        End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", CleanHtml, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
 
     End Sub
 
@@ -3165,7 +3240,11 @@ Public Class Form1
     End Sub
 
     Private Sub WebBrowser3_DocumentCompleted(ByVal sender As Object, ByVal e As System.Windows.Forms.WebBrowserDocumentCompletedEventArgs) Handles WebBrowser3.DocumentCompleted
-        doc = CType(sender, WebBrowser).Document
+        Try
+            doc = CType(sender, WebBrowser).Document
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", WebBrowser3_DocumentCompleted, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
     End Sub
     Private Sub Doc_Click(ByVal sender As Object, ByVal e As System.Windows.Forms.HtmlElementEventArgs) Handles doc.Click
         visToraw()
@@ -3179,24 +3258,51 @@ Public Class Form1
         Dim strDocText As String = ""
         Dim strText As String
         Dim strPage As String
+        Dim strButtons As String
+        Dim intLoop As Integer
+        Dim intLoop2 As Integer
         Dim objXMLNodes As MSXML2.IXMLDOMNodeList
         Dim objXMLElement As MSXML2.IXMLDOMElement
+        Dim objXMLParentElement As MSXML2.IXMLDOMElement
+        Dim objXMLButtonNodes As MSXML2.IXMLDOMNodeList
+        Dim objXMLButtonElement As MSXML2.IXMLDOMElement
+        Try
 
-        'get all the page nodes
-        objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Text")
-        For intLoop = 0 To objXMLNodes.length - 1
-            objXMLElement = objXMLNodes.item(intLoop)
-            strText = StripHTML(objXMLElement.xml)
-            'get the name of the page the node is in
-            strPage = getAttribute(objXMLElement.parentNode, "id")
-            strDocText = strDocText & "Page " & strPage & vbCrLf & strText & vbCrLf
-        Next
-        GrammarCheck(strDocText, True)
+            'get all the page nodes
+            objXMLNodes = MobjXMLDoc.selectNodes("//Pages//Page//Text")
+            For intLoop = 0 To objXMLNodes.length - 1
+                objXMLElement = objXMLNodes.item(intLoop)
+                strText = StripHTML(objXMLElement.xml)
+                'get the name of the page the node is in
+                strPage = getAttribute(objXMLElement.parentNode, "id")
+                objXMLParentElement = objXMLElement.parentNode
+                objXMLButtonNodes = objXMLParentElement.selectNodes("Button")
+                strButtons = ""
+                If objXMLButtonNodes.length > 0 Then
+                    strButtons = vbCrLf & "Button Text " & vbCrLf
+                    For intLoop2 = 0 To objXMLButtonNodes.length - 1
+                        objXMLButtonElement = objXMLButtonNodes.item(intLoop2)
+                        strButtons = strButtons & objXMLButtonElement.text & vbCrLf
+                    Next
+                End If
+                strDocText = strDocText & "Page " & strPage & vbCrLf & strText & vbCrLf & strButtons
+                If intLoop < objXMLNodes.length - 1 Then
+                    strDocText = strDocText & vbFormFeed
+                End If
+            Next
+            GrammarCheck(strDocText, True)
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MenuToolsGrammar_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
 
     End Sub
 
     Private Sub Button2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button2.Click
-        mciSendString("close all", Nothing, 0, 0)
+        Try
+            mciSendString("close all", Nothing, 0, 0)
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", Button2_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
     End Sub
 
     Private Function StripHTML(ByVal source As String) As String
@@ -3241,8 +3347,8 @@ Public Class Form1
             result = System.Text.RegularExpressions.Regex.Replace(result, "&rsaquo", ">", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
             result = System.Text.RegularExpressions.Regex.Replace(result, "&trade", "(tm)", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
             result = System.Text.RegularExpressions.Regex.Replace(result, "&frasl", "/", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
-            result = System.Text.RegularExpressions.Regex.Replace(result, "&lt", "<", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
-            result = System.Text.RegularExpressions.Regex.Replace(result, "&gt", ">", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&lt;", "<", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
+            result = System.Text.RegularExpressions.Regex.Replace(result, "&gt;", ">", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
             result = System.Text.RegularExpressions.Regex.Replace(result, "&copy", "(c)", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
             result = System.Text.RegularExpressions.Regex.Replace(result, "&reg", "(r)", System.Text.RegularExpressions.RegexOptions.IgnoreCase)
             ' Remove all others. More can be added, see
@@ -3277,8 +3383,73 @@ Public Class Form1
             ' That's it.
             Return result
 
-        Catch
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", StripHTML, " & ex.Message & ", " & ex.TargetSite.Name)
             Return source
         End Try
     End Function
+
+    Private Sub btnVidPlay_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVidPlay.Click
+        Try
+            Dim WMPSettings As IWMPSettings2
+            Dim strVideo As String
+            WMPSettings = AxWindowsMediaPlayer1.settings
+            strVideo = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & tbVideo.Text
+            WMPSettings.autoStart = False
+            AxWindowsMediaPlayer1.URL = strVideo
+            AxWindowsMediaPlayer1.Ctlcontrols.play()
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnVidPlay_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub btnVidStop_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVidStop.Click
+        Try
+            AxWindowsMediaPlayer1.Ctlcontrols.stop()
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnVidStop_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub AxWindowsMediaPlayer1_OpenStateChange(ByVal sender As Object, ByVal e As AxWMPLib._WMPOCXEvents_OpenStateChangeEvent) Handles AxWindowsMediaPlayer1.OpenStateChange
+        Dim intStart As Integer
+        Dim intStop As Integer
+
+        Try
+            If DirectCast(e.newState, WMPLib.WMPOpenState) = WMPLib.WMPOpenState.wmposMediaOpen Then
+                intStart = HMStoMillisec(tbVideoStartAt.Text)
+                intStop = HMStoMillisec(tbVideoStopAt.Text)
+                If intStart > 0 Then
+                    AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = intStart / 1000
+                Else
+                    AxWindowsMediaPlayer1.Ctlcontrols.currentPosition = 0
+                End If
+
+                If intStop > 0 Then
+                    If Not ShutoffTimer Is Nothing Then
+                        ShutoffTimer.Stop()
+                        ShutoffTimer.Dispose()
+                    End If
+                    ShutoffTimer = New Timer
+                    ShutoffTimer.Interval = intStop - intStart + 500
+                    AddHandler ShutoffTimer.Tick, AddressOf ShutOffTimer_Tick
+                    ShutoffTimer.Start()
+                End If
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", AxWindowsMediaPlayer1_OpenStateChange, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub ShutOffTimer_Tick(ByVal sender As Object, ByVal e As EventArgs)
+        Try
+            AxWindowsMediaPlayer1.Ctlcontrols.stop()
+            With DirectCast(sender, Timer)
+                .Stop()
+                .Dispose()
+            End With
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", ShutOffTimer_Tick, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
 End Class
