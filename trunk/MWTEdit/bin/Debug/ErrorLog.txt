@@ -1,12 +1,1 @@
-﻿2013/04/05 18:42:07, saveXml, The given path's format is not supported., CanonicalizePath
-2013/04/05 18:42:07, PopPageTree, Object reference not set to an instance of an object., PopPageTree
-2013/04/05 18:42:07, loadFile, Object reference not set to an instance of an object., loadFile
-2013/04/05 18:48:05, saveXml, The process cannot access the file 'C:\James\tm\TestFile.xml' because it is being used by another process., WinIOError
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
-2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+﻿
