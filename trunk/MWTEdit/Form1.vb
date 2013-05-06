@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.5"
+    Private MstrVer = " 1.6"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -2388,35 +2388,39 @@ Public Class Form1
                     strScript = strScript & getAttribute(objXMLPage, "id") & "#page("
                     'text
                     objXMLText = objXMLPage.selectSingleNode("./Text")
-                    strText = objXMLText.xml
-                    strText = strText.Replace("<Text>", "")
-                    strText = strText.Replace("</Text>", "")
-                    strText = strText.Replace("'", "&apos;")
-                    strText = strText.Replace("<p>", "")
-                    strText = strText.Replace("</p>", "")
-                    strText = strText.Replace("<P>", "")
-                    strText = strText.Replace("</P>", "")
+                    If objXMLText Is Nothing Then
+                        strText = ""
+                    Else
+                        strText = objXMLText.xml
+                        strText = strText.Replace("<Text>", "")
+                        strText = strText.Replace("</Text>", "")
+                        strText = strText.Replace("'", "&apos;")
+                        strText = strText.Replace("<p>", "")
+                        strText = strText.Replace("</p>", "")
+                        strText = strText.Replace("<P>", "")
+                        strText = strText.Replace("</P>", "")
 
-                    intPos = strText.IndexOf("SIZE=""")
-                    If intPos = -1 Then
-                        intPos = strText.IndexOf("size=""")
-                    End If
-                    intPos = intPos + 6
-                    While intPos <> 5
-                        intPos2 = strText.IndexOf("""", intPos)
-                        strFontSize = strText.Substring(intPos, intPos2 - intPos)
-                        intFont = Convert.ToInt32(strFontSize)
-                        strSize = GetNyxFontSize(intFont)
-                        strText = strText.Substring(0, intPos) & strSize & strText.Substring(intPos + strFontSize.Length)
-                        intPos = strText.IndexOf("SIZE=""", intPos2)
+                        intPos = strText.IndexOf("SIZE=""")
                         If intPos = -1 Then
-                            intPos = strText.IndexOf("size=""", intPos2)
-                        End If
-                        If intPos = -1 Then
-                            Exit While
+                            intPos = strText.IndexOf("size=""")
                         End If
                         intPos = intPos + 6
-                    End While
+                        While intPos <> 5
+                            intPos2 = strText.IndexOf("""", intPos)
+                            strFontSize = strText.Substring(intPos, intPos2 - intPos)
+                            intFont = Convert.ToInt32(strFontSize)
+                            strSize = GetNyxFontSize(intFont)
+                            strText = strText.Substring(0, intPos) & strSize & strText.Substring(intPos + strFontSize.Length)
+                            intPos = strText.IndexOf("SIZE=""", intPos2)
+                            If intPos = -1 Then
+                                intPos = strText.IndexOf("size=""", intPos2)
+                            End If
+                            If intPos = -1 Then
+                                Exit While
+                            End If
+                            intPos = intPos + 6
+                        End While
+                    End If
 
                     strScript = strScript & "'"
                     strScript = strScript & strText

@@ -1,1 +1,68 @@
-﻿
+﻿2013/04/05 18:42:07, saveXml, The given path's format is not supported., CanonicalizePath
+2013/04/05 18:42:07, PopPageTree, Object reference not set to an instance of an object., PopPageTree
+2013/04/05 18:42:07, loadFile, Object reference not set to an instance of an object., loadFile
+2013/04/05 18:48:05, saveXml, The process cannot access the file 'C:\James\tm\TestFile.xml' because it is being used by another process., WinIOError
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/06 22:40:36, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 21:30:43, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/09 21:34:11, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/09 21:35:09, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/09 21:41:35, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/09 21:41:53, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/09 21:50:10, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:31, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/09 22:01:32, displaypage, Object reference not set to an instance of an object., displaypage
+2013/04/11 22:00:27, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/11 22:04:33, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/11 22:13:15, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/11 22:13:40, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/11 22:13:45, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/11 22:15:10, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/11 22:15:19, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/11 22:16:28, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/11 22:16:42, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/11 22:17:10, savepage, End tag 'DIV' does not match the start tag 'br'.
+, appendChild
+2013/04/13 17:17:05, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/13 17:19:18, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/13 17:20:36, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/13 17:20:45, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/13 17:31:50, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/13 17:35:31, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/16 14:59:08, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/16 14:59:23, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/04/16 15:07:59, saveXml, The process cannot access the file 'Z:\TM\Teases\Kates Birthday Day 6-7.xml' because it is being used by another process., WinIOError
+2013/05/05 23:10:26, btnNyx_Click, Object reference not set to an instance of an object., MenuToolsNyx_Click
