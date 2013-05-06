@@ -88,6 +88,9 @@ Partial Class Form1
         Me.btnAudio = New System.Windows.Forms.Button
         Me.tbAudio = New System.Windows.Forms.TextBox
         Me.TabVideo = New System.Windows.Forms.TabPage
+        Me.btnVidStop = New System.Windows.Forms.Button
+        Me.btnVidPlay = New System.Windows.Forms.Button
+        Me.AxWindowsMediaPlayer1 = New AxWMPLib.AxWindowsMediaPlayer
         Me.ListView3 = New System.Windows.Forms.ListView
         Me.Label31 = New System.Windows.Forms.Label
         Me.Label27 = New System.Windows.Forms.Label
@@ -189,9 +192,6 @@ Partial Class Form1
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
         Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar
-        Me.AxWindowsMediaPlayer1 = New AxWMPLib.AxWindowsMediaPlayer
-        Me.btnVidPlay = New System.Windows.Forms.Button
-        Me.btnVidStop = New System.Windows.Forms.Button
         Me.TabControl1.SuspendLayout()
         Me.TabGeneral.SuspendLayout()
         Me.TabPageView.SuspendLayout()
@@ -213,6 +213,7 @@ Partial Class Form1
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabAudio.SuspendLayout()
         Me.TabVideo.SuspendLayout()
+        CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.TabMetronome.SuspendLayout()
         Me.TabDelay.SuspendLayout()
         Me.gbDelay.SuspendLayout()
@@ -232,7 +233,6 @@ Partial Class Form1
         Me.SplitContainer6.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
-        CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TabControl1
@@ -946,6 +946,33 @@ Partial Class Form1
         Me.TabVideo.Text = "Video"
         Me.TabVideo.UseVisualStyleBackColor = True
         '
+        'btnVidStop
+        '
+        Me.btnVidStop.Location = New System.Drawing.Point(317, 126)
+        Me.btnVidStop.Name = "btnVidStop"
+        Me.btnVidStop.Size = New System.Drawing.Size(75, 23)
+        Me.btnVidStop.TabIndex = 65
+        Me.btnVidStop.Text = "Stop"
+        Me.btnVidStop.UseVisualStyleBackColor = True
+        '
+        'btnVidPlay
+        '
+        Me.btnVidPlay.Location = New System.Drawing.Point(209, 125)
+        Me.btnVidPlay.Name = "btnVidPlay"
+        Me.btnVidPlay.Size = New System.Drawing.Size(75, 23)
+        Me.btnVidPlay.TabIndex = 64
+        Me.btnVidPlay.Text = "Play"
+        Me.btnVidPlay.UseVisualStyleBackColor = True
+        '
+        'AxWindowsMediaPlayer1
+        '
+        Me.AxWindowsMediaPlayer1.Enabled = True
+        Me.AxWindowsMediaPlayer1.Location = New System.Drawing.Point(28, 172)
+        Me.AxWindowsMediaPlayer1.Name = "AxWindowsMediaPlayer1"
+        Me.AxWindowsMediaPlayer1.OcxState = CType(resources.GetObject("AxWindowsMediaPlayer1.OcxState"), System.Windows.Forms.AxHost.State)
+        Me.AxWindowsMediaPlayer1.Size = New System.Drawing.Size(482, 343)
+        Me.AxWindowsMediaPlayer1.TabIndex = 63
+        '
         'ListView3
         '
         Me.ListView3.Dock = System.Windows.Forms.DockStyle.Right
@@ -1618,6 +1645,7 @@ Partial Class Form1
         Me.txtNyxScript.AcceptsReturn = True
         Me.txtNyxScript.Dock = System.Windows.Forms.DockStyle.Fill
         Me.txtNyxScript.Location = New System.Drawing.Point(0, 0)
+        Me.txtNyxScript.MaxLength = 0
         Me.txtNyxScript.Multiline = True
         Me.txtNyxScript.Name = "txtNyxScript"
         Me.txtNyxScript.ScrollBars = System.Windows.Forms.ScrollBars.Both
@@ -1872,33 +1900,6 @@ Partial Class Form1
         Me.ToolStripProgressBar1.Size = New System.Drawing.Size(300, 16)
         Me.ToolStripProgressBar1.Step = 1
         '
-        'AxWindowsMediaPlayer1
-        '
-        Me.AxWindowsMediaPlayer1.Enabled = True
-        Me.AxWindowsMediaPlayer1.Location = New System.Drawing.Point(28, 172)
-        Me.AxWindowsMediaPlayer1.Name = "AxWindowsMediaPlayer1"
-        Me.AxWindowsMediaPlayer1.OcxState = CType(resources.GetObject("AxWindowsMediaPlayer1.OcxState"), System.Windows.Forms.AxHost.State)
-        Me.AxWindowsMediaPlayer1.Size = New System.Drawing.Size(482, 343)
-        Me.AxWindowsMediaPlayer1.TabIndex = 63
-        '
-        'btnVidPlay
-        '
-        Me.btnVidPlay.Location = New System.Drawing.Point(209, 125)
-        Me.btnVidPlay.Name = "btnVidPlay"
-        Me.btnVidPlay.Size = New System.Drawing.Size(75, 23)
-        Me.btnVidPlay.TabIndex = 64
-        Me.btnVidPlay.Text = "Play"
-        Me.btnVidPlay.UseVisualStyleBackColor = True
-        '
-        'btnVidStop
-        '
-        Me.btnVidStop.Location = New System.Drawing.Point(317, 126)
-        Me.btnVidStop.Name = "btnVidStop"
-        Me.btnVidStop.Size = New System.Drawing.Size(75, 23)
-        Me.btnVidStop.TabIndex = 65
-        Me.btnVidStop.Text = "Stop"
-        Me.btnVidStop.UseVisualStyleBackColor = True
-        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
@@ -1937,6 +1938,7 @@ Partial Class Form1
         Me.TabAudio.PerformLayout()
         Me.TabVideo.ResumeLayout(False)
         Me.TabVideo.PerformLayout()
+        CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.TabMetronome.ResumeLayout(False)
         Me.TabMetronome.PerformLayout()
         Me.TabDelay.ResumeLayout(False)
@@ -1966,7 +1968,6 @@ Partial Class Form1
         Me.MenuStrip1.PerformLayout()
         Me.StatusStrip1.ResumeLayout(False)
         Me.StatusStrip1.PerformLayout()
-        CType(Me.AxWindowsMediaPlayer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
