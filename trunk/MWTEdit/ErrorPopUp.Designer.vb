@@ -49,8 +49,10 @@ Partial Class ErrorPopUp
         'txtComment
         '
         Me.txtComment.Location = New System.Drawing.Point(91, 222)
+        Me.txtComment.MaxLength = 0
         Me.txtComment.Multiline = True
         Me.txtComment.Name = "txtComment"
+        Me.txtComment.ScrollBars = System.Windows.Forms.ScrollBars.Vertical
         Me.txtComment.Size = New System.Drawing.Size(614, 152)
         Me.txtComment.TabIndex = 2
         '
