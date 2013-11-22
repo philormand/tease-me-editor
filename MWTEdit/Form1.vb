@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.6"
+    Private MstrVer = " 1.7"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -20,6 +20,7 @@ Public Class Form1
     Private MblnDebug As Boolean = False
     Private thrMyThread As System.Threading.Thread = Nothing
     Private blnBackup As Boolean
+    Private blnNyxOnly As Boolean
     Private txtDirectory As String
     Private MstrImageFilter As String
     Private MstrAudioFilter As String
@@ -29,6 +30,7 @@ Public Class Form1
     Private MintLoopCheckDepth As Integer
     Private MintMaxDelay As Integer
     Private MstrEditStatus As String = "Neither"
+    Private MblnUpdating As Boolean = False
     Dim WithEvents doc As System.Windows.Forms.HtmlDocument
 
     Private Sub loadFile(ByVal strFile As String)
@@ -187,6 +189,7 @@ Public Class Form1
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim strTemp As String
+        Dim strNyxOnly As String
         MobjLogWriter = My.Computer.FileSystem.OpenTextFileWriter("ErrorLog.txt", True)
         If MblnDebug Then
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", Form Opening")
@@ -206,6 +209,7 @@ Public Class Form1
                 objXMLEl = objDomSettings.createElement("Settings")
                 objXMLEl.setAttribute("directory", "c:\")
                 objXMLEl.setAttribute("backup", "True")
+                objXMLEl.setAttribute("nyxonly", "True")
                 objXMLEl.setAttribute("thumbnailsize", "120")
                 objXMLEl.setAttribute("loopcheckdepth", "20")
                 objXMLEl.setAttribute("maxdelay", "120")
@@ -217,6 +221,29 @@ Public Class Form1
             End If
             strPath = getAttribute(objDomSettings.documentElement, "directory")
             blnBackup = getAttribute(objDomSettings.documentElement, "backup")
+            strNyxOnly = getAttribute(objDomSettings.documentElement, "nyxonly")
+            If strNyxOnly = "" Then
+                blnNyxOnly = False
+            Else
+                blnNyxOnly = strNyxOnly
+            End If
+            txtPageIfSet.Enabled = Not blnNyxOnly
+            txtPageIfNotSet.Enabled = Not blnNyxOnly
+            tbAudioTarget.Enabled = Not blnNyxOnly
+            tbAudioStartAt.Enabled = Not blnNyxOnly
+            tbAudioStopAt.Enabled = Not blnNyxOnly
+            cbMetronome.Enabled = Not blnNyxOnly
+            tbMetronome.Enabled = Not blnNyxOnly
+            tbVideo.Enabled = Not blnNyxOnly
+            btnVideo.Enabled = Not blnNyxOnly
+            tbVideoTarget.Enabled = Not blnNyxOnly
+            tbVideoStartAt.Enabled = Not blnNyxOnly
+            tbVideoStopAt.Enabled = Not blnNyxOnly
+            btnVidPlay.Enabled = Not blnNyxOnly
+            btnVidStop.Enabled = Not blnNyxOnly
+            txtDelayIfSet.Enabled = Not blnNyxOnly
+            txtDelayIfNotSet.Enabled = Not blnNyxOnly
+            tbDelayStartWith.Enabled = Not blnNyxOnly
             txtDirectory = strPath
             If strPath <> "" Then
                 OpenFileDialog1.InitialDirectory = strPath
@@ -277,6 +304,9 @@ Public Class Form1
             DataGridView1.EnableHeadersVisualStyles = False
             DataGridView1.Columns(4).HeaderCell.Style.BackColor = Color.Red
             DataGridView1.Columns(5).HeaderCell.Style.BackColor = Color.Red
+            DataGridView1.Columns(4).ReadOnly = blnNyxOnly
+            DataGridView1.Columns(5).ReadOnly = blnNyxOnly
+
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", Form1_Load, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
@@ -591,164 +621,195 @@ Public Class Form1
             addAttribute(MobjXMLPage, "if-not-set", txtPageIfNotSet.Text)
 
             'Image
-            objXMLImage = MobjXMLPage.selectSingleNode("Image")
-            If Not objXMLImage Is Nothing Then
-                objXMLImage.setAttribute("id", tbImage.Text)
-            Else
-                objXMLImage = MobjXMLDoc.createElement("Image")
-                objXMLImage.setAttribute("id", tbImage.Text)
-                MobjXMLPage.appendChild(objXMLImage)
-            End If
+            Try
+                objXMLImage = MobjXMLPage.selectSingleNode("Image")
+                If Not objXMLImage Is Nothing Then
+                    objXMLImage.setAttribute("id", tbImage.Text)
+                Else
+                    objXMLImage = MobjXMLDoc.createElement("Image")
+                    objXMLImage.setAttribute("id", tbImage.Text)
+                    MobjXMLPage.appendChild(objXMLImage)
+                End If
+            Catch ex As Exception
+                MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", savepage Image, " & ex.Message & ", " & ex.TargetSite.Name)
+            End Try
 
             'Text
-            objXMLText = MobjXMLPage.selectSingleNode("./Text")
-            If objXMLText Is Nothing Then
-                objXMLText = MobjXMLDoc.createElement("Text")
-                MobjXMLPage.appendChild(objXMLText)
-            End If
-            strStyle = tbPageText.Text
-            strStyle = strStyle.Replace("<BR>", "<BR/>")
-            strStyle = strStyle.Replace("&nbsp;", "<BR/>")
-            strStyle = strStyle.Trim(" ")
-            strStyle = HtmlAsXml(strStyle)
-            MobjXMLDocFrag.loadXML(strStyle)
-            If MobjXMLDocFrag.documentElement Is Nothing Then
-                strStyle = "<DIV>" & strStyle & "</DIV>"
-                MobjXMLDocFrag.loadXML(strStyle)
-            End If
-            For intloop = objXMLText.childNodes.length - 1 To 0 Step -1
-                If objXMLText.childNodes(intloop).nodeType = MSXML2.DOMNodeType.NODE_TEXT Then
-                    objXMLText.text = ""
-                Else
-                    objXMLTextChild = objXMLText.childNodes(intloop)
-                    objXMLText.removeChild(objXMLTextChild)
+            Try
+                objXMLText = MobjXMLPage.selectSingleNode("./Text")
+                If objXMLText Is Nothing Then
+                    objXMLText = MobjXMLDoc.createElement("Text")
+                    MobjXMLPage.appendChild(objXMLText)
                 End If
-            Next
-            objXMLText.appendChild(MobjXMLDocFrag.documentElement)
+                strStyle = tbPageText.Text
+                strStyle = HtmlAsXml(strStyle)
+                MobjXMLDocFrag.loadXML(strStyle)
+                If MobjXMLDocFrag.documentElement Is Nothing Then
+                    strStyle = "<DIV>" & strStyle & "</DIV>"
+                    MobjXMLDocFrag.loadXML(strStyle)
+                End If
+                If MobjXMLDocFrag.documentElement Is Nothing Then
+                    MsgBox("If you use HTML tags they must conform to the XHTML standard, text has not been saved", MsgBoxStyle.OkOnly, "Text Error")
+                    blnRefresh = False
+                Else
+                    For intloop = objXMLText.childNodes.length - 1 To 0 Step -1
+                        If objXMLText.childNodes(intloop).nodeType = MSXML2.DOMNodeType.NODE_TEXT Then
+                            objXMLText.text = ""
+                        Else
+                            objXMLTextChild = objXMLText.childNodes(intloop)
+                            objXMLText.removeChild(objXMLTextChild)
+                        End If
+                    Next
+                    objXMLText.appendChild(MobjXMLDocFrag.documentElement)
+                End If
+            Catch ex As Exception
+                MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", savepage Text, " & ex.Message & ", " & ex.TargetSite.Name)
+            End Try
 
             'Delay
-            objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
-            If objXMLDelay Is Nothing Then
-                If cbDelay.Checked Then
-                    objXMLDelay = MobjXMLDoc.createElement("Delay")
-                    MobjXMLPage.appendChild(objXMLDelay)
-                    objXMLDelay.setAttribute("seconds", tbDelaySeconds.Text)
-                    objXMLDelay.setAttribute("target", tbDelayTarget.Text)
-                    objXMLDelay.setAttribute("start-with", tbDelayStartWith.Text)
-                    Select Case True
-                        Case rbHidden.Checked
-                            strStyle = "hidden"
-                        Case rbNormal.Checked
-                            strStyle = "normal"
-                        Case rbSecret.Checked
-                            strStyle = "secret"
-                        Case Else
-                            strStyle = "normal"
-                    End Select
-                    objXMLDelay.setAttribute("style", strStyle)
-                End If
-            Else
-                If cbDelay.Checked Then
-                    objXMLDelay.setAttribute("seconds", tbDelaySeconds.Text)
-                    objXMLDelay.setAttribute("target", tbDelayTarget.Text)
-                    objXMLDelay.setAttribute("start-with", tbDelayStartWith.Text)
-                    Select Case True
-                        Case rbHidden.Checked
-                            strStyle = "hidden"
-                        Case rbNormal.Checked
-                            strStyle = "normal"
-                        Case rbSecret.Checked
-                            strStyle = "secret"
-                        Case Else
-                            strStyle = "normal"
-                    End Select
-                    objXMLDelay.setAttribute("style", strStyle)
-                    'delay set options
-                    addAttribute(objXMLDelay, "set", txtDelaySet.Text)
-                    addAttribute(objXMLDelay, "unset", txtDelayUnSet.Text)
-                    addAttribute(objXMLDelay, "if-set", txtDelayIfSet.Text)
-                    addAttribute(objXMLDelay, "if-not-set", txtDelayIfNotSet.Text)
+            Try
+                objXMLDelay = MobjXMLPage.selectSingleNode("./Delay")
+                If objXMLDelay Is Nothing Then
+                    If cbDelay.Checked Then
+                        objXMLDelay = MobjXMLDoc.createElement("Delay")
+                        MobjXMLPage.appendChild(objXMLDelay)
+                        objXMLDelay.setAttribute("seconds", tbDelaySeconds.Text)
+                        objXMLDelay.setAttribute("target", tbDelayTarget.Text)
+                        objXMLDelay.setAttribute("start-with", tbDelayStartWith.Text)
+                        Select Case True
+                            Case rbHidden.Checked
+                                strStyle = "hidden"
+                            Case rbNormal.Checked
+                                strStyle = "normal"
+                            Case rbSecret.Checked
+                                strStyle = "secret"
+                            Case Else
+                                strStyle = "normal"
+                        End Select
+                        objXMLDelay.setAttribute("style", strStyle)
+                    End If
                 Else
-                    MobjXMLPage.removeChild(objXMLDelay)
+                    If cbDelay.Checked Then
+                        objXMLDelay.setAttribute("seconds", tbDelaySeconds.Text)
+                        objXMLDelay.setAttribute("target", tbDelayTarget.Text)
+                        objXMLDelay.setAttribute("start-with", tbDelayStartWith.Text)
+                        Select Case True
+                            Case rbHidden.Checked
+                                strStyle = "hidden"
+                            Case rbNormal.Checked
+                                strStyle = "normal"
+                            Case rbSecret.Checked
+                                strStyle = "secret"
+                            Case Else
+                                strStyle = "normal"
+                        End Select
+                        objXMLDelay.setAttribute("style", strStyle)
+                        'delay set options
+                        addAttribute(objXMLDelay, "set", txtDelaySet.Text)
+                        addAttribute(objXMLDelay, "unset", txtDelayUnSet.Text)
+                        addAttribute(objXMLDelay, "if-set", txtDelayIfSet.Text)
+                        addAttribute(objXMLDelay, "if-not-set", txtDelayIfNotSet.Text)
+                    Else
+                        MobjXMLPage.removeChild(objXMLDelay)
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", savepage delay, " & ex.Message & ", " & ex.TargetSite.Name)
+            End Try
 
             'Metronome
-            objXMLMetronome = MobjXMLPage.selectSingleNode("./Metronome")
-            If objXMLMetronome Is Nothing Then
-                If cbMetronome.Checked Then
-                    objXMLMetronome = MobjXMLDoc.createElement("Metronome")
-                    MobjXMLPage.appendChild(objXMLMetronome)
-                    objXMLMetronome.setAttribute("bpm", tbMetronome.Text)
-                End If
-            Else
-                If cbMetronome.Checked Then
-                    objXMLMetronome.setAttribute("bpm", tbMetronome.Text)
+            Try
+                objXMLMetronome = MobjXMLPage.selectSingleNode("./Metronome")
+                If objXMLMetronome Is Nothing Then
+                    If cbMetronome.Checked Then
+                        objXMLMetronome = MobjXMLDoc.createElement("Metronome")
+                        MobjXMLPage.appendChild(objXMLMetronome)
+                        objXMLMetronome.setAttribute("bpm", tbMetronome.Text)
+                    End If
                 Else
-                    MobjXMLPage.removeChild(objXMLMetronome)
+                    If cbMetronome.Checked Then
+                        objXMLMetronome.setAttribute("bpm", tbMetronome.Text)
+                    Else
+                        MobjXMLPage.removeChild(objXMLMetronome)
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", savepage Metronome, " & ex.Message & ", " & ex.TargetSite.Name)
+            End Try
 
             'Audio
-            objXMLAudio = MobjXMLPage.selectSingleNode("./Audio")
-            If objXMLAudio Is Nothing Then
-                If tbAudio.Text <> "" Then
-                    objXMLAudio = MobjXMLDoc.createElement("Audio")
-                    MobjXMLPage.appendChild(objXMLAudio)
-                    objXMLAudio.setAttribute("id", tbAudio.Text)
-                    addAttribute(objXMLAudio, "target", tbAudioTarget.Text)
-                    addAttribute(objXMLAudio, "start-at", tbAudioStartAt.Text)
-                    addAttribute(objXMLAudio, "stop-at", tbAudioStopAt.Text)
-                End If
-            Else
-                If tbAudio.Text <> "" Then
-                    objXMLAudio.setAttribute("id", tbAudio.Text)
-                    addAttribute(objXMLAudio, "target", tbAudioTarget.Text)
-                    addAttribute(objXMLAudio, "start-at", tbAudioStartAt.Text)
-                    addAttribute(objXMLAudio, "stop-at", tbAudioStopAt.Text)
+            Try
+                objXMLAudio = MobjXMLPage.selectSingleNode("./Audio")
+                If objXMLAudio Is Nothing Then
+                    If tbAudio.Text <> "" Then
+                        objXMLAudio = MobjXMLDoc.createElement("Audio")
+                        MobjXMLPage.appendChild(objXMLAudio)
+                        objXMLAudio.setAttribute("id", tbAudio.Text)
+                        addAttribute(objXMLAudio, "target", tbAudioTarget.Text)
+                        addAttribute(objXMLAudio, "start-at", tbAudioStartAt.Text)
+                        addAttribute(objXMLAudio, "stop-at", tbAudioStopAt.Text)
+                    End If
                 Else
-                    MobjXMLPage.removeChild(objXMLAudio)
+                    If tbAudio.Text <> "" Then
+                        objXMLAudio.setAttribute("id", tbAudio.Text)
+                        addAttribute(objXMLAudio, "target", tbAudioTarget.Text)
+                        addAttribute(objXMLAudio, "start-at", tbAudioStartAt.Text)
+                        addAttribute(objXMLAudio, "stop-at", tbAudioStopAt.Text)
+                    Else
+                        MobjXMLPage.removeChild(objXMLAudio)
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", savepage Audio, " & ex.Message & ", " & ex.TargetSite.Name)
+            End Try
 
             'Video
-            objXMLVideo = MobjXMLPage.selectSingleNode("./Video")
-            If objXMLVideo Is Nothing Then
-                If tbVideo.Text <> "" Then
-                    objXMLVideo = MobjXMLDoc.createElement("Video")
-                    MobjXMLPage.appendChild(objXMLVideo)
-                    objXMLVideo.setAttribute("id", tbVideo.Text)
-                    addAttribute(objXMLVideo, "target", tbVideoTarget.Text)
-                    addAttribute(objXMLVideo, "start-at", tbVideoStartAt.Text)
-                    addAttribute(objXMLVideo, "stop-at", tbVideoStopAt.Text)
-                End If
-            Else
-                If tbVideo.Text <> "" Then
-                    objXMLVideo.setAttribute("id", tbVideo.Text)
-                    addAttribute(objXMLVideo, "target", tbVideoTarget.Text)
-                    addAttribute(objXMLVideo, "start-at", tbVideoStartAt.Text)
-                    addAttribute(objXMLVideo, "stop-at", tbVideoStopAt.Text)
+            Try
+                objXMLVideo = MobjXMLPage.selectSingleNode("./Video")
+                If objXMLVideo Is Nothing Then
+                    If tbVideo.Text <> "" Then
+                        objXMLVideo = MobjXMLDoc.createElement("Video")
+                        MobjXMLPage.appendChild(objXMLVideo)
+                        objXMLVideo.setAttribute("id", tbVideo.Text)
+                        addAttribute(objXMLVideo, "target", tbVideoTarget.Text)
+                        addAttribute(objXMLVideo, "start-at", tbVideoStartAt.Text)
+                        addAttribute(objXMLVideo, "stop-at", tbVideoStopAt.Text)
+                    End If
                 Else
-                    MobjXMLPage.removeChild(objXMLVideo)
+                    If tbVideo.Text <> "" Then
+                        objXMLVideo.setAttribute("id", tbVideo.Text)
+                        addAttribute(objXMLVideo, "target", tbVideoTarget.Text)
+                        addAttribute(objXMLVideo, "start-at", tbVideoStartAt.Text)
+                        addAttribute(objXMLVideo, "stop-at", tbVideoStopAt.Text)
+                    Else
+                        MobjXMLPage.removeChild(objXMLVideo)
+                    End If
                 End If
-            End If
+            Catch ex As Exception
+                MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", savepage Video, " & ex.Message & ", " & ex.TargetSite.Name)
+            End Try
 
             'Buttons
-            objXMLButtons = MobjXMLPage.selectNodes("./Button")
-            For intloop = objXMLButtons.length - 1 To 0 Step -1
-                objXMLButton = objXMLButtons.item(intloop)
-                MobjXMLPage.removeChild(objXMLButton)
-            Next
-            For intloop = DataGridView1.Rows.Count - 2 To 0 Step -1
-                objXMLButton = MobjXMLDoc.createElement("Button")
-                objXMLButton.setAttribute("target", DataGridView1.Rows(intloop).Cells(1).Value)
-                objXMLButton.text = DataGridView1.Rows(intloop).Cells(0).Value
-                addAttribute(objXMLButton, "set", DataGridView1.Rows(intloop).Cells(2).Value)
-                addAttribute(objXMLButton, "unset", DataGridView1.Rows(intloop).Cells(3).Value)
-                addAttribute(objXMLButton, "if-set", DataGridView1.Rows(intloop).Cells(4).Value)
-                addAttribute(objXMLButton, "if-not-set", DataGridView1.Rows(intloop).Cells(5).Value)
-                MobjXMLPage.appendChild(objXMLButton)
-            Next
+            Try
+                objXMLButtons = MobjXMLPage.selectNodes("./Button")
+                For intloop = objXMLButtons.length - 1 To 0 Step -1
+                    objXMLButton = objXMLButtons.item(intloop)
+                    MobjXMLPage.removeChild(objXMLButton)
+                Next
+                For intloop = DataGridView1.Rows.Count - 2 To 0 Step -1
+                    objXMLButton = MobjXMLDoc.createElement("Button")
+                    objXMLButton.setAttribute("target", DataGridView1.Rows(intloop).Cells(1).Value)
+                    objXMLButton.text = DataGridView1.Rows(intloop).Cells(0).Value
+                    addAttribute(objXMLButton, "set", DataGridView1.Rows(intloop).Cells(2).Value)
+                    addAttribute(objXMLButton, "unset", DataGridView1.Rows(intloop).Cells(3).Value)
+                    addAttribute(objXMLButton, "if-set", DataGridView1.Rows(intloop).Cells(4).Value)
+                    addAttribute(objXMLButton, "if-not-set", DataGridView1.Rows(intloop).Cells(5).Value)
+                    MobjXMLPage.appendChild(objXMLButton)
+                Next
+            Catch ex As Exception
+                MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", savepage buttons, " & ex.Message & ", " & ex.TargetSite.Name)
+            End Try
+
 
             'Save XML File
             saveXml(MobjXMLDoc, TextBox1.Text)
@@ -1067,6 +1128,8 @@ Public Class Form1
                 MenuPageDeleteError.Enabled = True
             End If
 
+            ListView1.SelectedIndices.Clear()
+
             MblnDirty = False
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", displaypage, " & ex.Message & ", " & ex.TargetSite.Name)
@@ -1269,11 +1332,15 @@ Public Class Form1
 
     Private Sub saveXml(ByRef objXMLDom As MSXML2.IXMLDOMDocument2, ByVal strFileName As String)
         Try
-            Dim objDoc As New Xml.XmlDocument
-            Dim writer As System.Xml.XmlTextWriter = New System.Xml.XmlTextWriter(strFileName, Nothing)
-            writer.Formatting = Xml.Formatting.Indented
-            objDoc.LoadXml(objXMLDom.xml)
-            objDoc.Save(writer)
+            If Not MblnUpdating Then
+                MblnUpdating = True
+                Dim objDoc As New Xml.XmlDocument
+                Dim writer As System.Xml.XmlTextWriter = New System.Xml.XmlTextWriter(strFileName, Nothing)
+                writer.Formatting = Xml.Formatting.Indented
+                objDoc.LoadXml(objXMLDom.xml)
+                objDoc.Save(writer)
+                MblnUpdating = False
+            End If
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", saveXml, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
@@ -1555,6 +1622,7 @@ Public Class Form1
         Dim strMedia As String
         Dim strNode As String
         Dim strPage As String
+        Dim strMediaWild As String = ""
 
         Try
             'loop through the nodes passed and check the media exists
@@ -1571,9 +1639,12 @@ Public Class Form1
                             Else
                                 strOutput = strOutput & "<tr><td>" & strPage & "</td><td><font color=""red"">" & strNode & " " & strMedia & "</font></td></tr>"
                             End If
+                        Else
+                            strMediaWild = strMediaWild & strMedia & vbCrLf
                         End If
                 End Select
             Next
+            MobjLogWriter.WriteLine(strMediaWild)
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MediaExists, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
@@ -2817,6 +2888,7 @@ Public Class Form1
         Try
             frmDialogue.txtDefaltDir.Text = txtDirectory
             frmDialogue.cbBackup.Checked = blnBackup
+            frmDialogue.cbNyx.Checked = blnNyxOnly
             frmDialogue.tbThumbnailSize.Text = MintThumbnailSize
             frmDialogue.tbLoopCheck.Text = MintLoopCheckDepth
             frmDialogue.tbMaxDelay.Text = MintMaxDelay
@@ -2826,6 +2898,26 @@ Public Class Form1
             If frmDialogue.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 txtDirectory = frmDialogue.txtDefaltDir.Text
                 blnBackup = frmDialogue.cbBackup.Checked
+                blnNyxOnly = frmDialogue.cbNyx.Checked
+                txtPageIfSet.Enabled = Not blnNyxOnly
+                txtPageIfNotSet.Enabled = Not blnNyxOnly
+                tbAudioTarget.Enabled = Not blnNyxOnly
+                tbAudioStartAt.Enabled = Not blnNyxOnly
+                tbAudioStopAt.Enabled = Not blnNyxOnly
+                cbMetronome.Enabled = Not blnNyxOnly
+                tbMetronome.Enabled = Not blnNyxOnly
+                tbVideo.Enabled = Not blnNyxOnly
+                btnVideo.Enabled = Not blnNyxOnly
+                tbVideoTarget.Enabled = Not blnNyxOnly
+                tbVideoStartAt.Enabled = Not blnNyxOnly
+                tbVideoStopAt.Enabled = Not blnNyxOnly
+                btnVidPlay.Enabled = Not blnNyxOnly
+                btnVidStop.Enabled = Not blnNyxOnly
+                txtDelayIfSet.Enabled = Not blnNyxOnly
+                txtDelayIfNotSet.Enabled = Not blnNyxOnly
+                tbDelayStartWith.Enabled = Not blnNyxOnly
+                DataGridView1.Columns(4).ReadOnly = blnNyxOnly
+                DataGridView1.Columns(5).ReadOnly = blnNyxOnly
                 intTemp = Convert.ToInt32(frmDialogue.tbThumbnailSize.Text)
                 If intTemp > 20 Then
                     MintThumbnailSize = intTemp
@@ -2845,6 +2937,7 @@ Public Class Form1
                 objXMLEl = objDomSettings.documentElement
                 objXMLEl.setAttribute("directory", txtDirectory)
                 objXMLEl.setAttribute("backup", blnBackup)
+                objXMLEl.setAttribute("nyxonly", blnNyxOnly)
                 objXMLEl.setAttribute("thumbnailsize", MintThumbnailSize)
                 objXMLEl.setAttribute("loopcheckdepth", MintLoopCheckDepth)
                 objXMLEl.setAttribute("maxdelay", MintMaxDelay)

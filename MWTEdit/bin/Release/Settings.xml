@@ -1,2 +1,2 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Settings directory="c:\" backup="0" imagefilter="*.jpg,*.bmp,*.gif,*.png" audiofilter="*.mp3,*.wav" videofilter="*.wmv,*.mp4" thumbnailsize="170" loopcheckdepth="10" maxdelay="180" />
+<?xml version="1.0"?>
+<Settings directory="c:\" backup="-1" nyxonly="0" thumbnailsize="120" loopcheckdepth="20" maxdelay="120" imagefilter="*.jpg,*.bmp,*.gif" audiofilter="*.mp3,*.wav" videofilter="*.wmv,*.mp4" />

@@ -39,6 +39,7 @@ Partial Class OptionsPopUp
         Me.tbThumbnailSize = New System.Windows.Forms.TextBox
         Me.Label6 = New System.Windows.Forms.Label
         Me.tbMaxDelay = New System.Windows.Forms.TextBox
+        Me.cbNyx = New System.Windows.Forms.CheckBox
         Me.SuspendLayout()
         '
         'btnOk
@@ -182,12 +183,24 @@ Partial Class OptionsPopUp
         Me.tbMaxDelay.Size = New System.Drawing.Size(67, 20)
         Me.tbMaxDelay.TabIndex = 41
         '
+        'cbNyx
+        '
+        Me.cbNyx.AutoSize = True
+        Me.cbNyx.Location = New System.Drawing.Point(139, 54)
+        Me.cbNyx.Name = "cbNyx"
+        Me.cbNyx.RightToLeft = System.Windows.Forms.RightToLeft.Yes
+        Me.cbNyx.Size = New System.Drawing.Size(68, 17)
+        Me.cbNyx.TabIndex = 43
+        Me.cbNyx.Text = "Nyx Only"
+        Me.cbNyx.UseVisualStyleBackColor = True
+        '
         'OptionsPopUp
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(752, 264)
         Me.ControlBox = False
+        Me.Controls.Add(Me.cbNyx)
         Me.Controls.Add(Me.Label6)
         Me.Controls.Add(Me.tbMaxDelay)
         Me.Controls.Add(Me.Label5)
@@ -229,4 +242,5 @@ Partial Class OptionsPopUp
     Friend WithEvents tbThumbnailSize As System.Windows.Forms.TextBox
     Friend WithEvents Label6 As System.Windows.Forms.Label
     Friend WithEvents tbMaxDelay As System.Windows.Forms.TextBox
+    Friend WithEvents cbNyx As System.Windows.Forms.CheckBox
 End Class

@@ -18,12 +18,13 @@
     <OptionStrict>Off</OptionStrict>
     <OptionInfer>On</OptionInfer>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <ManifestCertificateThumbprint>13A60BBCF35039989F8A22470B2F63ABB36189B6</ManifestCertificateThumbprint>
-    <ManifestKeyFile>MWTEdit_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestCertificateThumbprint>1E9D1BB94165462D16B047C08F20458F97D04D15</ManifestCertificateThumbprint>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
     <GenerateManifests>true</GenerateManifests>
     <SignManifests>true</SignManifests>
     <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
-    <PublishUrl>Z:\mwtedit\</PublishUrl>
+    <PublishUrl>y:\mwtedit\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -36,7 +37,7 @@
     <TargetCulture>en-GB</TargetCulture>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.6.0.0</ApplicationVersion>
+    <ApplicationVersion>1.7.0.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -344,6 +345,7 @@
     </PublishFile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="MWTEdit_1_TemporaryKey.pfx" />
     <None Include="Resources\stop-button-black-md1.png" />
   </ItemGroup>
   <ItemGroup>
