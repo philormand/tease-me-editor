@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.7"
+    Private MstrVer = " 1.8"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -613,6 +613,10 @@ Public Class Form1
             Dim objXMLButton As MSXML2.IXMLDOMElement
             Dim strStyle As String
             Dim intloop As Integer
+            Dim objHtmlDoc As New HtmlAgilityPack.HtmlDocument
+            objHtmlDoc.OptionOutputAsXml = True
+            HtmlAgilityPack.HtmlNode.ElementsFlags.Remove("form")
+
 
             'page set options
             addAttribute(MobjXMLPage, "set", txtPageSet.Text)
@@ -641,8 +645,8 @@ Public Class Form1
                     objXMLText = MobjXMLDoc.createElement("Text")
                     MobjXMLPage.appendChild(objXMLText)
                 End If
-                strStyle = tbPageText.Text
-                strStyle = HtmlAsXml(strStyle)
+                objHtmlDoc.LoadHtml(tbPageText.Text)
+                strStyle = objHtmlDoc.DocumentNode.InnerHtml
                 MobjXMLDocFrag.loadXML(strStyle)
                 If MobjXMLDocFrag.documentElement Is Nothing Then
                     strStyle = "<DIV>" & strStyle & "</DIV>"
@@ -970,11 +974,9 @@ Public Class Form1
             Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
                 System.Windows.Forms.Application.DoEvents()
             Loop
-            If Not WebBrowser1.Document.Body Is Nothing Then
-                tbPageText.Text = WebBrowser1.Document.Body.InnerHtml
-            End If
+            tbPageText.Text = Trim(strText)
             'If Not WebBrowser1.Document.Body Is Nothing Then
-            '    txtRawText.Text = WebBrowser1.Document.Body.InnerHtml
+            '    tbPageText.Text = WebBrowser1.Document.Body.InnerHtml
             'End If
 
             'Delay
@@ -3325,10 +3327,15 @@ Public Class Form1
     End Sub
 
     Private Sub visToraw()
+        Dim tmphtmldocument As New HtmlAgilityPack.HtmlDocument
+        tmphtmldocument.OptionOutputAsXml = True
         Try
             If MstrEditStatus = "Neither" Then
                 MstrEditStatus = "Vis"
-                txtRawText.Text = WebBrowser3.Document.Body.InnerHtml
+                If Not WebBrowser3.Document.Body.InnerHtml = Nothing Then
+                    tmphtmldocument.LoadHtml(WebBrowser3.Document.Body.InnerHtml)
+                    txtRawText.Text = tmphtmldocument.DocumentNode.InnerHtml
+                End If
                 MstrEditStatus = "Neither"
             End If
         Catch ex As Exception
@@ -3547,6 +3554,123 @@ Public Class Form1
             End With
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", ShutOffTimer_Tick, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+    End Sub
+
+    Private Sub MenuPageBatch_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuPageBatch.Click
+        Dim frmDialogue As New BatchCreate
+        Dim objXMLText As MSXML2.IXMLDOMElement
+        Dim objXMLDelay As MSXML2.IXMLDOMElement
+        Dim objXMLButton As MSXML2.IXMLDOMElement
+        Dim intFrom As Integer
+        Dim intTo As Integer
+        Dim intLoop As Integer
+        Dim strPage As String
+        Dim strPageNext As String
+        Dim blnDoit As Boolean
+        Dim strText As String
+        Dim strHTML As String
+        Try
+            blnDoit = True
+            If MblnDirty Then
+                Select Case MsgBox("Do you want to saved changes to the current page?" & vbCrLf & "Select Yes to save and create a new page, " & vbCrLf & "No lose changes or " & vbCrLf & "Cancel to to stay on this page", MsgBoxStyle.YesNoCancel, "Unsaved Changes")
+                    Case MsgBoxResult.Yes
+                        SavePage(False)
+                        MblnDirty = False
+                    Case MsgBoxResult.Cancel
+                        blnDoit = False
+                End Select
+            End If
+
+            If blnDoit Then
+                tbImage.Text = ""
+                If Not PictureBox1.Image Is Nothing Then
+                    PictureBox1.Image.Dispose()
+                    PictureBox1.Image = Nothing
+                End If
+                If Not PictureBox1.Image Is Nothing Then
+                    PictureBox2.Image.Dispose()
+                    PictureBox2.Image = Nothing
+                End If
+                strText = ""
+                strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
+                WebBrowser1.DocumentText = strHtml
+                Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
+                    System.Windows.Forms.Application.DoEvents()
+                Loop
+                tbPageText.Text = WebBrowser1.Document.Body.InnerHtml
+                cbDelay.Checked = False
+                tbDelaySeconds.Text = ""
+                tbDelayTarget.Text = ""
+                tbDelayStartWith.Text = ""
+                rbHidden.Checked = False
+                rbNormal.Checked = False
+                rbSecret.Checked = False
+                btnDelay.Tag = ""
+                btnDelay.Enabled = False
+                lblTimer.Text = ""
+                cbMetronome.Checked = False
+                tbMetronome.Text = ""
+                tbAudio.Text = ""
+                tbAudioTarget.Text = ""
+                tbAudioStartAt.Text = ""
+                tbAudioStopAt.Text = ""
+                btnPlayAudio.Enabled = False
+                tbVideo.Text = ""
+                tbVideoTarget.Text = ""
+                tbVideoStartAt.Text = ""
+                tbVideoStopAt.Text = ""
+                DataGridView1.Rows.Clear()
+                For intLoop = MobjButtons.GetUpperBound(0) To 1 Step -1
+                    FlowLayoutPanel1.Controls.Remove(MobjButtons(intLoop))
+                    MobjButtons(intLoop).Dispose()
+                Next
+                MblnDirty = False
+                frmDialogue.txtPrefix.Text = "Page"
+                frmDialogue.txtFrom.Text = 1
+                frmDialogue.txtTo.Text = 10
+                frmDialogue.txtDelay.Text = 15
+                frmDialogue.cbxContinue.Checked = True
+                frmDialogue.cbxDelay.Checked = False
+                If frmDialogue.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
+                    intFrom = frmDialogue.txtFrom.Text
+                    intTo = frmDialogue.txtTo.Text
+                    If intTo > intFrom Then
+                        For intLoop = intFrom To intTo
+                            strPage = frmDialogue.txtPrefix.Text & intLoop
+                            strPageNext = frmDialogue.txtPrefix.Text & (intLoop + 1)
+                            MstrPage = strPage
+                            lblPage.Text = MstrPage
+                            MobjXMLPage = MobjXMLDoc.createElement("Page")
+                            MobjXMLPage.setAttribute("id", MstrPage)
+                            MobjXMLPages.appendChild(MobjXMLPage)
+                            objXMLText = MobjXMLDoc.createElement("Text")
+                            MobjXMLPage.appendChild(objXMLText)
+                            If frmDialogue.cbxDelay.Checked Then
+                                objXMLDelay = MobjXMLDoc.createElement("Delay")
+                                MobjXMLPage.appendChild(objXMLDelay)
+                                objXMLDelay.setAttribute("seconds", frmDialogue.txtDelay.Text)
+                                objXMLDelay.setAttribute("target", strPageNext)
+                                objXMLDelay.setAttribute("style", "normal")
+                            End If
+                            If frmDialogue.cbxContinue.Checked Then
+                                objXMLButton = MobjXMLDoc.createElement("Button")
+                                objXMLButton.setAttribute("target", strPageNext)
+                                objXMLButton.text = "Continue"
+                                addAttribute(objXMLButton, "set", "")
+                                addAttribute(objXMLButton, "unset", "")
+                                addAttribute(objXMLButton, "if-set", "")
+                                addAttribute(objXMLButton, "if-not-set", "")
+                                MobjXMLPage.appendChild(objXMLButton)
+                            End If
+                        Next
+                    End If
+                End If
+                PopPageTree()
+                TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
+            End If
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MenuPageBatch_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
 End Class
