@@ -192,6 +192,7 @@ Partial Class Form1
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
         Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar
+        Me.MenuPageBatch = New System.Windows.Forms.ToolStripMenuItem
         Me.TabControl1.SuspendLayout()
         Me.TabGeneral.SuspendLayout()
         Me.TabPageView.SuspendLayout()
@@ -1709,7 +1710,7 @@ Partial Class Form1
         '
         'PageToolStripMenuItem
         '
-        Me.PageToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuPageSave, Me.MenuPageNew, Me.MenuPageDelete, Me.MenuPageCopy, Me.MenuPageSplit, Me.MenuPageRename, Me.MenuPageDownLoadError, Me.MenuPageDeleteError})
+        Me.PageToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuPageSave, Me.MenuPageNew, Me.MenuPageDelete, Me.MenuPageCopy, Me.MenuPageSplit, Me.MenuPageRename, Me.MenuPageDownLoadError, Me.MenuPageDeleteError, Me.MenuPageBatch})
         Me.PageToolStripMenuItem.Name = "PageToolStripMenuItem"
         Me.PageToolStripMenuItem.Size = New System.Drawing.Size(45, 20)
         Me.PageToolStripMenuItem.Text = "&Page"
@@ -1899,6 +1900,12 @@ Partial Class Form1
         Me.ToolStripProgressBar1.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ToolStripProgressBar1.Size = New System.Drawing.Size(300, 16)
         Me.ToolStripProgressBar1.Step = 1
+        '
+        'MenuPageBatch
+        '
+        Me.MenuPageBatch.Name = "MenuPageBatch"
+        Me.MenuPageBatch.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageBatch.Text = "BatchCreate"
         '
         'Form1
         '
@@ -2141,5 +2148,6 @@ Partial Class Form1
     Friend WithEvents AxWindowsMediaPlayer1 As AxWMPLib.AxWindowsMediaPlayer
     Friend WithEvents btnVidStop As System.Windows.Forms.Button
     Friend WithEvents btnVidPlay As System.Windows.Forms.Button
+    Friend WithEvents MenuPageBatch As System.Windows.Forms.ToolStripMenuItem
 
 End Class
