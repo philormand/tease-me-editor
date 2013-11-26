@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.8"
+    Private MstrVer = " 1.9"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -130,6 +130,7 @@ Public Class Form1
             Cursor = Cursors.Default
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", fillListView, " & ex.Message & ", " & ex.TargetSite.Name)
+            Cursor = Cursors.Default
         End Try
     End Sub
 
@@ -647,6 +648,7 @@ Public Class Form1
                 End If
                 objHtmlDoc.LoadHtml(tbPageText.Text)
                 strStyle = objHtmlDoc.DocumentNode.InnerHtml
+                strStyle = strStyle.Replace("&amp;#160;", "&#160;")
                 MobjXMLDocFrag.loadXML(strStyle)
                 If MobjXMLDocFrag.documentElement Is Nothing Then
                     strStyle = "<DIV>" & strStyle & "</DIV>"
@@ -1341,6 +1343,7 @@ Public Class Form1
                 writer.Formatting = Xml.Formatting.Indented
                 objDoc.LoadXml(objXMLDom.xml)
                 objDoc.Save(writer)
+                writer.Close()
                 MblnUpdating = False
             End If
         Catch ex As Exception
@@ -1684,13 +1687,14 @@ Public Class Form1
             Dim objXMLEl As MSXML2.IXMLDOMElement
             Dim objXMLEl2 As MSXML2.IXMLDOMElement
             Dim objXMLEl3 As MSXML2.IXMLDOMElement
+            Dim strPath As String
             DialogBox.Text = "File Name"
             If DialogBox.ShowDialog = System.Windows.Forms.DialogResult.OK Then
                 strName = DialogBox.TextBox1.Text
                 If strName.IndexOf(".xml") = -1 Then
                     strName = strName & ".xml"
                 End If
-                TextBox1.Text = txtDirectory & "\" & OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & strName
+                TextBox1.Text = txtDirectory & "\" & strName
                 objXMLRoot = MobjXMLDoc.createElement("Tease")
                 objXMLRoot.setAttribute("scriptVersion", "v0.1")
                 objXMLRoot.setAttribute("id", "")
@@ -1710,6 +1714,9 @@ Public Class Form1
                 objXMLRoot.appendChild(objXMLEl)
 
                 objXMLEl = MobjXMLDoc.createElement("MediaDirectory")
+                objXMLEl.text = DialogBox.TextBox1.Text
+                strPath = txtDirectory & "\" & DialogBox.TextBox1.Text
+                System.IO.Directory.CreateDirectory(strPath)
                 objXMLRoot.appendChild(objXMLEl)
 
                 objXMLEl = MobjXMLDoc.createElement("Settings")
@@ -3328,13 +3335,16 @@ Public Class Form1
 
     Private Sub visToraw()
         Dim tmphtmldocument As New HtmlAgilityPack.HtmlDocument
+        Dim strText As String
         tmphtmldocument.OptionOutputAsXml = True
         Try
             If MstrEditStatus = "Neither" Then
                 MstrEditStatus = "Vis"
                 If Not WebBrowser3.Document.Body.InnerHtml = Nothing Then
                     tmphtmldocument.LoadHtml(WebBrowser3.Document.Body.InnerHtml)
-                    txtRawText.Text = tmphtmldocument.DocumentNode.InnerHtml
+                    strText = tmphtmldocument.DocumentNode.InnerHtml
+                    strText = strText.Replace("&amp;nbsp;", "&#160;")
+                    txtRawText.Text = strText
                 End If
                 MstrEditStatus = "Neither"
             End If
