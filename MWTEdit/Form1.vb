@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.9"
+    Private MstrVer = " 1.10"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -2472,14 +2472,6 @@ Public Class Form1
                         strText = ""
                     Else
                         strText = objXMLText.xml
-                        strText = strText.Replace("<Text>", "")
-                        strText = strText.Replace("</Text>", "")
-                        strText = strText.Replace("'", "&apos;")
-                        strText = strText.Replace("<p>", "")
-                        strText = strText.Replace("</p>", "")
-                        strText = strText.Replace("<P>", "")
-                        strText = strText.Replace("</P>", "")
-
                         intPos = strText.IndexOf("SIZE=""")
                         If intPos = -1 Then
                             intPos = strText.IndexOf("size=""")
@@ -2517,8 +2509,12 @@ Public Class Form1
                     objXMLButtons = objXMLPage.selectNodes("./Button")
                     'populate with buttons for this page
                     If objXMLButtons.length > 0 Then
-                        strScript = strScript & ",vert("
-                        strScript = strScript & "buttons("
+                        If objXMLButtons.length > 1 Then
+                            strScript = strScript & ",vert("
+                            strScript = strScript & "buttons("
+                        Else
+                            strScript = strScript & ",buttons("
+                        End If
                     End If
                     For intloop = objXMLButtons.length - 1 To 0 Step -1
                         objXMLButton = objXMLButtons.item(intloop)
