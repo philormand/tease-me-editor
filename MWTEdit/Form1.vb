@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.10"
+    Private MstrVer = " 1.11"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -2502,6 +2502,16 @@ Public Class Form1
                     If Not objXMLImage Is Nothing Then
                         strImage = getAttribute(objXMLImage, "id")
                         strImage = strImage.Replace("_", "-")
+                        strImage = strImage.Replace(" ", "-")
+                        Do While strImage.IndexOf("--") > -1
+                            strImage = strImage.Replace("--", "-")
+                        Loop
+                        If strImage.First() = "-" Then
+                            strImage = strImage.Substring(1)
+                        End If
+                        If IsNumeric(strImage.First()) Then
+                            strImage = "no-" & strImage
+                        End If
                         strScript = strScript & ",pic(""" & strImage.ToLower & """)"
                     End If
 

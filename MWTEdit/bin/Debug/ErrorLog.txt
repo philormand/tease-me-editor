@@ -4,3 +4,157 @@
 
 
 
+2013/12/24 16:51:27, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:51:47, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:51:59, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:52:13, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:52:53, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\slow'., WinIOError
+2013/12/24 16:53:19, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\slow'., WinIOError
+2013/12/24 16:54:26, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:54:42, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:55:14, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:55:19, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 16:55:20, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\slow'., WinIOError
+2013/12/24 16:55:21, displaypage, Could not find a part of the path 'y:\tm\teases\SlideShow\hostess'., WinIOError
+2013/12/24 22:04:05, displaypage, Index was outside the bounds of the array., displaypage
+2013/12/24 22:04:07, displaypage, Index was outside the bounds of the array., displaypage
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+etstroke*.jpg
+
+
+
+
+
+
+
+
+
+
+
+
+2014/01/26 17:45:40, displaypage, Could not find file 'Y:\TM\Teases\I'm Too Good For You - Foot Guessing\r1q4a2.jpg'., WinIOError
+2014/01/26 17:46:07, displaypage, Could not find file 'Y:\TM\Teases\I'm Too Good For You - Foot Guessing\r1q4a2.jpg'., WinIOError
+2014/01/26 17:46:39, displaypage, Could not find file 'Y:\TM\Teases\I'm Too Good For You - Foot Guessing\r1q4a2.jpg'., WinIOError
+b*.jpg
+r4*.jpg
+r4*.jpg
+r3*.jpg
+r2*.jpg
+r2*.jpg
+r1*.jpg
+r1*.jpg
+*.jpg
+*.jpg
+
+
+
+b*.jpg
+r4*.jpg
+r4*.jpg
+r3*.jpg
+r2*.jpg
+r2*.jpg
+r1*.jpg
+r1*.jpg
+*.jpg
+*.jpg
+
+
+
+2014/01/31 19:09:25, displaypage, Could not find file 'Y:\TM\Teases\NewOne\_model name misc  __019.jpg'., WinIOError
