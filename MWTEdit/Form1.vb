@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.11"
+    Private MstrVer = " 1.12"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -946,8 +946,12 @@ Public Class Form1
                     Else
                         strImage = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & getAttribute(objXMLImage, "id")
                     End If
-                    PictureBox1.Load(strImage)
-                    PictureBox2.Load(strImage)
+                    Try
+                        PictureBox1.Load(strImage)
+                        PictureBox2.Load(strImage)
+                    Catch ex As Exception
+                        MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", displaypage, " & ex.Message & ", " & ex.TargetSite.Name)
+                    End Try
                 End If
             Else
                 tbImage.Text = ""
@@ -1643,13 +1647,13 @@ Public Class Form1
                             If System.IO.File.Exists(OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text & "\" & strMedia) Then
                             Else
                                 strOutput = strOutput & "<tr><td>" & strPage & "</td><td><font color=""red"">" & strNode & " " & strMedia & "</font></td></tr>"
+                                MobjLogWriter.WriteLine(strMedia)
                             End If
                         Else
                             strMediaWild = strMediaWild & strMedia & vbCrLf
                         End If
                 End Select
             Next
-            MobjLogWriter.WriteLine(strMediaWild)
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MediaExists, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
@@ -2494,6 +2498,8 @@ Public Class Form1
                         End While
                     End If
 
+                    strText = escapeText(strText)
+
                     strScript = strScript & "'"
                     strScript = strScript & strText
                     strScript = strScript & "'"
@@ -2501,18 +2507,8 @@ Public Class Form1
                     objXMLImage = objXMLPage.selectSingleNode("Image")
                     If Not objXMLImage Is Nothing Then
                         strImage = getAttribute(objXMLImage, "id")
-                        strImage = strImage.Replace("_", "-")
-                        strImage = strImage.Replace(" ", "-")
-                        Do While strImage.IndexOf("--") > -1
-                            strImage = strImage.Replace("--", "-")
-                        Loop
-                        If strImage.First() = "-" Then
-                            strImage = strImage.Substring(1)
-                        End If
-                        If IsNumeric(strImage.First()) Then
-                            strImage = "no-" & strImage
-                        End If
-                        strScript = strScript & ",pic(""" & strImage.ToLower & """)"
+                        strImage = uploadFix(strImage)
+                        strScript = strScript & ",pic(""" & strImage & """)"
                     End If
 
                     'Buttons
@@ -2544,11 +2540,11 @@ Public Class Form1
                         End If
                         strButtonText = objXMLButton.text
                         If strButtonSet & strButtonUnSet = "" Then
-                            strScript = strScript & strButtonTarget & ","
+                            strScript = strScript & strButtonTarget & ", "
                         Else
                             strRandomPage = intRandomPage.ToString
                             intRandomPage = intRandomPage + 1
-                            strScript = strScript & strRandomPage & "#,"
+                            strScript = strScript & strRandomPage & "#, "
                             strRandomPages = strRandomPages & strRandomPage & "#page("""",pic(""blank.jpg""),delay(0sec," & strButtonTarget & ")"
                             If strButtonSet <> "" Then
                                 strTxtSplit = strButtonSet.Split(",")
@@ -2585,7 +2581,11 @@ Public Class Form1
                         'strButtonIfNotSet = getAttribute(objXMLButton, "if-not-set")
                     Next
                     If objXMLButtons.length > 0 Then
-                        strScript = strScript & "))"
+                        If objXMLButtons.length > 1 Then
+                            strScript = strScript & "))"
+                        Else
+                            strScript = strScript & ")"
+                        End If
                     End If
 
                     'delay
@@ -2655,10 +2655,11 @@ Public Class Form1
                     objXMLAudio = objXMLPage.selectSingleNode("./Audio")
                     If Not objXMLAudio Is Nothing Then
                         strAudio = getAttribute(objXMLAudio, "id")
+                        strAudio = uploadFix(strAudio)
                         If strScript.Substring(strScript.Length - 1, 1) <> "(" Then
                             strScript = strScript & ","
                         End If
-                        strScript = strScript & "hidden:sound(id:'" & strAudio.ToLower & "')"
+                        strScript = strScript & "hidden:sound(id:'" & strAudio & "')"
                     End If
 
                     'strScript = strScript & ")"
@@ -2755,6 +2756,29 @@ Public Class Form1
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnNyx_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
     End Sub
+
+    Private Function escapeText(ByVal strText As String) As String
+        strText = strText.Replace("&", "&amp;")
+        strText = strText.Replace("'", "&apos;")
+        strText = strText.Replace("""", "&quot;")
+        Return strText
+    End Function
+
+    Private Function uploadFix(ByVal strMedia As String) As String
+        strMedia = strMedia.Replace("_", "-")
+        strMedia = strMedia.Replace(" ", "-")
+        Do While strMedia.IndexOf("--") > -1
+            strMedia = strMedia.Replace("--", "-")
+        Loop
+        If strMedia.First() = "-" Then
+            strMedia = strMedia.Substring(1)
+        End If
+        If IsNumeric(strMedia.First()) Then
+            strMedia = "no-" & strMedia
+        End If
+        strMedia = strMedia.ToLower
+        Return strMedia
+    End Function
 
     Private Sub tscbTextToVisual_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Try
