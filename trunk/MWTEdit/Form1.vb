@@ -3,7 +3,7 @@ Imports System.Drawing.Drawing2D
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.12"
+    Private MstrVer = " 1.13"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -2765,6 +2765,7 @@ Public Class Form1
     End Function
 
     Private Function uploadFix(ByVal strMedia As String) As String
+        Dim intPos As Integer
         strMedia = strMedia.Replace("_", "-")
         strMedia = strMedia.Replace(" ", "-")
         Do While strMedia.IndexOf("--") > -1
@@ -2775,6 +2776,10 @@ Public Class Form1
         End If
         If IsNumeric(strMedia.First()) Then
             strMedia = "no-" & strMedia
+        End If
+        intPos = strMedia.LastIndexOf(".")
+        If strMedia.Substring(intPos - 1, 1) = "-" Then
+            strMedia = strMedia.Substring(0, intPos - 1) & strMedia.Substring(intPos)
         End If
         strMedia = strMedia.ToLower
         Return strMedia
