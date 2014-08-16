@@ -1,9 +1,10 @@
 ﻿Imports System.Runtime.InteropServices
 Imports System.Drawing.Drawing2D
+Imports System.Text.RegularExpressions
 
 Public Class Form1
     Private ShutoffTimer As Timer
-    Private MstrVer = " 1.13"
+    Private MstrVer = " 1.14"
     Private MobjXMLDoc As New MSXML2.DOMDocument
     Private MobjXMLDocFrag As New MSXML2.DOMDocument
     Private MobjXMLPages As MSXML2.IXMLDOMElement
@@ -65,6 +66,19 @@ Public Class Form1
     Public Function ThumbnailCallback() As Boolean
         Return False
     End Function
+
+    Private Sub addImageToList(ByVal strImage As String)
+        Dim listviewitemadded As ListViewItem
+        Dim myImageList As ImageList
+        myImageList = ListView1.LargeImageList
+        Dim img As Image
+        Dim myCallback As New Image.GetThumbnailImageAbort(AddressOf ThumbnailCallback)
+        img = Image.FromFile(strImage)
+        myImageList.Images.Add(GetPaddedAspectRatioThumbnail(img, myImageList.ImageSize))
+        img.Dispose()
+        listviewitemadded = ListView1.Items.Add(strImage)
+        listviewitemadded.ImageIndex = listviewitemadded.Index
+    End Sub
 
     Private Sub fillListView()
         Try
@@ -398,11 +412,20 @@ Public Class Form1
     Private Sub bntImage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles bntImage.Click
         Try
             Dim strImage As String
+            Dim strOtherDirName As String
+            Dim strMediaDir As String
             OpenFileDialogImage.InitialDirectory = OpenFileDialog1.FileName.Substring(0, OpenFileDialog1.FileName.LastIndexOf("\") + 1) & tbMediaDirectory.Text
             If OpenFileDialogImage.ShowDialog() = System.Windows.Forms.DialogResult.OK Then
                 If tbImage.Text <> OpenFileDialogImage.SafeFileName Then
                     tbImage.Text = OpenFileDialogImage.SafeFileName
-                    strImage = OpenFileDialogImage.FileName
+                    strOtherDirName = OpenFileDialogImage.FileName
+                    strOtherDirName = strOtherDirName.Replace(OpenFileDialogImage.SafeFileName, "")
+                    strMediaDir = OpenFileDialogImage.InitialDirectory & "\"
+                    strImage = strMediaDir & OpenFileDialogImage.SafeFileName
+                    If strOtherDirName <> strMediaDir Then
+                        System.IO.File.Copy(OpenFileDialogImage.FileName, strImage)
+                        addImageToList(strImage)
+                    End If
                     PictureBox1.Load(strImage)
                     PictureBox2.Load(strImage)
                     MblnDirty = True
@@ -1137,6 +1160,8 @@ Public Class Form1
             End If
 
             ListView1.SelectedIndices.Clear()
+            ListView2.SelectedIndices.Clear()
+            ListView3.SelectedIndices.Clear()
 
             MblnDirty = False
         Catch ex As Exception
@@ -1827,6 +1852,9 @@ Public Class Form1
                     MblnDirty = False
                     PopPageTree()
                     TreeViewPages.SelectedNode = TreeViewPages.Nodes.Item(MstrPage)
+                    If TabControl1.SelectedTab.Name = "TabPage" Then
+                        tbPageText.Focus()
+                    End If
                 End If
             End If
         Catch ex As Exception
@@ -2314,6 +2342,146 @@ Public Class Form1
         frmDialogue.ShowDialog()
     End Sub
 
+    Private Sub MenuToolsMCC_Click(ByVal sender As Object, ByVal e As System.EventArgs)
+        Dim strTeaseName As String
+        Dim strTemp As String
+        Dim strC As String
+        Dim blnSpace As Boolean
+        Dim objfilewriterTease As System.IO.StreamWriter
+        Dim objfilewriterPage As System.IO.StreamWriter
+        Dim objfilewriterButton As System.IO.StreamWriter
+
+        Dim objXMLDomText As New MSXML2.DOMDocument
+        Dim objXMLPages As MSXML2.IXMLDOMNode
+        Dim objXMLPageNode As MSXML2.IXMLDOMNode
+        Dim objXMLPage As MSXML2.IXMLDOMNode
+        Dim objXMLImage As MSXML2.IXMLDOMElement
+        Dim objXMLText As MSXML2.IXMLDOMElement
+        Dim objXMLButtons As MSXML2.IXMLDOMNodeList
+        Dim objXMLButton As MSXML2.IXMLDOMElement
+        Dim strImage As String
+        Dim strText As String
+        Dim strButtonTarget As String
+        Dim strButtonText As String
+        Dim intloop As Integer
+        Dim strScript As String = ""
+        Dim strPages(1, 0) As String
+        Dim strNewTarget As String = ""
+        Dim intPos As Integer
+        Dim intPos2 As Integer
+        Dim strFontSize As String
+        Dim intFont As Integer
+        Dim strSize As String
+        Dim strTeaseCSV As String
+        Dim strTeasePageCSV As String
+        Dim strTeaseButtonCSV As String
+
+        Try
+            objfilewriterTease = My.Computer.FileSystem.OpenTextFileWriter("c:\nfl\tease.csv", False, System.Text.Encoding.ASCII)
+            objfilewriterPage = My.Computer.FileSystem.OpenTextFileWriter("c:\nfl\page.csv", False, System.Text.Encoding.ASCII)
+            objfilewriterButton = My.Computer.FileSystem.OpenTextFileWriter("c:\nfl\button.csv", False, System.Text.Encoding.ASCII)
+
+            blnSpace = True
+            strTeaseName = ""
+            strTemp = tbTitle.Text
+            For i = 1 To Len(strTemp)
+                strC = Mid(strTemp, i, 1)
+                If strC >= "A" And strC <= "Z" Then
+                    strTeaseName = strTeaseName & strC
+                End If
+                If strC >= "0" And strC <= "9" Then
+                    strTeaseName = strTeaseName & strC
+                End If
+                If strC >= "a" And strC <= "z" Then
+                    If blnSpace Then
+                        strTeaseName = strTeaseName & UCase(strC)
+                    Else
+                        strTeaseName = strTeaseName & strC
+                    End If
+                End If
+                If strC = " " Then
+                    blnSpace = True
+                Else
+                    blnSpace = False
+                End If
+            Next
+
+            strTeaseCSV = """" & strTeaseName & """,""start"",""" & tbTitle.Text & """,0" & vbLf
+            objfilewriterTease.Write(strTeaseCSV)
+            objfilewriterTease.Close()
+            objXMLPages = MobjXMLPages.cloneNode(True)
+
+            For Each objXMLPageNode In objXMLPages.childNodes
+                If objXMLPageNode.nodeType = MSXML2.DOMNodeType.NODE_ELEMENT Then
+                    objXMLPage = objXMLPageNode
+                    strTeasePageCSV = """" & strTeaseName & """,""" & getAttribute(objXMLPage, "id") & """"
+                    'text
+                    objXMLText = objXMLPage.selectSingleNode("./Text")
+                    If objXMLText Is Nothing Then
+                        strText = ""
+                    Else
+                        strText = objXMLText.xml
+                        Dim regex As Regex = New Regex(">\s*<")
+                        strText = regex.Replace(strText, "><")
+                        intPos = strText.IndexOf("SIZE=""")
+                        If intPos = -1 Then
+                            intPos = strText.IndexOf("size=""")
+                        End If
+                        intPos = intPos + 6
+                        While intPos <> 5
+                            intPos2 = strText.IndexOf("""", intPos)
+                            strFontSize = strText.Substring(intPos, intPos2 - intPos)
+                            intFont = Convert.ToInt32(strFontSize)
+                            strSize = GetNyxFontSize(intFont)
+                            strText = strText.Substring(0, intPos) & strSize & strText.Substring(intPos + strFontSize.Length)
+                            intPos = strText.IndexOf("SIZE=""", intPos2)
+                            If intPos = -1 Then
+                                intPos = strText.IndexOf("size=""", intPos2)
+                            End If
+                            If intPos = -1 Then
+                                Exit While
+                            End If
+                            intPos = intPos + 6
+                        End While
+                    End If
+
+                    strText = escapeText(strText)
+
+                    strTeasePageCSV = strTeasePageCSV & ",""" & strText & """"
+
+                    'image
+                    objXMLImage = objXMLPage.selectSingleNode("Image")
+                    If Not objXMLImage Is Nothing Then
+                        strImage = getAttribute(objXMLImage, "id")
+                    Else
+                        strImage = ""
+                    End If
+
+                    strTeasePageCSV = strTeasePageCSV & ",""" & strImage & """" & vbLf
+
+                    objfilewriterPage.Write(strTeasePageCSV)
+
+                    'Buttons
+                    objXMLButtons = objXMLPage.selectNodes("./Button")
+                    'populate with buttons for this page
+                    For intloop = objXMLButtons.length - 1 To 0 Step -1
+                        objXMLButton = objXMLButtons.item(intloop)
+                        strButtonTarget = getAttribute(objXMLButton, "target")
+                        strButtonText = objXMLButton.text
+                        strTeaseButtonCSV = """" & strTeaseName & """,""" & getAttribute(objXMLPage, "id") & """," & intloop & ",""" & strButtonText & """,""" & strButtonTarget & """" & vbLf
+                        objfilewriterButton.Write(strTeaseButtonCSV)
+                    Next
+
+                End If
+
+            Next
+            objfilewriterPage.Close()
+            objfilewriterButton.Close()
+        Catch ex As Exception
+            MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", btnNyx_Click, " & ex.Message & ", " & ex.TargetSite.Name)
+        End Try
+
+    End Sub
 
     Private Sub MenuToolsNyx_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles MenuToolsNyx.Click
         Try
@@ -2476,6 +2644,8 @@ Public Class Form1
                         strText = ""
                     Else
                         strText = objXMLText.xml
+                        Dim regex As Regex = New Regex(">\s*<")
+                        strText = regex.Replace(strText, "><")
                         intPos = strText.IndexOf("SIZE=""")
                         If intPos = -1 Then
                             intPos = strText.IndexOf("size=""")
@@ -2507,20 +2677,17 @@ Public Class Form1
                     objXMLImage = objXMLPage.selectSingleNode("Image")
                     If Not objXMLImage Is Nothing Then
                         strImage = getAttribute(objXMLImage, "id")
-                        strImage = uploadFix(strImage)
-                        strScript = strScript & ",pic(""" & strImage & """)"
+                        If strImage <> "" Then
+                            strImage = uploadFix(strImage)
+                            strScript = strScript & ",pic(""" & strImage & """)"
+                        End If
                     End If
 
                     'Buttons
                     objXMLButtons = objXMLPage.selectNodes("./Button")
                     'populate with buttons for this page
                     If objXMLButtons.length > 0 Then
-                        If objXMLButtons.length > 1 Then
-                            strScript = strScript & ",vert("
-                            strScript = strScript & "buttons("
-                        Else
-                            strScript = strScript & ",buttons("
-                        End If
+                        strScript = strScript & ",buttons("
                     End If
                     For intloop = objXMLButtons.length - 1 To 0 Step -1
                         objXMLButton = objXMLButtons.item(intloop)
@@ -2581,11 +2748,7 @@ Public Class Form1
                         'strButtonIfNotSet = getAttribute(objXMLButton, "if-not-set")
                     Next
                     If objXMLButtons.length > 0 Then
-                        If objXMLButtons.length > 1 Then
-                            strScript = strScript & "))"
-                        Else
-                            strScript = strScript & ")"
-                        End If
+                        strScript = strScript & ")"
                     End If
 
                     'delay
@@ -2761,6 +2924,19 @@ Public Class Form1
         strText = strText.Replace("&", "&amp;")
         strText = strText.Replace("'", "&apos;")
         strText = strText.Replace("""", "&quot;")
+        strText = Replace(strText, "<EM>", "<I>", 1, , CompareMethod.Text)
+        strText = Replace(strText, "</EM>", "</I>", 1, , CompareMethod.Text)
+        strText = Replace(strText, "<STRONG>", "<B>", 1, , CompareMethod.Text)
+        strText = Replace(strText, "</STRONG>", "</B>", 1, , CompareMethod.Text)
+        strText = Replace(strText, "<DIV>", "<p>", 1, , CompareMethod.Text)
+        strText = Replace(strText, "</DIV>", "</p>", 1, , CompareMethod.Text)
+        strText = Replace(strText, "<Text>", "", 1, , CompareMethod.Text)
+        strText = Replace(strText, "</Text>", "", 1, , CompareMethod.Text)
+        If strText.IndexOf("<p>") = 0 Or strText.IndexOf("<P>") = 0 Then
+            If strText.LastIndexOf("</p>") = (strText.Length - 4) Or strText.LastIndexOf("</P>") = (strText.Length - 4) Then
+                strText = strText.Substring(3, strText.Length - 7)
+            End If
+        End If
         Return strText
     End Function
 
@@ -3134,6 +3310,9 @@ Public Class Form1
         Try
             If TabControl1.SelectedTab.Name = "TabPageView" Then
                 TreeViewPages.Focus()
+            End If
+            If TabControl1.SelectedTab.Name = "TabPage" Then
+                tbPageText.Focus()
             End If
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", TabControl1_SelectedIndexChanged, " & ex.Message & ", " & ex.TargetSite.Name)
@@ -3638,8 +3817,8 @@ Public Class Form1
                     PictureBox2.Image = Nothing
                 End If
                 strText = ""
-                strHtml = MstrHtmlTemplate.Replace("[TEXT]", strText)
-                WebBrowser1.DocumentText = strHtml
+                strHTML = MstrHtmlTemplate.Replace("[TEXT]", strText)
+                WebBrowser1.DocumentText = strHTML
                 Do While Not WebBrowser1.ReadyState = WebBrowserReadyState.Complete
                     System.Windows.Forms.Application.DoEvents()
                 Loop
@@ -3717,5 +3896,43 @@ Public Class Form1
         Catch ex As Exception
             MobjLogWriter.WriteLine(Now().ToString("yyyy/MM/dd HH:mm:ss") & ", MenuPageBatch_Click, " & ex.Message & ", " & ex.TargetSite.Name)
         End Try
+    End Sub
+
+    Private mDragg As TreeNode
+    Private mDropp As TreeNode
+
+    Private Sub TreeViewPages_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles TreeViewPages.DragDrop
+        Dim strDrag As String
+        Dim strDrop As String
+        Dim objXMLPageDrag As MSXML2.IXMLDOMElement
+        Dim objXMLPageDrop As MSXML2.IXMLDOMElement
+        If mDropp IsNot Nothing Then
+            strDrag = mDragg.Text
+            strDrop = mDropp.Text
+            objXMLPageDrag = MobjXMLPages.selectSingleNode("./Page[@id=""" & strDrag & """]")
+            objXMLPageDrop = MobjXMLPages.selectSingleNode("./Page[@id=""" & strDrop & """]")
+            objXMLPageDrag.parentNode.removeChild(objXMLPageDrag)
+            objXMLPageDrop.parentNode.insertBefore(objXMLPageDrag, objXMLPageDrop)
+            TreeViewPages.Nodes.Remove(mDragg)
+            TreeViewPages.Nodes.Insert(TreeViewPages.Nodes.IndexOf(mDropp), mDragg)
+            TreeViewPages.AllowDrop = False
+        End If
+    End Sub
+
+    Private Sub TreeViewPages_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles TreeViewPages.DragEnter
+        e.Effect = DragDropEffects.Copy
+    End Sub
+
+    Private Sub TreeViewPages_DragOver(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles TreeViewPages.DragOver
+        Dim pt As New System.Drawing.Point(e.X, e.Y)
+        Dim pnt As System.Drawing.Point = DirectCast(sender, TreeView).PointToClient(pt)
+        mDropp = DirectCast(sender, TreeView).GetNodeAt(pnt)
+        If mDropp IsNot Nothing Then TreeViewPages.SelectedNode = mDropp
+    End Sub
+
+    Private Sub TreeViewPages_ItemDrag(ByVal sender As Object, ByVal e As System.Windows.Forms.ItemDragEventArgs) Handles TreeViewPages.ItemDrag
+        mDragg = DirectCast(e.Item, TreeNode)
+        TreeViewPages.AllowDrop = True
+        TreeViewPages.DoDragDrop("", DragDropEffects.All)
     End Sub
 End Class
