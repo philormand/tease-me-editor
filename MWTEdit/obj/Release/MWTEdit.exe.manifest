@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <asmv1:assembly manifestVersion="1.0" xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1">
-  <asmv1:assemblyIdentity version="1.7.0.0" name="MWTEdit.exe" publicKeyToken="0000000000000000" language="en-GB" processorArchitecture="msil" type="win32" />
+  <asmv1:assemblyIdentity version="1.14.0.0" name="MWTEdit.exe" publicKeyToken="0000000000000000" language="en-GB" processorArchitecture="msil" type="win32" />
   <application />
   <entryPoint>
     <assemblyIdentity name="MWTEdit" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
@@ -68,6 +68,18 @@
     </dependentAssembly>
   </dependency>
   <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="HtmlAgilityPack.dll" size="134144">
+      <assemblyIdentity name="HtmlAgilityPack" version="1.4.6.0" publicKeyToken="BD319B19EAF3B43A" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>dyMsfYTNomCy5qQ3z+WKooIEcFs=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Interop.MSXML2.dll" size="212992">
       <assemblyIdentity name="Interop.MSXML2" version="3.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
@@ -75,7 +87,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>bc/IBBom03ALC12z8x2ck5SWGjk=</dsig:DigestValue>
+        <dsig:DigestValue>S2FiGisb2z/+NmEkGIk/24oDwds=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -87,7 +99,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>zeH11uGsHlo8yuHeud4uUR0sQe0=</dsig:DigestValue>
+        <dsig:DigestValue>J6scuTOtS9cEzh1l4ntmx1Lt0A0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -152,14 +164,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MWTEdit.exe" size="172544">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MWTEdit.exe" size="184320">
       <assemblyIdentity name="MWTEdit" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>UMCCGfogBlsSQ+sEnfEiI83dc0U=</dsig:DigestValue>
+        <dsig:DigestValue>MSoP13KUcGKrxkEs8juUCNi4aa0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>

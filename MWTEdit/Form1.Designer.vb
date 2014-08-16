@@ -174,6 +174,7 @@ Partial Class Form1
         Me.MenuPageRename = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuPageDownLoadError = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuPageDeleteError = New System.Windows.Forms.ToolStripMenuItem
+        Me.MenuPageBatch = New System.Windows.Forms.ToolStripMenuItem
         Me.ToolsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsSort = New System.Windows.Forms.ToolStripMenuItem
         Me.MenuToolsCheck = New System.Windows.Forms.ToolStripMenuItem
@@ -192,7 +193,6 @@ Partial Class Form1
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip
         Me.ToolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel
         Me.ToolStripProgressBar1 = New System.Windows.Forms.ToolStripProgressBar
-        Me.MenuPageBatch = New System.Windows.Forms.ToolStripMenuItem
         Me.TabControl1.SuspendLayout()
         Me.TabGeneral.SuspendLayout()
         Me.TabPageView.SuspendLayout()
@@ -1767,6 +1767,12 @@ Partial Class Form1
         Me.MenuPageDeleteError.Size = New System.Drawing.Size(156, 22)
         Me.MenuPageDeleteError.Text = "DeleteError"
         '
+        'MenuPageBatch
+        '
+        Me.MenuPageBatch.Name = "MenuPageBatch"
+        Me.MenuPageBatch.Size = New System.Drawing.Size(156, 22)
+        Me.MenuPageBatch.Text = "BatchCreate"
+        '
         'ToolsToolStripMenuItem
         '
         Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.MenuToolsSort, Me.MenuToolsCheck, Me.MenuToolsLoops, Me.MenuToolsUpload, Me.MenuToolsNyx, Me.MenuToolsOptions, Me.MenuToolsRefreshMedia, Me.MenuToolsNyxText, Me.MenuToolsGrammar})
@@ -1900,12 +1906,6 @@ Partial Class Form1
         Me.ToolStripProgressBar1.RightToLeft = System.Windows.Forms.RightToLeft.No
         Me.ToolStripProgressBar1.Size = New System.Drawing.Size(300, 16)
         Me.ToolStripProgressBar1.Step = 1
-        '
-        'MenuPageBatch
-        '
-        Me.MenuPageBatch.Name = "MenuPageBatch"
-        Me.MenuPageBatch.Size = New System.Drawing.Size(156, 22)
-        Me.MenuPageBatch.Text = "BatchCreate"
         '
         'Form1
         '
