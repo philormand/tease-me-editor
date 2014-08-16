@@ -1,2 +1,6 @@
 Fixes to the Nyx generation
 [https://drive.google.com/file/d/0B4SW7oxupc2QdmJZQWJldlRIUjg/edit?usp=sharing version 1.13]
+
+Fixes to choosing media
+Re-order pages via drag and drop
+[https://drive.google.com/file/d/0B4SW7oxupc2QQTJlRFo1ZWZMQTQ/edit?usp=sharing version 1.14]
