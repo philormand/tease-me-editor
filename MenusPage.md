@@ -1,0 +1,24 @@
+![http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuPage.png](http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuPage.png)
+
+## Save ##
+Saves the changes to the current page
+
+## New ##
+Creates a new page
+
+## Delete ##
+Deletes the current page
+
+## Copy ##
+Creates a copy of the current page
+
+## Split ##
+This will split the current page into 2 pages. It will prompt for the name of the new page. It will replace the buttons on the current page with a continue button for the new page. The new page will be a copy of the original page with the new name. (I put this in to handle pages where the text on a page was too long and I wanted to split it across two pages)
+
+## Rename ##
+Renames the current page
+
+## DownLoadError / DeleteError ##
+When teaseme downloads a tease from Milovana but does not understand the Nyx script for a page it generates error information and stores the Nyx code for the page. Download Error will display a pop up with the error and Nyx script that caused it. You can use this to manually correct the teasme xml. Delete Error allows you to delete that information once you have manually corrected it.
+
+MenusFile MenusTools

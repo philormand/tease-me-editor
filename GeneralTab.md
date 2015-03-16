@@ -1,0 +1,27 @@
+![http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/GeneralTab.png](http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/GeneralTab.png)
+
+# Description #
+Most of the fields on this page are downloaded from milovana if you are creating a tease you only need to fill in title, author and media directory
+
+# Buttons #
+## Get File ##
+Opens a dialogue box which will allow you to select a tease xml file to edit
+
+## Save File ##
+Kind of redundant because it saves the xml file when you save changes to a page, but if you update fields on this page it saves them.
+
+## Create Upload Directory ##
+This will create (or overwrite) an upload directory in your media directory, It will copy all the pictures you have actually used from the media directory.
+(I added this because I put a load of pictures that I might use in the directory and wanted an easy way to identify which ones I had used)
+
+## Sort Pages ##
+This will sort the pages in the Page Tree tab in alphabetical order.
+(it will put the start page first though)
+
+## New File ##
+Will allow you to create a new tease xml file
+
+## File Location Save ##
+Default directory for the tease xml files
+
+MenusTools PageView

@@ -1,0 +1,5 @@
+Unzip to a directory and run MWTEdit.exe
+
+See the rest of the wiki pages for details on what each option does
+
+MenusFile

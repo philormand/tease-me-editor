@@ -1,0 +1,27 @@
+![http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/PageViewTab.png](http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/PageViewTab.png)
+# Description #
+The pages in the tease will be displayed on the left. Pages in Red have Nyx download error information. Clicking on a page name on the left will display it on the right (this will also change what is displayed on the editing tabs)
+
+This will give you a rough view of what the page will look like in teaseme.
+
+The tease buttons will work if they go to a single page, but not random one.
+
+This page does not display videos
+
+# Buttons #
+## Play Audio ##
+Will play the audio file for the page
+
+## << ##
+Will display the previous page in the page tree
+
+## >> ##
+Will display the next page in the page tree
+
+## Delay Page ##
+Will display the page the delay takes you to
+
+## Tease Buttons ##
+Display the page the button takes you to in the tease
+
+GeneralTab [Page](http://code.google.com/p/tease-me-editor/wiki/Page)

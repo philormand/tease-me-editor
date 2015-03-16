@@ -1,0 +1,15 @@
+![http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/ButtonsTab.png](http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/ButtonsTab.png)
+
+The table contains the buttons.
+The row with a star next to it is where you can enter information to create a new button.
+Clicking the far left of a row to highlight it and pressing the keyboard delete button will delete a button from the table
+
+# Buttons #
+
+## Move Up ##
+Moves the current selected button row in the table up one row
+
+## Move Down ##
+Moves the current selected button row in the table down one row
+
+[Delay](http://code.google.com/p/tease-me-editor/wiki/Delay) [Editor](http://code.google.com/p/tease-me-editor/wiki/WYSIWYG)

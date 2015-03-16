@@ -1,0 +1,28 @@
+![http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuTools.png](http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/MenuTools.png)
+
+## Sort Pages ##
+Sorts the pages in alphabetical order (apart from the start page which will be the first page)
+
+## Check Pages ##
+Will check for broken links to pages and pages that are not refernced
+![http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/CheckPages.png](http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/CheckPages.png)
+
+## Create Upload Directory ##
+Creates an upload directory in the media directory containing all the images actually used in the tease
+
+## Gen Nyx Script ##
+Populates the Nyx tab with the script for this tease
+
+## Options ##
+Sets the directory where the xml files will be stored.
+Check box if ticked will cause a backup file to be created every time a tease is opened.
+Image, Audio and Video are filters on what is displayed in the lists in the three tabs.  To add more file types (e.g. png files) add a comma and the filter for the file extension (`,*.png`)
+![http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Options.png](http://tease-me-editor.googlecode.com/svn/trunk/Wiki/Images/Options.png)
+
+## Refresh Media ##
+Will refresh the lists in the image, audio and video tabs if you have added new files to the media directory during the session
+
+## Add Nyx Text Formatting ##
+New in V1.3 (not shown on screen shot) when tease me downloads a Nyx flash tease it does not convert the formatting of text.  The formatting is still in the xml file as a comment.  This option will replace the current text with correctly formatted HTML so colours font changes etc should not show in tease me. Note you will lose any changes you have made to the text.
+
+MenusPage GeneralTab

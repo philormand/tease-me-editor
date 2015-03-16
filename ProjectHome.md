@@ -1,0 +1,1 @@
+Visual editor for xml files for offline tease viewer by Takenaga and d3vi0n. Inspired by www.milovana.com
