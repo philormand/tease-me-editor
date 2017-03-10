@@ -26,3 +26,10 @@ C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Release
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Release\MWTEdit.BatchCreate.resources
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Release\HtmlAgilityPack.pdb
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Release\HtmlAgilityPack.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Release\MWTEdit.vbprojResolveAssemblyReference.cache
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Release\Interop.MSXML2.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Release\Interop.WMPLib.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Release\AxInterop.WMPLib.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Release\MWTEdit.exe
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Release\MWTEdit.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Release\MWTEdit.pdb

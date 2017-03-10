@@ -26,3 +26,42 @@ C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\A
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\HtmlAgilityPack.pdb
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\bin\Debug\HtmlAgilityPack.xml
 C:\Users\James\Documents\Visual Studio 2008\Projects\MWTEdit\MWTEdit\obj\Debug\MWTEdit.BatchCreate.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\Interop.MSHTML.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\Interop.MSXML2.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\Interop.VBIDE.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\Interop.WMPLib.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\AxInterop.WMPLib.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.vbproj.ResolveComReference.cache
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.exe
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.pdb
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.vbprojResolveAssemblyReference.cache
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.BatchCreate.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.CheckPopUp.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.OptionsPopUp.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.ErrorPopUp.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.Form1.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.Resources.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.TextDialog.resources
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.vbproj.GenerateResource.Cache
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\MWTEdit.exe.manifest
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\MWTEdit.application
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\MWTEdit.exe
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\MWTEdit.pdb
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\MWTEdit.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\HtmlAgilityPack.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Microsoft.DirectX.AudioVideoPlayback.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Microsoft.DirectX.Direct3D.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Microsoft.DirectX.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\HtmlAgilityPack.pdb
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\HtmlAgilityPack.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Microsoft.DirectX.AudioVideoPlayback.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Microsoft.DirectX.Direct3D.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Microsoft.DirectX.xml
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Interop.MSHTML.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Interop.MSXML2.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Interop.VBIDE.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\Interop.WMPLib.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\bin\Debug\AxInterop.WMPLib.dll
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.exe.manifest
+F:\gitProj\mwtedit\tease-me-editor\MWTEdit\obj\Debug\MWTEdit.application

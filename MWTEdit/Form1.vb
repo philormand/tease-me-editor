@@ -2954,8 +2954,11 @@ Public Class Form1
             strMedia = "no-" & strMedia
         End If
         intPos = strMedia.LastIndexOf(".")
-        If strMedia.Substring(intPos - 1, 1) = "-" Then
-            strMedia = strMedia.Substring(0, intPos - 1) & strMedia.Substring(intPos)
+        intPos = strMedia.LastIndexOf(".")
+        If intPos > 0 Then
+            If strMedia.Substring(intPos - 1, 1) = "-" Then
+                strMedia = strMedia.Substring(0, intPos - 1) & strMedia.Substring(intPos)
+            End If
         End If
         strMedia = strMedia.ToLower
         Return strMedia
